@@ -1,8 +1,13 @@
 import React from 'react'
+import Hero from '../../components/Hero/Hero'
+import Services from '../../components/Services/Services'
 
 const Home = () => {
   return (
-    <div className='h-screen'><h1 className='text-2xl text-black text-center font-bold relative top-1/2'>This is home page.</h1></div>
+    <div>
+      <Hero></Hero>
+      <Services></Services>
+    </div>
   )
 }
 

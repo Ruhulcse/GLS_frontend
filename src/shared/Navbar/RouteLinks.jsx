@@ -1,0 +1,34 @@
+export const links = [
+    {
+        name:"Solutions",
+        submenu:true,
+        sublink:[
+            {
+                name:'Carriers',
+                link:'/carriers'
+            },
+            {
+                name:'Brokers',
+                link:'/brokers'
+            },
+            {
+                name:'Shippers',
+                link:'/shippers'
+            },
+        ]
+    },
+    {
+        name:"Recources",
+        submenu:true,
+        sublink:[
+            {
+                name:'Carriers',
+                link:'/carriers'
+            },
+            {
+                name:'Videos',
+                link:'/videos'
+            },
+        ]
+    },
+]
