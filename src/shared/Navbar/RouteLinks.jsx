@@ -26,6 +26,10 @@ export const links = [
                 link:'/carriers'
             },
             {
+                name:'Blogs',
+                link:'/blog'
+            },
+            {
                 name:'Videos',
                 link:'/videos'
             },
