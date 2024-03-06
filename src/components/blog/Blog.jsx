@@ -17,8 +17,9 @@ function Blog({item}) {
             <img src={item.image} className='h-full w-full object-fill' alt="" />
         </div>
         <div className='mx-6'>
-            <Link to={`/blog/${item.id}`} state={item} className='text-xl font-medium py-8'>{splitText(item.info,150)}</Link>
-            <p  className='uppercase text-xl font-bold text-blue-700 cursor-pointer mb-12 mt-[24px]'>read more</p>
+            <p  className='text-xl font-medium py-8'>{splitText(item.info,150)}</p>
+            <Link to={`/blog/${item.id}`} 
+            state={item} className='uppercase text-xl font-bold text-blue-700 cursor-pointer mb-12 mt-[24px]'>read more</Link>
         </div>
     </div>
   )
