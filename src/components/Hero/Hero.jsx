@@ -21,14 +21,12 @@ const Hero = () => {
               loading to unloading <br className="hidden sm:block" /> we
               maintain the standard terms of safety while in transit.
             </p>
-            <div>
               <button
-                className="px-8 py-6 text-sm tracking-normal uppercase font-semibold text-white bg-[#03045e] hover:bg-[#0B0D7D] transition-all duration-500"
+                className="px-8 py-6 text-sm tracking-normal uppercase font-semibold text-white bg-[#03045e] hover:bg-[#0B0D7D]"
                 data-aos="fade-left"
               >
                 Request a quote
               </button>
-            </div>
           </Container>
         </div>
       </div>
