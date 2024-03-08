@@ -6,3 +6,18 @@
 #root {
   font-family: "Noto Sans", sans-serif;
 }
+
+.slick-active {
+  outline: none;
+}
+
+.slick-prev,
+.slick-next {
+  display: none !important;
+}
+.slick-slide > div {
+  margin: 0 10px;
+}
+.slick-list > div {
+  margin: 0 -10px;
+}

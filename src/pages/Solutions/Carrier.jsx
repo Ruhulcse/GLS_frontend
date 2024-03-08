@@ -1,5 +1,4 @@
 import React from "react";
-import { FaAnglesDown } from "react-icons/fa6";
 import truck01 from "../../assets/solutions/truck01.jpg";
 import truck02 from "../../assets/solutions/truck02.jpg";
 import Bg_image from "../../assets/solutions/bg-image.jpg";
@@ -14,13 +13,11 @@ import { FaPhoneVolume } from "react-icons/fa6";
 import Carrier_carusal from "./Carrier_carusal";
 import { BsFuelPump } from "react-icons/bs";
 import Testimonial from "./Testimonial";
-import "../Solutions/Responsive.css";
+import "../Solutions/responsive.css";
+import Banner from "./Banner";
+// import Card from "./Card";
 
 const Carrier = () => {
-  const handleScroll = () => {
-    const element = document.getElementById("Smooth");
-    element.scrollIntoView({ behavior: "smooth" });
-  };
   const handleScroll1 = () => {
     const element = document.getElementById("Authority");
     element.scrollIntoView({ behavior: "smooth" });
@@ -30,44 +27,27 @@ const Carrier = () => {
     element.scrollIntoView({ behavior: "smooth" });
   };
   const handleScroll3 = () => {
-    const element = document.getElementById("Bussines");
+    const element = document.getElementById("Need_GLS");
     element.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <div>
       {/* banner section */}
-      <div
-        className="hero min-h-96 md:min-h-[500px] lg:min-h-screen"
-        style={{
-          backgroundImage: `url(${Bg_image})`,
-          backgroundSize: "cover",
-        }}
-      >
-        <div className="hero-overlay bg-opacity-60"></div>
-
-        <div className=" hero-content text-white">
-          <div className="max-w-md">
-            <h1 className="mb-5 mt-10 py-2 text-3xl  md:text-5xl font-bold">
-              Solutions for <br /> Carriers
-            </h1>
-            <p className="mb-5">
-              Whether you are new to being a Carrier or an industry veteran, DAT
-              helps your business grow with next level tools to cut operating
-              costs and get you the best loads first.
-            </p>
-            <div class="flex justify-center items-center text-center md:justify-end md:items-end md:text-end hover:translate-y-3 transition duration-200 ease-in-out">
-              <p class="text-4xl">
-                <FaAnglesDown onClick={handleScroll}></FaAnglesDown>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Banner
+        bgImage={Bg_image}
+        heading="Solutions for"
+        heroSpan="Carriers"
+        paragraph="Whether you are new to being a Carrier or an industry veteran,
+         DAT helps your business grow with next level tools to cut operating costs
+          and get you the best loads first. "
+        btnId="Smooth"
+      ></Banner>
       {/* Card section */}
+
       <div
         id="Smooth"
-        className=" w-full max-w-6xl mx-auto grid gap-6 lg:gap-8 py-10 px-3 md:px-10 lg:px-0 lg:py-16 my-8 lg:my-16 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center"
+        className=" w-full padding max-w-6xl mx-auto grid gap-6 lg:gap-8 py-10 px-3 md:px-10 lg:px-0 lg:py-16 my-8 lg:my-16 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center"
       >
         <div className="card w-96  md:w-80 lg:w-96 card_one bg-slate-900 shadow-xl rounded-none">
           <figure>
@@ -87,7 +67,7 @@ const Carrier = () => {
             </div>
           </div>
         </div>
-        <div className="card w-96  md:w-80 lg:w-96 card_one bg-slate-900 shadow-xl rounded-none">
+        <div className="card w-96  md:w-80 lg:w-96  card_one  bg-slate-900 shadow-xl rounded-none">
           <figure>
             <img src={truck02} alt="" />
           </figure>
@@ -105,7 +85,7 @@ const Carrier = () => {
             </div>
           </div>
         </div>
-        <div className="card w-96  md:w-80 lg:w-96 card_one bg-slate-900 shadow-xl rounded-none">
+        <div className="card w-96  md:w-80 lg:w-96 responsive-card card_one bg-slate-900 shadow-xl rounded-none">
           <figure>
             <img src={truck03} alt="" />
           </figure>

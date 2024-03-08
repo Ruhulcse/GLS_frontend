@@ -22,6 +22,7 @@ import SpaceCity5 from "../../assets/solutions/SpaceCity5.jpeg";
 import SpaceCity6 from "../../assets/solutions/SpaceCity6.jpeg";
 import SpaceCity7 from "../../assets/solutions/SpaceCity7.jpeg";
 import SpaceCity8 from "../../assets/solutions/SpaceCity8.jpeg";
+import "../Solutions/responsive.css";
 
 export const ServiceData = [
   {
@@ -81,7 +82,7 @@ const Carrier_carusal = () => {
           clickable: true,
         }}
         modules={[FreeMode, Pagination]}
-        className="max-w-[90%] lg:max-w-[80%]"
+        className="max-w-[90%] lg:max-w-[80%] width-set"
       >
         {ServiceData.map((item) => (
           <SwiperSlide key={item.title}>
