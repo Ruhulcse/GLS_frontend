@@ -1,0 +1,9 @@
+@media screen and (min-width:1028px) and (max-width:1211px) {
+    .card_one{
+        width: 320px;
+    }
+    .carusal{
+        width: 250px;
+        height: 320px;
+    }
+}

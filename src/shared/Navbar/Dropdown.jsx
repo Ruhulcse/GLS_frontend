@@ -12,7 +12,7 @@ const solutions = [
   },
   {
     label: "Shippers",
-    href: "/Shippers",
+    href: "/shippers",
   },
 ];
 
@@ -31,7 +31,7 @@ export const SolutionsDropdown = () => {
           className="text-base font-normal leading-normal tracking-normal cursor-pointer w-40 py-2"
           key={i}
         >
-        <Link to={item.href}>{item.label}</Link>
+          <Link to={item.href}>{item.label}</Link>
         </li>
       ))}
     </>
@@ -46,7 +46,7 @@ export const RecourcesDropdown = () => {
           className="text-base font-normal leading-normal tracking-normal cursor-pointer w-40 py-2"
           key={i}
         >
-        <Link to={item.href}>{item.label}</Link>
+          <Link to={item.href}>{item.label}</Link>
         </li>
       ))}
     </>
