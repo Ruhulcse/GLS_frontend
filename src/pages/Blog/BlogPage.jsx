@@ -17,7 +17,7 @@ function BlogPage() {
         {/* about */}
         <div className='grid mx-5 mt-16 lg:mx-auto lg:grid-cols-2 grid-cols-1 space-y-10 lg:space-y-0 lg:space-x-10 lg:container lg:min-h-[500px]'>
             <div className='h-[400px] relative lg:h-[100%]'>
-                <img src={road} alt="" className='h-full absolute w-full object-cover' />
+                <img src={road} alt="" className='h-full  absolute w-full object-cover' />
         
             </div>
            
