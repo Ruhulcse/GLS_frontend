@@ -6,6 +6,9 @@ import Brokers from "../pages/Solutions/Brokers";
 import Shippers from "../pages/Solutions/Shippers";
 import BlogPage from "../pages/Blog/BlogPage";
 import BlogDetails from "../pages/Blog/subPage/BlogDetails";
+import BlogPage from "../pages/Blog/BlogPage";
+import BlogDetails from "../pages/Blog/subPage/BlogDetails";
+import Home from "../pages/Home/Home";
 
 export const router = createBrowserRouter([
   {
@@ -39,12 +42,6 @@ export const router = createBrowserRouter([
         path: "/blog",
         element: <BlogPage></BlogPage>,
       },
-    ],
-  },
-  {
-    path: "/blog/:id",
-    element: <Layout></Layout>,
-    children: [
       {
         path: "/blog/:id",
         element: <BlogDetails />,

@@ -53,7 +53,7 @@ const Pricing = () => {
             className="rounded border border-[#535159] text-[#e8e8eb] sm:w-96 w-auto h-auto bg-[#0E0C15] px-8 py-4"
             key={item.id}
           >
-              <div className="relative left-[30%] -top-12">
+              <div className="-mt-12 sm:ml-24 ml-20">
                 <button className="bg-[#371777] rounded-xl text-lg font-semibold tracking-normal leading-normal text-white py-4 px-4">
                   {item.name}
                 </button>
