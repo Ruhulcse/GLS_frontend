@@ -9,6 +9,7 @@ import BlogDetails from "../pages/Blog/subPage/BlogDetails";
 import BlogPage from "../pages/Blog/BlogPage";
 import BlogDetails from "../pages/Blog/subPage/BlogDetails";
 import Home from "../pages/Home/Home";
+import AboutDetails from "../pages/Blog/subPage/AboutDetails";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
         path: "/blog/:id",
         element: <BlogDetails />,
       },
+      {
+        path: '/about/:id',
+        element: <AboutDetails/>
+      }
     ],
   },
 ]);
