@@ -4,7 +4,7 @@ import Container from "../../shared/Container/Container";
 const Hero = () => {
   return (
     <section
-      className="mt-[88px] bg-cover bg-center"
+      className="bg-cover bg-center"
       style={{ backgroundImage: `url(${backgroundImage})`, objectFit: "cover" }}
     >
       <div className="bg-gradient-to-r from-[#001427] w-full sm:h-screen h-[80vh]">
