@@ -6,7 +6,7 @@ import Services from './../../components/service/Services';
 
 function BlogPage() {
   return (
-    <div className='mt-24 mb-12'>
+    <div className='mb-12'>
         {/* title */}
         <div className='w-full min-h-72 bg-gradient-to-r from-blue-950 to-blue-500'>
             <div className='flex flex-col justify-center my-auto min-h-72 items-center container mx-auto space-y-10 text-white'>
