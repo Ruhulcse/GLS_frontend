@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { IoCloseOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import logo from '../../assets/home/logo.png';
 import Container from "../Container/Container";
 import NavLinks from "./NavLinks";
 const Nav = () => {
   const [open, setOpen] = useState(false);
   return (
-    <nav className="bg-white fixed z-10 w-full h-[88px] top-0">
+   <div className="mb-20">
+     <nav className="bg-white fixed z-10 w-full top-0">
       <Container>
         <div className="flex font-medium items-center justify-between">
           <div className="z-50 sm:w-auto w-full flex items-center justify-between mt-7 sm:mt-0">
-            <h3 className="text-2xl font-bold text-black">GLS</h3>
+            <Link to='/'>
+            <img src={logo} alt="logo" className="h-10 w-10" />
+            </Link>
             <span className="sm:hidden text-xl" onClick={() => setOpen(!open)}>
               {open ? (
                 <IoCloseOutline className="size-8" />
@@ -51,6 +55,7 @@ const Nav = () => {
         </div>
       </Container>
     </nav>
+   </div>
   );
 };
 

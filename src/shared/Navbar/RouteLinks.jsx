@@ -22,10 +22,6 @@ export const links = [
         submenu:true,
         sublink:[
             {
-                name:'Carriers',
-                link:'/carriers'
-            },
-            {
                 name:'Blogs',
                 link:'/blog'
             },

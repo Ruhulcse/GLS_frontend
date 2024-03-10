@@ -8,7 +8,6 @@ import BlogListPage from "../pages/Blog/subPage/BlogListPage";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
     element: <Layout></Layout>,
     children: [
       {
