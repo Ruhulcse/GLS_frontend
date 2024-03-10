@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 import { road } from '../../assets/index';
 import Blogs from './../../components/blog/Blogs';
 import ReportList from './../../components/report/ReportList';
@@ -29,6 +30,26 @@ function BlogPage() {
        <Services/>
        {/* blogs */}
        <Blogs/>
+=======
+import BlogTitle from "../../components/BlogTitle/BlogTitle";
+import TopBlog from "../../components/topBlog/TopBlog";
+import { blogData } from "../../data/blogData";
+import Blogs from "./../../components/blog/Blogs";
+
+import Services from "./../../components/service/Services";
+
+function BlogPage() {
+  return (
+    <div className="mt-24 mb-12">
+      {/* title */}
+     <BlogTitle/>
+      {/* top Blog */}
+     <TopBlog item={blogData}/>
+      {/* service */}
+      <Services />
+      {/* blogs */}
+      <Blogs  item={blogData}/>
+>>>>>>> 1e9a07b9b77b7bd6fb28ddd083de5696e7ca4a74
     </div>
   );
 }
