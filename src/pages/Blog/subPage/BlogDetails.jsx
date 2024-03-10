@@ -5,7 +5,7 @@ function BlogDetails() {
   const location = useLocation();
   // const {id} = useParams()
 
-  // console.log(location);
+   console.log(location);
 
   return (
     <div className="mt-24 container mx-auto">

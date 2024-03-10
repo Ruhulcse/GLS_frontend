@@ -4,6 +4,7 @@ import BlogPage from "../pages/Blog/BlogPage";
 import BlogDetails from '../pages/Blog/subPage/BlogDetails';
 import Home from "../pages/Home/Home";
 import AboutDetails from "../pages/Blog/subPage/AboutDetails";
+import BlogListPage from "../pages/Blog/subPage/BlogListPage";
 
 export const router = createBrowserRouter([
   {
@@ -23,9 +24,10 @@ export const router = createBrowserRouter([
         element: <BlogDetails/>,
       },
       {
-        path: '/about/:id',
-        element: <AboutDetails/>
-      }
+        path: '/blogs/:category',
+        element: <BlogListPage/>
+      },
+      
     ],
   },
 ]);
