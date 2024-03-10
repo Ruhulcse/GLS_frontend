@@ -1,22 +1,19 @@
-import { person } from "../../assets";
+import { broker, carrier, person, shipper } from "../../assets";
 
 const data = [
     {
         title:'Carriers',
-        image:person
+        image:carrier
     },
     {
         title:'Brokers',
-        image:person
+        image:broker
     },
     {
         title:'Shippers',
-        image:person
+        image:shipper
     },
-    {
-        title:'Newslertter Sign Up',
-        image:person
-    },
+   
 ]
 
 export {data}

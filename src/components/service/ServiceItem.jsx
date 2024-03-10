@@ -6,7 +6,7 @@ function ServiceItem({item}) {
     <div className='w-full bg-yellow-300 h-96 relative'>
       <img src={item.image} className='w-full h-full object-cover' alt="" />
       
-      <div className='h-24 w-full bg-black absolute bottom-0 opacity-40'>
+      <div className='h-24  w-full bg-black absolute bottom-0 opacity-40 '>
         
       </div>
       <div className='h-24 w-full  absolute bottom-0'>

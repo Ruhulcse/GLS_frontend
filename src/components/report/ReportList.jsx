@@ -1,15 +1,14 @@
-import React from 'react'
-import { data } from './index'
-import ReportItem from './ReportItem'
+import ReportItem from "./ReportItem";
+import { data } from "./index";
 
 function ReportList() {
   return (
-    <div className=''>
-        {data.map((item,i)=>(
-            <ReportItem key={i} item={item}/>
-        ))}
+    <div className="">
+      {data.map((item, i) => (
+        <ReportItem key={i} item={item} />
+      ))}
     </div>
-  )
+  );
 }
 
-export default ReportList
+export default ReportList;
