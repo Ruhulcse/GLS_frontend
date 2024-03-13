@@ -8,7 +8,7 @@ import Services from "./../../components/service/Services";
 
 function BlogPage() {
   return (
-    <div className="mt-24 mb-12">
+    <div className="mb-12">
       {/* title */}
      <BlogTitle/>
       {/* top Blog */}
