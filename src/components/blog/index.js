@@ -1,11 +1,15 @@
-import { report } from "../../assets";
+import {  gps, highway, shipper, transport } from "../../assets";
+
 
 const data = [
-    {
-      id:1,
-        title:'Weekly Market Update for February 27th, 2024: Sleep hygiene part 4',
-        image:report,
-        info:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia 
+  {
+    id: 1,
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    image: highway,
+    publish_date: "1 jun 2023",
+    category: "carriers",
+    tags: "shipment,truck,vehicle",
+    info: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia 
         molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
         numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
         optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
@@ -25,11 +29,16 @@ const data = [
         suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
         modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
         totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam 
-        quasi aliquam eligendi, placeat qui corporis!`
-    },
-       {id:2, title:'Weekly Market Update for February 27th, 2024: Sleep hygiene part 4',
-        image:report,
-        info:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia 
+        quasi aliquam eligendi, placeat qui corporis!`,
+  },
+  {
+    id: 2,
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    image: transport,
+    publish_date: "1 jun 2023",
+    category: "carriers",
+    tags: "shipment,truck,vehicle",
+    info: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia 
         molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
         numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
         optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
@@ -49,11 +58,16 @@ const data = [
         suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
         modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
         totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam 
-        quasi aliquam eligendi, placeat qui corporis!`
-    },
-      { id:3, title:'Weekly Market Update for February 27th, 2024: Sleep hygiene part 4',
-        image:report,
-        info:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia 
+        quasi aliquam eligendi, placeat qui corporis!`,
+  },
+  {
+    id: 3,
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    image: gps,
+    publish_date: "1 jun 2023",
+    category: "broker",
+    tags: "shipment,truck,vehicle",
+    info: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia 
         molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
         numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
         optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
@@ -73,11 +87,16 @@ const data = [
         suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
         modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
         totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam 
-        quasi aliquam eligendi, placeat qui corporis!`
-    },{ id:4,
-        title:'Weekly Market Update for February 27th, 2024: Sleep hygiene part 4',
-        image:report,
-        info:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia 
+        quasi aliquam eligendi, placeat qui corporis!`,
+  },
+  {
+    id: 7,
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    image: shipper,
+    publish_date: "1 jun 2023",
+    category: "shippers",
+    tags: "shipment,truck,vehicle",
+    info: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia 
         molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
         numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
         optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
@@ -97,11 +116,16 @@ const data = [
         suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
         modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
         totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam 
-        quasi aliquam eligendi, placeat qui corporis!`
-    },
-      { id:5,  title:'Weekly Market Update for February 27th, 2024: Sleep hygiene part 4',
-        image:report,
-        info:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia 
+        quasi aliquam eligendi, placeat qui corporis!`,
+  },
+  {
+    id: 4,
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    image: transport,
+    publish_date: "1 jun 2023",
+    category: "carriers",
+    tags: "shipment,truck,vehicle",
+    info: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia 
         molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
         numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
         optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
@@ -121,11 +145,16 @@ const data = [
         suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
         modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
         totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam 
-        quasi aliquam eligendi, placeat qui corporis!`
-    },
-      {id:6,  title:'Weekly Market Update for February 27th, 2024: Sleep hygiene part 4',
-        image:report,
-        info:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia 
+        quasi aliquam eligendi, placeat qui corporis!`,
+  },
+  {
+    id: 6,
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    image: transport,
+    publish_date: "1 jun 2023",
+    category: "carriers",
+    tags: "shipment,truck,vehicle",
+    info: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia 
         molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
         numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
         optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis
@@ -145,8 +174,9 @@ const data = [
         suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
         modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
         totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam 
-        quasi aliquam eligendi, placeat qui corporis!`
-    },
-]
+        quasi aliquam eligendi, placeat qui corporis!`,
+  },
+ 
+];
 
-export {data}
+export { data };

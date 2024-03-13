@@ -22,16 +22,12 @@ export const links = [
         submenu:true,
         sublink:[
             {
-                name:'Carriers',
-                link:'/carriers'
-            },
-            {
                 name:'Blogs',
                 link:'/blog'
             },
             {
                 name:'Videos',
-                link:'/videos'
+                link:'https://www.youtube.com/'
             },
         ]
     },

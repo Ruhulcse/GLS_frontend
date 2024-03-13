@@ -10,10 +10,12 @@ import AboutDetails from "../pages/Blog/subPage/AboutDetails";
 import Register from "../components/CarrierSections/Register";
 import Learn from "../components/CarrierSections/Learn";
 import Contact from "../pages/Solutions/Contact";
+import BlogListPage from "../pages/Blog/subPage/BlogListPage";
+import SignUp from "./../auth/SignUp";
+import Login from "../auth/Login";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
     element: <Layout></Layout>,
     children: [
       {
@@ -56,6 +58,22 @@ export const router = createBrowserRouter([
         path: "/contact",
         element: <Contact></Contact>,
       },
+      {
+        path: "/blogs/:category",
+        element: <BlogListPage />,
+      },
+      {
+        path: "/blog/:id",
+        element: <BlogDetails />,
+      },
+      {
+        path: "/signUp",
+        element: <SignUp />,
+      },
+      {
+        path: "/logIn",
+        element: <Login />,
+      },
     ],
   },
 
@@ -77,4 +95,19 @@ export const router = createBrowserRouter([
   //     },
   //   ],
   // },
+  //       path: '/blogs/:category',
+  //       element: <BlogListPage/>
+  //     },
+
+  //   ],
+  // },
+
+  //   {
+  //     path:'/signUp',
+  //     element:<SignUp/>
+  //   },
+  //   {
+  //     path:'/logIn',
+  //     element:<Login/>
+  //   },
 ]);
