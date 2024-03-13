@@ -27,7 +27,9 @@ const Nav = () => {
               </Link>
             </li>
             <NavLinks />
-            <li className="cursor-pointer">Contact</li>
+            <Link to="/contact">
+              <li className="cursor-pointer">Contact</li>
+            </Link>
             <li className="cursor-pointer">Login</li>
             <li className="cursor-pointer">Sign Up</li>
           </ul>
@@ -44,7 +46,9 @@ const Nav = () => {
               </Link>
             </li>
             <NavLinks />
-            <li className="py-4 px-3 inline-block cursor-pointer">Contact</li>
+            <Link to="/contact">
+              <li className="cursor-pointer">Contact</li>
+            </Link>
             <li className="py-4 px-3 inline-block cursor-pointer">Login</li>
             <li className="py-4 px-3 inline-block cursor-pointer">Sign Up</li>
           </ul>

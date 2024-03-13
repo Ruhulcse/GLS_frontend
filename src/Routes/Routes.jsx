@@ -6,10 +6,10 @@ import Brokers from "../pages/Solutions/Brokers";
 import Shippers from "../pages/Solutions/Shippers";
 import BlogPage from "../pages/Blog/BlogPage";
 import BlogDetails from "../pages/Blog/subPage/BlogDetails";
-import BlogPage from "../pages/Blog/BlogPage";
-import BlogDetails from "../pages/Blog/subPage/BlogDetails";
-import Home from "../pages/Home/Home";
 import AboutDetails from "../pages/Blog/subPage/AboutDetails";
+import Register from "../components/CarrierSections/Register";
+import Learn from "../components/CarrierSections/Learn";
+import Contact from "../pages/Solutions/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -32,13 +32,6 @@ export const router = createBrowserRouter([
         path: "/shippers",
         element: <Shippers></Shippers>,
       },
-    ],
-  },
-
-  {
-    path: "/blog",
-    element: <Layout></Layout>,
-    children: [
       {
         path: "/blog",
         element: <BlogPage></BlogPage>,
@@ -48,9 +41,40 @@ export const router = createBrowserRouter([
         element: <BlogDetails />,
       },
       {
-        path: '/about/:id',
-        element: <AboutDetails/>
-      }
+        path: "/about/:id",
+        element: <AboutDetails />,
+      },
+      {
+        path: "/register",
+        element: <Register></Register>,
+      },
+      {
+        path: "/learn",
+        element: <Learn></Learn>,
+      },
+      {
+        path: "/contact",
+        element: <Contact></Contact>,
+      },
     ],
   },
+
+  // {
+  //   path: "/blog",
+  //   element: <Layout></Layout>,
+  //   children: [
+  //     {
+  //       path: "/blog",
+  //       element: <BlogPage></BlogPage>,
+  //     },
+  //     {
+  //       path: "/blog/:id",
+  //       element: <BlogDetails />,
+  //     },
+  //     {
+  //       path: "/about/:id",
+  //       element: <AboutDetails />,
+  //     },
+  //   ],
+  // },
 ]);
