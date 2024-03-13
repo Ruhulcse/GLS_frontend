@@ -31,9 +31,9 @@ const Nav = () => {
               </Link>
             </li>
             <NavLinks />
-            <li className="cursor-pointer">Contact</li>
-            <li className="cursor-pointer">Login</li>
-            <li className="cursor-pointer">Sign Up</li>
+            <Link className="cursor-pointer">Contact</Link>
+            <Link to={'/logIn'} className="cursor-pointer">Login</Link>
+            <Link to={'/signUp'} className="cursor-pointer">Sign Up</Link>
           </ul>
           {/* Mobile nav */}
           <ul

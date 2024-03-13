@@ -27,7 +27,7 @@ export const links = [
             },
             {
                 name:'Videos',
-                link:'/videos'
+                link:'https://www.youtube.com/'
             },
         ]
     },

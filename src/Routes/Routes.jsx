@@ -5,6 +5,8 @@ import BlogDetails from '../pages/Blog/subPage/BlogDetails';
 import Home from "../pages/Home/Home";
 import AboutDetails from "../pages/Blog/subPage/AboutDetails";
 import BlogListPage from "../pages/Blog/subPage/BlogListPage";
+import SignUp from "./../auth/SignUp";
+import Login from "../auth/Login";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +29,17 @@ export const router = createBrowserRouter([
         element: <BlogListPage/>
       },
       
+      
     ],
   },
+  
+    {
+      path:'/signUp',
+      element:<SignUp/>
+    },
+    {
+      path:'/logIn',
+      element:<Login/>
+    },
+  
 ]);

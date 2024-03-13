@@ -7,4 +7,5 @@ import broker from './home/broker.jpg'
 import transport from './blog/service-4540203_1280.jpg'
 import gps from './blog/map-7620510_1280.png'
 import highway from './blog/highway-3392100_1280.jpg'
-export {road,report,person,carrier,shipper,broker,transport,gps,highway}
+import car from './home/truck.jpg'
+export {road,report,person,carrier,shipper,broker,transport,gps,highway,car}
