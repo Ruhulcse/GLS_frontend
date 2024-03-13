@@ -4,9 +4,12 @@ import { loginFiled } from "./loginFiled"
 import logo from "./../assets/home/logo.png";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 function Login() {
   const [formState,setFormState] = useState(transferObj(loginFiled))
   const formData = objectToArray(formState)
+
+  const navigate = useNavigate()
 
   const handleChange = (e) =>{
     const {name,value} = e.target
@@ -69,7 +72,7 @@ function Login() {
              </div>
              <div className="inline-block mx-auto text-lg text-blue-700 mt-6 hover:bg-black hover:text-white transition-all cursor-pointer bg-white rounded-full px-3">
               
-              <p>Create account</p>
+              <p onClick={()=>navigate('/signUp')}>Create account</p>
              </div>
             </div>
           </form>
