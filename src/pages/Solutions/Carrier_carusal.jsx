@@ -1,20 +1,20 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
-import "swiper/css/pagination";
 import "swiper/css/free-mode";
+import "swiper/css/pagination";
 
 import { FreeMode, Pagination } from "swiper/modules";
 
 import { RxArrowTopRight } from "react-icons/rx";
 
 import {
+  RxAccessibility,
   RxCrop,
   RxDesktop,
   RxPencil2,
   RxReader,
   RxRocket,
-  RxAccessibility,
 } from "react-icons/rx";
 
 import SpaceCity1 from "../../assets/solutions/SpaceCity1.jpg";
@@ -22,7 +22,6 @@ import SpaceCity5 from "../../assets/solutions/SpaceCity5.jpeg";
 import SpaceCity6 from "../../assets/solutions/SpaceCity6.jpeg";
 import SpaceCity7 from "../../assets/solutions/SpaceCity7.jpeg";
 import SpaceCity8 from "../../assets/solutions/SpaceCity8.jpeg";
-import "../Solutions/responsive.css";
 
 export const ServiceData = [
   {
