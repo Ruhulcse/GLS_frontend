@@ -13,6 +13,8 @@ import Carrier from "../pages/Solutions/Carrier";
 import Contact from "../pages/Solutions/Contact";
 import Shippers from "../pages/Solutions/Shippers";
 import SignUp from "./../auth/SignUp";
+import AdminLayout from '../pages/admin/layout/Layout'
+import Dashboard from "@/pages/dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +78,16 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    element: <AdminLayout></AdminLayout>,
+    children: [
+      {
+        path: "/dashboard",
+        element: <Dashboard></Dashboard>,
+      },
+      
+    ],
+  }
 
   // {
   //   path: "/blog",
