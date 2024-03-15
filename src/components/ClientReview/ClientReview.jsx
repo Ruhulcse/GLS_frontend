@@ -4,6 +4,7 @@ import { MdOutlineStarPurple500 } from "react-icons/md";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+import client from '../../assets/home/review.jpg';
 import Container from "../../shared/Container/Container";
 const ClientReview = () => {
   const reviews = [
@@ -11,24 +12,28 @@ const ClientReview = () => {
       name: "MR. AB J",
       description:
         "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat sequi iure harum asperiores minima. Officia!",
+        image:client,
       date: "01/2/2024",
     },
     {
       name: "MR. AB J",
       description:
         "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat sequi iure harum asperiores minima. Officia!",
+        image:client,
       date: "01/2/2024",
     },
     {
       name: "MR. AB J",
       description:
         "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat sequi iure harum asperiores minima. Officia!",
+        image:client,
       date: "01/2/2024",
     },
     {
       name: "MR. AB J",
       description:
         "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat sequi iure harum asperiores minima. Officia!",
+        image:client,
       date: "01/2/2024",
     },
   ];
@@ -88,21 +93,22 @@ const ClientReview = () => {
               className="h-auto rounded-xl border border-[#dfdfdf] p-5"
               key={i}
             >
-              <div className="flex flex-col space-y-2">
+              <div className="flex flex-col items-center space-y-2">
                 <div className="flex space-x-1">
                   <MdOutlineStarPurple500 className="text-yellow-500 size-8" />
                   <MdOutlineStarPurple500 className="text-yellow-500 size-8" />
                   <MdOutlineStarPurple500 className="text-yellow-500 size-8" />
                   <MdOutlineStarPurple500 className="text-yellow-500 size-8" />
                   <MdOutlineStarPurple500 className="text-yellow-500 size-8" />
-                </div>
-                <p className="text-sm font-normal tracking-wide leading-normal">
+                </div>          
+                <p className="text-sm text-center font-normal tracking-wide leading-normal">
                   {review.description}
                 </p>
-              </div>
+              <img src={review.image} alt="review" className="rounded-full h-1/6 w-1/6" />
               <div className="my-2">
                 <h5>{review.name}</h5>
                 <p>{review.date}</p>
+              </div>
               </div>
             </div>
           ))}
