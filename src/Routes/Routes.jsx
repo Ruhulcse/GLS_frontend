@@ -15,6 +15,7 @@ import Shippers from "../pages/Solutions/Shippers";
 import SignUp from "./../auth/SignUp";
 import AdminLayout from '../pages/admin/layout/Layout'
 import Dashboard from "@/pages/dashboard";
+import ShipmentList from "@/pages/admin/shipments/shipment-list";
 
 export const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard></Dashboard>,
+      },
+      {
+        path: "/shipments",
+        element: <ShipmentList></ShipmentList>,
       },
       
     ],

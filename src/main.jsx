@@ -3,6 +3,7 @@ import 'aos/dist/aos.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
+import "flatpickr/dist/themes/light.css";
 import 'react-toastify/dist/ReactToastify.css';
 import "simplebar-react/dist/simplebar.min.css";
 import App from './App.jsx';

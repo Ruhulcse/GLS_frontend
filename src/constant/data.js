@@ -10,27 +10,18 @@ export const menuItems = [
     link: "dashboard",
   },
   {
-    title: "Multi Level",
-    icon: "heroicons:share",
+    title: "Shippers",
+    icon: "heroicons-outline:truck",
     link: "#",
+    isHide: true,
     child: [
       {
-        childtitle: "Level 1.1",
-        childlink: "icons",
+        childtitle: "Shipments",
+        childlink: "shipments",
       },
       {
-        childtitle: "Level 1.2",
-        childlink: "Level-1",
-        multi_menu: [
-          {
-            multiTitle: "Level 2.1",
-            multiLink: "Level-2",
-          },
-          {
-            multiTitle: "Level 2.2",
-            multiLink: "Level-2.3",
-          },
-        ],
+        childtitle: "Create Shipment",
+        childlink: "create-shipment",
       },
     ],
   },
