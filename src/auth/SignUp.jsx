@@ -34,11 +34,11 @@ function SignUp() {
   };
 
   return (
-    <div>
-      <div className="h-screen w-full bg-[url('./../../src/assets/home/truck.jpg')] bg-cover bg-no-repeat flex justify-center items-center  relative"></div>
-      <div className="bg-black opacity-50 absolute inset-0"></div>
-      <div className="h-screen w-full absolute inset-0">
-        <div className="h-full w-full flex justify-center items-center">
+    <div className="">
+      <div className=" h-screen w-full bg-[url('./../../src/assets/home/truck.jpg')] bg-cover bg-no-repeat flex justify-center items-center  relative"></div>
+      <div className="h-[110vh] bg-black opacity-50 absolute inset-0"></div>
+      <div className=" w-full absolute inset-0">
+        <div className="mt-12 h-full w-full flex justify-center items-center">
           <form className="bg-gradient-to-tl from-[#afc0ee] to-[#6d5cf0] rounded-xl  min-h-96 w-96 lg:w-[420px] shadow-xl" onSubmit={handleSubmit}>
             <div className="mb-12 grid justify-center">
               <img
