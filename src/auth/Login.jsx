@@ -22,7 +22,6 @@ function Login() {
 		});
 	};
 
-
 	const handleSubmit = e => {
 		e.preventDefault();
 		const values = Object.keys(formState).reduce((acc, crr) => {
@@ -48,8 +47,9 @@ function Login() {
 								src={logo}
 								className='h-12 w-12 m-4 inline-block mx-auto'
 								alt=''
+							/>
 
-							{formData.map((item, i) => (
+							{...formData.map((item, i) => (
 								<div className='flex flex-col my-1.5'>
 									<label htmlFor='' className='text-lg font-medium my-[2px]'>
 										{item.title}
