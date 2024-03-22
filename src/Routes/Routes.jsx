@@ -21,7 +21,7 @@ const ShipmentFormPage = lazy(() =>
   import("@/pages/admin/shipments/shipment-form")
 );
 const Dashboard = lazy(() => import("@/pages/dashboard"));
-//test commit
+//test commit updated
 export const router = createBrowserRouter([
   {
     element: <Layout></Layout>,
