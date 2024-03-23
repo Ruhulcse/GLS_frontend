@@ -1,3 +1,4 @@
+import ScrollTop from "@/components/ScrollTop/ScrollTop";
 import ShipmentList from "@/pages/admin/shipments/shipment-list";
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
@@ -24,7 +25,10 @@ const Dashboard = lazy(() => import("@/pages/dashboard"));
 //test commit updated
 export const router = createBrowserRouter([
   {
-    element: <Layout></Layout>,
+    element: <>
+    <ScrollTop></ScrollTop>
+    <Layout></Layout>
+    </>,
     children: [
       {
         path: "/",
