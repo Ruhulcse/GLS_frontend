@@ -6,6 +6,7 @@ import { formFiled } from "./form";
 
 function SignUp() {
   const [formState, setFormState] = useState(transferObj(formFiled));
+  const [category,setCategory] = useState('')
   const formData = objectToArray(formState);
 
   const handleChange = (e) => {
@@ -18,6 +19,9 @@ function SignUp() {
       },
     });
   };
+  const handleCategory =(e)=>{
+    setCategory(e.target.value)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,8 +51,9 @@ function SignUp() {
               />
 
               {formData.map((item) => (
-                <div className="flex flex-col my-1.5">
-                  <label htmlFor="" className="text-lg font-medium my-[2px]">
+                <div className="flex flex-col my-px">
+                  <label htmlFor="" className="text-base
+                   font-medium my-[2px]">
                     {item.title}
                   </label>
                   <input
@@ -61,6 +66,13 @@ function SignUp() {
                   />
                 </div>
               ))}
+               <label className="text-base font-medium my-[2px]">Category:</label>
+                <select value={category} onChange={handleCategory}name="category">
+                  <option value="">category</option>
+                  <option value="carriers">Carriers</option>
+                  <option value="brokers">Brokers</option>
+                  <option value="shippers">Shippers</option>
+                </select>
 
               <button
                 className="inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all hover:bg-black-500"
@@ -69,9 +81,9 @@ function SignUp() {
                 Sign Up
               </button>
             </div>
-          <div className="flex justify-between mb-4 mx-6 mt-[-12px]">
-            <div className="text-base text-blue-950 font-bold">I have a already account</div>
-            <div className="bg-white rounded-full px-4 cursor-pointer hover:text-white hover:bg-black-500">Sign In</div>
+          <div className="flex justify-between mb-4 mx-6 mt-[-12px] items-center">
+            <div className="text-base text-blue-950 font-bold">Do you have an account?</div>
+            <div className="text-xl font-bold cursor-pointer hover:text-black-500">Sign In</div>
           </div>
           </form>
         </div>

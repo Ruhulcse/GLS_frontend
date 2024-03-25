@@ -50,8 +50,8 @@ function Login() {
               />
 
               {...formData.map((item, i) => (
-                <div className="flex flex-col my-1.5">
-                  <label htmlFor="" className="text-lg font-medium my-[2px]">
+                <div className="flex flex-col my-px">
+                  <label htmlFor="" className="text-base font-medium my-[2px]">
                     {item.title}
                   </label>
                   <input
@@ -64,6 +64,7 @@ function Login() {
                   />
                 </div>
               ))}
+             
 
               <button
                 className="inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all hover:bg-black-500"
@@ -75,9 +76,9 @@ function Login() {
              
              
             </div>
-            <div className="flex justify-between mb-4 mx-6 mt-[-12px]">
-            <div className="text-base text-blue-950 font-bold">Do you have a account?</div>
-            <div className="bg-white rounded-full px-4 cursor-pointer hover:text-white hover:bg-black-500">Create Account</div>
+            <div className="flex justify-between mb-4 mx-6 mt-[-12px] items-center">
+            <div className="text-base text-blue-950 font-bold">Don't have an account?</div>
+            <div className="text-xl font-bold cursor-pointer hover:text-black-500">Sign Up</div>
           </div>
           </form>
         </div>
