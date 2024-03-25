@@ -2,12 +2,12 @@ import React from "react";
 
 const ProductSupport = () => {
   return (
-    <div className=" text-white  border-t-2 border-white text-start py-8">
+    <div className=" text-white text-start">
       <h1 className="border-b-2 border-white  p-2 text-3xl font-bold ">
         Product Support
       </h1>
-      <div className="px-4 md:px-6 mb-10">
-        <div className="flex flex-col md:flex-row gap-10   py-3">
+      <div className="p-2  mb-10">
+        <div className="flex flex-col md:flex-row gap-10   py-3 justify-evenly">
           <div>
             <h1 className="text-2xl font-bold  ">Load Board Services</h1>
             <div className="flex gap-2">
@@ -56,7 +56,7 @@ const ProductSupport = () => {
       <h1 className="border-b-2 border-white  p-2 text-3xl font-bold ">
         Billing & Payments
       </h1>
-      <div className="px-4 md:px-6 mb-10">
+      <div className="p-2 mb-10 justify-between">
         <h1 className="text-2xl font-bold py-3 ">Billing Information</h1>
         <div className="flex gap-2">
           <p>DAT Solutions, LLC Box 3801</p>
@@ -76,8 +76,8 @@ const ProductSupport = () => {
       <h1 className="border-b-2 border-white  p-2 text-3xl font-bold ">
         General Marketing, PR & Partnerships
       </h1>
-      <div className="flex pb-20 gap-10">
-        <div className="px-4 md:px-6 mb-10">
+      <div className="flex flex-col md:flex-row pb-20 justify-between">
+        <div className="p-2 mb-10">
           <h1 className="text-2xl font-bold py-3 ">
             General Marketing Inquiries
           </h1>
