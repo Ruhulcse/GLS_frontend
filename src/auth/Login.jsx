@@ -66,20 +66,19 @@ function Login() {
               ))}
 
               <button
-                className="inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all"
+                className="inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all hover:bg-black-500"
                 type="submit"
               >
                 Sign in
               </button>
-              <p className="text-center p-4 text-white">sign in with</p>
-              <div className="flex justify-center text-3xl space-x-4">
-                <FcGoogle className="cursor-pointer" />
-                <FaFacebook className="text-blue-600 cursor-pointer" />
-              </div>
-              <div className="inline-block mx-auto text-lg text-blue-700 mt-6 hover:bg-black hover:text-white transition-all cursor-pointer bg-white rounded-full px-3">
-                <p onClick={() => navigate("/signUp")}>Create account</p>
-              </div>
+             
+             
+             
             </div>
+            <div className="flex justify-between mb-4 mx-6 mt-[-12px]">
+            <div className="text-base text-blue-950 font-bold">Do you have a account?</div>
+            <div className="bg-white rounded-full px-4 cursor-pointer hover:text-white hover:bg-black-500">Create Account</div>
+          </div>
           </form>
         </div>
       </div>
