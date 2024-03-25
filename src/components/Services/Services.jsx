@@ -1,4 +1,4 @@
-import React from 'react'
+import { Link } from 'react-router-dom'
 import broker from '../../assets/home/broker.jpg'
 import carrier from '../../assets/home/carrier.jpg'
 import shipper from '../../assets/home/shipper.jpg'
@@ -8,14 +8,17 @@ const Services = () => {
         {
             title:'Carriers',
             image:carrier,
+            link:'/carriers'
         },
         {
             title:'Brokers',
-            image:broker
+            image:broker,
+            link:'/brokers'
         },
         {
             title:'Shippers',
-            image:shipper
+            image:shipper,
+            link:'/shippers'
         },
     ]
   return (
@@ -29,7 +32,9 @@ const Services = () => {
                     <div className='relative flex flex-col justify-center items-center inset-0 transition-all duration-1000 space-y-4 py-6 bg-[#FFFFFF] group-hover:bg-[#0A0D10]'>
                     <h3 className='text-xl font-semibold text-[#03045e] group-hover:text-white'>{item.title}</h3>
                     <div>
+                    <Link to={item.link}>
                     <button className='px-6 py-3 text-base font-semibold text-white rounded-sm bg-[#03045e] hover:bg-[#0C0E7A] transition-all duration-500'>Get Started</button>
+                    </Link>
                     </div>
                     </div>
                 </div>
