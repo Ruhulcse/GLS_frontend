@@ -3,11 +3,14 @@ import { useState } from "react";
 import { objectToArray, transferObj } from "../util/objMaping/objectMap";
 import logo from "./../assets/home/logo.png";
 import { formFiled } from "./form";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [formState, setFormState] = useState(transferObj(formFiled));
   const [category,setCategory] = useState('')
   const formData = objectToArray(formState);
+
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,7 +86,7 @@ function SignUp() {
             </div>
           <div className="flex justify-between mb-4 mx-6 mt-[-12px] items-center">
             <div className="text-base text-blue-950 font-bold">Do you have an account?</div>
-            <div className="text-xl font-bold cursor-pointer hover:text-black-500">Sign In</div>
+            <div className="text-xl font-bold cursor-pointer hover:text-black-500" onClick={()=>navigate('/logIn')}>Sign In</div>
           </div>
           </form>
         </div>

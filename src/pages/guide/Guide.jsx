@@ -72,7 +72,7 @@ function Guide() {
         {/* title */}
         <PageTitle title={'Resource'} about={about}/>
         {/* search bar */}
-        <div className="sticky top-24 z-20">
+        <div className="sticky top-24 z-[80]">
     <div className="flex justify-center md:mt-6 mt-3 md:w-2/3 mx-auto w-96 ">
     <input type="text" value={search}onChange={handleChange}className="bg-gray-300 md:h-12 h-6 w-full rounded-md px-6 md:text-xl text-sm"/>
     <button className="bg-blue-600 px-6 mx-2 rounded-md shadow-md text-white">search</button>

@@ -78,7 +78,7 @@ function Login() {
             </div>
             <div className="flex justify-between mb-4 mx-6 mt-[-12px] items-center">
             <div className="text-base text-blue-950 font-bold">Don't have an account?</div>
-            <div className="text-xl font-bold cursor-pointer hover:text-black-500">Sign Up</div>
+            <div className="text-xl font-bold cursor-pointer hover:text-black-500" onClick={()=>navigate('/signUp')}>Sign Up</div>
           </div>
           </form>
         </div>

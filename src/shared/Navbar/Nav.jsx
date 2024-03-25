@@ -9,7 +9,7 @@ const Nav = () => {
   const [open, setOpen] = useState(false);
   return (
     <div className="mb-20">
-      <nav className="bg-white fixed z-50 w-full top-0">
+      <nav className="bg-white fixed z-[100] w-full top-0">
         <Container>
           <div className="flex font-medium items-center justify-between">
             <div className="z-50 sm:w-auto w-full flex items-center justify-between mt-7 sm:mt-0">
