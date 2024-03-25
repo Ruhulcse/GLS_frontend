@@ -63,12 +63,16 @@ function SignUp() {
               ))}
 
               <button
-                className="inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all"
+                className="inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all hover:bg-black-500"
                 type="submit"
               >
                 Sign Up
               </button>
             </div>
+          <div className="flex justify-between mb-4 mx-6 mt-[-12px]">
+            <div className="text-base text-blue-950 font-bold">I have a already account</div>
+            <div className="bg-white rounded-full px-4 cursor-pointer hover:text-white hover:bg-black-500">Sign In</div>
+          </div>
           </form>
         </div>
       </div>

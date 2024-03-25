@@ -22,6 +22,10 @@ export const links = [
         submenu:true,
         sublink:[
             {
+                name:'Guide',
+                link:'/guide'
+            },
+            {
                 name:'Blogs',
                 link:'/blog'
             },
