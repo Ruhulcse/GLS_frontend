@@ -31,7 +31,7 @@ const Shippers = () => {
         feture03="Streamline the annual or mini-bid RFP process by eliminating time-consuming manual analysis"
         btnText01="Request a demo"
         btnText02="learn more"
-        btnLink1="/register"
+        btnLink1="/signUp"
         btnLink02="/learn"
         bgImg={Staticstics}
       ></SingleAthourity>

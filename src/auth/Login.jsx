@@ -50,8 +50,8 @@ function Login() {
               />
 
               {...formData.map((item, i) => (
-                <div className="flex flex-col my-1.5">
-                  <label htmlFor="" className="text-lg font-medium my-[2px]">
+                <div className="flex flex-col my-px">
+                  <label htmlFor="" className="text-base font-medium my-[2px]">
                     {item.title}
                   </label>
                   <input
@@ -64,22 +64,22 @@ function Login() {
                   />
                 </div>
               ))}
+             
 
               <button
-                className="inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all"
+                className="inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all hover:bg-black-500"
                 type="submit"
               >
                 Sign in
               </button>
-              <p className="text-center p-4 text-white">sign in with</p>
-              <div className="flex justify-center text-3xl space-x-4">
-                <FcGoogle className="cursor-pointer" />
-                <FaFacebook className="text-blue-600 cursor-pointer" />
-              </div>
-              <div className="inline-block mx-auto text-lg text-blue-700 mt-6 hover:bg-black hover:text-white transition-all cursor-pointer bg-white rounded-full px-3">
-                <p onClick={() => navigate("/signUp")}>Create account</p>
-              </div>
+             
+             
+             
             </div>
+            <div className="flex justify-between mb-4 mx-6 mt-[-12px] items-center">
+            <div className="text-base text-blue-950 font-bold">Don't have an account?</div>
+            <div className="text-xl font-bold cursor-pointer hover:text-black-500" onClick={()=>navigate('/signUp')}>Sign Up</div>
+          </div>
           </form>
         </div>
       </div>

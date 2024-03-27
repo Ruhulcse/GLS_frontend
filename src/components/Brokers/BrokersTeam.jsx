@@ -1,4 +1,3 @@
-import Container from "../../shared/Container/Container";
 import Team from "../../assets/solutions/team.jpg";
 
 const BrokersTeam = ({ contentId4 }) => {
