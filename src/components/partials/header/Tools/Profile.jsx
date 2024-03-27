@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import Dropdown from "@/components/ui/Dropdown";
 import Icon from "@/components/ui/Icon";
@@ -6,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import UserAvatar from "@/assets/images/all-img/user.png";
+import { logOut } from "@/store/api/auth/authSlice";
 
 const profileLabel = () => {
   return (
@@ -47,7 +49,7 @@ const Profile = () => {
       icon: "heroicons-outline:user",
 
       action: () => {
-        console.log("profile");
+        navigate("/profile/6601e50217fc70b39ecc269b");
       },
     },
     {
