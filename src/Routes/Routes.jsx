@@ -17,12 +17,16 @@ import Contact from "../pages/Solutions/Contact";
 import Shippers from "../pages/Solutions/Shippers";
 import AdminLayout from "../pages/admin/layout/Layout";
 import SignUp from "./../auth/SignUp";
-import Guide from './../pages/guide/Guide'
+import Guide from "./../pages/guide/Guide";
 import CardDetails from "@/pages/guide/subPage/CardDetails";
+
 //import PrivateRoute from "@/authGard/PrivateRoute";
 import Text from "@/components/Text";
 import PrivateRoute from "@/authGard/PrivateRoute";
 import PublicRoute from "@/authGard/PublicRoute";
+
+
+import Insurance from "@/components/Insurance/Insurance";
 
 
 const ShipmentFormPage = lazy(() =>
@@ -32,10 +36,12 @@ const Dashboard = lazy(() => import("@/pages/dashboard"));
 //test commit updated
 export const router = createBrowserRouter([
   {
-    element: <>
-    <ScrollTop></ScrollTop>
-    <Layout></Layout>
-    </>,
+    element: (
+      <>
+        <ScrollTop></ScrollTop>
+        <Layout></Layout>
+      </>
+    ),
     children: [
       {
         path: "/",
@@ -54,12 +60,12 @@ export const router = createBrowserRouter([
         element: <Shippers></Shippers>,
       },
       {
-        path:"/guide",
-        element:<Guide/>
+        path: "/guide",
+        element: <Guide />,
       },
       {
-        path:"/guide/:id",
-        element:<CardDetails/>
+        path: "/guide/:id",
+        element: <CardDetails />,
       },
       {
         path: "/blog",
@@ -92,6 +98,10 @@ export const router = createBrowserRouter([
       {
         path: "/blog/:id",
         element: <BlogDetails />,
+      },
+      {
+        path: "/insurance",
+        element: <Insurance></Insurance>,
       },
       {
         path: "/signUp",
