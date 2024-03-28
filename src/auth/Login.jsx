@@ -5,9 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { objectToArray, transferObj } from "../util/objMaping/objectMap";
 import logo from "./../assets/home/logo.png";
 import { loginFiled } from "./loginFiled";
+import { useLoginMutation } from "@/store/api/auth/authApiSlice";
 function Login() {
   const [formState, setFormState] = useState(transferObj(loginFiled));
   const formData = objectToArray(formState);
+  const [login,{data,error}] = useLoginMutation()
+
 
   const navigate = useNavigate();
 
@@ -24,12 +27,12 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const values = Object.keys(formState).reduce((acc, crr) => {
-      acc[crr] = formState[crr].value;
-      return acc;
-    }, {});
-    console.log(values);
-    navigate("/dashboard");
+    const {email,password} = formState
+   login({
+    email:email.value,
+    password:password.value
+   })
+    //navigate("/hello");
     // You can add further logic for submitting the form data here
   };
   return (

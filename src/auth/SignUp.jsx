@@ -4,12 +4,14 @@ import { objectToArray, transferObj } from "../util/objMaping/objectMap";
 import logo from "./../assets/home/logo.png";
 import { formFiled } from "./form";
 import { useNavigate } from "react-router-dom";
+import { useRegisterUserMutation } from "@/store/api/auth/authApiSlice";
 
 function SignUp() {
   const [formState, setFormState] = useState(transferObj(formFiled));
   const [category,setCategory] = useState('')
   const formData = objectToArray(formState);
-
+  const [error,setError] = useState('')
+  const [register,{data,isLoading,error:responseError}] = useRegisterUserMutation()
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -28,12 +30,24 @@ function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const values = Object.keys(formState).reduce((acc, crr) => {
-      acc[crr] = formState[crr].value;
-      return acc;
-    }, {});
-    console.log(values);
-    // You can add further logic for submitting the form data here
+    const {fName,lName,email,password,phone,confirmPassword} = formState
+    if(password.value!==confirmPassword.value)
+    {
+      setError('passwords do not match')
+    }
+    else {
+      register({
+        firstName:fName.value,
+        lastName:lName.value,
+        email:email.value,
+        password:password.value,
+        category,
+        phoneNumber:phone.value
+      })
+      setFormState(transferObj(formFiled))
+      setCategory('')
+      navigate('/logIn')
+    }
   };
 
   return (
@@ -69,6 +83,7 @@ function SignUp() {
                   />
                 </div>
               ))}
+              {error&& <div className="text-red-600">{error}</div>}
                <label className="text-base font-medium my-[2px]">Category:</label>
                 <select value={category} onChange={handleCategory}name="category">
                   <option value="">category</option>

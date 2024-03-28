@@ -19,6 +19,11 @@ import AdminLayout from "../pages/admin/layout/Layout";
 import SignUp from "./../auth/SignUp";
 import Guide from './../pages/guide/Guide'
 import CardDetails from "@/pages/guide/subPage/CardDetails";
+//import PrivateRoute from "@/authGard/PrivateRoute";
+import Text from "@/components/Text";
+import PrivateRoute from "@/authGard/PrivateRoute";
+import PublicRoute from "@/authGard/PublicRoute";
+
 
 const ShipmentFormPage = lazy(() =>
   import("@/pages/admin/shipments/shipment-form")
@@ -94,8 +99,13 @@ export const router = createBrowserRouter([
       },
       {
         path: "/logIn",
-        element: <Login />,
+        element: <Login/>,
       },
+      {
+        path:"/hello",
+        element:<Text/>
+      }
+      
     ],
   },
   {
@@ -103,7 +113,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/dashboard",
-        element: <Dashboard></Dashboard>,
+        element:<PrivateRoute element={<Dashboard/>}/>,
       },
       {
         path: "/shipments",
