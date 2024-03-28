@@ -11,7 +11,10 @@ const Contact = () => {
           <div className="flex-1 px-2 md:px-4 flex flex-col justify-center items-center">
             <ProductSupport></ProductSupport>
           </div>
-          <div className="p-6 flex-1  ">
+          <div className="px-6 flex-1  ">
+            <h1 className="border-b-2 border-white  p-2 text-3xl font-bold ">
+              Looking for Something else?
+            </h1>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sapiente
             vitae voluptatum vel dolorem obcaecati praesentium magnam eos ipsum
             delectus quaerat libero, id nobis? Ullam odit a et nobis tempore

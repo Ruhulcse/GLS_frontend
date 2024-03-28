@@ -17,8 +17,9 @@ import Contact from "../pages/Solutions/Contact";
 import Shippers from "../pages/Solutions/Shippers";
 import AdminLayout from "../pages/admin/layout/Layout";
 import SignUp from "./../auth/SignUp";
-import Guide from './../pages/guide/Guide'
+import Guide from "./../pages/guide/Guide";
 import CardDetails from "@/pages/guide/subPage/CardDetails";
+import Insurance from "@/components/Insurance/Insurance";
 
 const ShipmentFormPage = lazy(() =>
   import("@/pages/admin/shipments/shipment-form")
@@ -27,10 +28,12 @@ const Dashboard = lazy(() => import("@/pages/dashboard"));
 //test commit updated
 export const router = createBrowserRouter([
   {
-    element: <>
-    <ScrollTop></ScrollTop>
-    <Layout></Layout>
-    </>,
+    element: (
+      <>
+        <ScrollTop></ScrollTop>
+        <Layout></Layout>
+      </>
+    ),
     children: [
       {
         path: "/",
@@ -49,12 +52,12 @@ export const router = createBrowserRouter([
         element: <Shippers></Shippers>,
       },
       {
-        path:"/guide",
-        element:<Guide/>
+        path: "/guide",
+        element: <Guide />,
       },
       {
-        path:"/guide/:id",
-        element:<CardDetails/>
+        path: "/guide/:id",
+        element: <CardDetails />,
       },
       {
         path: "/blog",
@@ -87,6 +90,10 @@ export const router = createBrowserRouter([
       {
         path: "/blog/:id",
         element: <BlogDetails />,
+      },
+      {
+        path: "/insurance",
+        element: <Insurance></Insurance>,
       },
       {
         path: "/signUp",
