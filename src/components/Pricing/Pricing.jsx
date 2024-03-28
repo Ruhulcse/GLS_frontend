@@ -1,4 +1,5 @@
 import { MdCheck } from "react-icons/md";
+import { Link } from "react-router-dom";
 import Container from "../../shared/Container/Container";
 const Pricing = () => {
   const Products = [
@@ -55,7 +56,7 @@ const Pricing = () => {
               className="rounded border border-[#535159] text-[#e8e8eb] sm:w-80 w-auto h-auto bg-[#0E0C15] px-8 py-4"
               key={item.id}
             >
-              <div className="-mt-12 sm:ml-24 ml-20">
+              <div className="-mt-12 flex justify-center">
                 <button className="bg-[#371777] rounded-xl text-lg font-semibold tracking-normal leading-normal text-white py-4 px-4">
                   {item.name}
                 </button>
@@ -104,9 +105,11 @@ const Pricing = () => {
                     </div>
                   </div>
                 </div>
+                <Link to="/login">
                 <button className="w-full py-2 flex items-center justify-center rounded-full text-base font-normal capitalize bg-[#371777] hover:bg-[#411991]  duration-500 text-white">
                   Get Started
                 </button>
+                </Link>
               </div>
             </div>
           ))}

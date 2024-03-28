@@ -3,10 +3,16 @@ import { useState } from "react";
 import { objectToArray, transferObj } from "../util/objMaping/objectMap";
 import logo from "./../assets/home/logo.png";
 import { formFiled } from "./form";
+import { useNavigate } from "react-router-dom";
+import { useRegisterUserMutation } from "@/store/api/auth/authApiSlice";
 
 function SignUp() {
   const [formState, setFormState] = useState(transferObj(formFiled));
+  const [category,setCategory] = useState('')
   const formData = objectToArray(formState);
+  const [error,setError] = useState('')
+  const [register,{data,isLoading,error:responseError}] = useRegisterUserMutation()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,15 +24,30 @@ function SignUp() {
       },
     });
   };
+  const handleCategory =(e)=>{
+    setCategory(e.target.value)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const values = Object.keys(formState).reduce((acc, crr) => {
-      acc[crr] = formState[crr].value;
-      return acc;
-    }, {});
-    console.log(values);
-    // You can add further logic for submitting the form data here
+    const {fName,lName,email,password,phone,confirmPassword} = formState
+    if(password.value!==confirmPassword.value)
+    {
+      setError('passwords do not match')
+    }
+    else {
+      register({
+        firstName:fName.value,
+        lastName:lName.value,
+        email:email.value,
+        password:password.value,
+        category,
+        phoneNumber:phone.value
+      })
+      setFormState(transferObj(formFiled))
+      setCategory('')
+      navigate('/logIn')
+    }
   };
 
   return (
@@ -47,8 +68,9 @@ function SignUp() {
               />
 
               {formData.map((item) => (
-                <div className="flex flex-col my-1.5">
-                  <label htmlFor="" className="text-lg font-medium my-[2px]">
+                <div className="flex flex-col my-px">
+                  <label htmlFor="" className="text-base
+                   font-medium my-[2px]">
                     {item.title}
                   </label>
                   <input
@@ -61,14 +83,26 @@ function SignUp() {
                   />
                 </div>
               ))}
+              {error&& <div className="text-red-600">{error}</div>}
+               <label className="text-base font-medium my-[2px]">Category:</label>
+                <select value={category} onChange={handleCategory}name="category">
+                  <option value="">category</option>
+                  <option value="carriers">Carriers</option>
+                  <option value="brokers">Brokers</option>
+                  <option value="shippers">Shippers</option>
+                </select>
 
               <button
-                className="inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all"
+                className="inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all hover:bg-black-500"
                 type="submit"
               >
                 Sign Up
               </button>
             </div>
+          <div className="flex justify-between mb-4 mx-6 mt-[-12px] items-center">
+            <div className="text-base text-blue-950 font-bold">Do you have an account?</div>
+            <div className="text-xl font-bold cursor-pointer hover:text-black-500" onClick={()=>navigate('/logIn')}>Sign In</div>
+          </div>
           </form>
         </div>
       </div>

@@ -17,7 +17,7 @@ const GotAthourity = ({ contedID3 }) => {
           fetureTitle02="Don’t worry about road bumps. We streamline completing Federal, State and BOC-3 requirements."
           feture03="Get the right permitting"
           fetureTitle03="Get support even after you’re up and running."
-          btnLink1="/register"
+          btnLink1="/signUp"
           btnLink02="/learn"
           bgImg={Bg_image}
           btnText01="Get started"
