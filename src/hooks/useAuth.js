@@ -1,15 +1,13 @@
-import { useSelector } from "react-redux"
-
+import { useSelector } from 'react-redux';
 
 function useAuth() {
-    const auth = useSelector((state)=>state.auth)
-    console.log("i an auth hook",auth);
-  if(auth) {
-    return true
-  }
-  else {
-    return false
-  }
+	const { isLoggedIn } = useSelector(state => state.auth);
+	console.log('i an auth hook', isLoggedIn);
+	if (isLoggedIn) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
-export default useAuth
+export default useAuth;
