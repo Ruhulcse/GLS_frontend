@@ -1,9 +1,10 @@
+import { bus, bus1, callCenter, callCenter1 } from "@/assets/index1";
 import { shipper, carrier } from "./../assets/index";
 
 const guideData = [
     {
         title:`Maxime mollitia,
-        molestiae quas vel sint lorem ipsum`,
+        molestiae quas vel sint mazimd fjfi`,
         id:1,
         info:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
         molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
@@ -31,7 +32,7 @@ const guideData = [
         image:shipper
     },
     {
-        title:'Lorem ipsum dolor sit amet consectetur adipisicing elit',
+        title:'Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, c',
         id:2,
         info:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
         molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
@@ -81,13 +82,13 @@ const guideData = [
         suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
         modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
         totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam `,
-        category:'shippers',
+        category:'brokers',
         type:'blog',
         date:'1 jun 2022',
-        image:shipper
+        image:bus
     },
     {
-        title:'Lorem ipsum dolor sit amet consectetur adipisicing elit',
+        title:'Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor jdjj',
         id:4,
         info:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
         molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
@@ -137,13 +138,13 @@ const guideData = [
         suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
         modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
         totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam `,
-        category:'shippers',
-        type:'blog',
+        category:'brokers',
+        type:'video',
         date:'1 jun 2022',
-        image:shipper
+        image:callCenter
     },
     {
-        title:'Lorem ipsum dolor sit amet consectetur adipisicing elit',
+        title:'ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat',
         id:6,
         info:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
         molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
@@ -171,7 +172,7 @@ const guideData = [
         image:shipper
     },
     {
-        title:'Lorem ipsum dolor sit amet consectetur adipisicing elit',
+        title:'itur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas t',
         id:7,
         info:`Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
         molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
@@ -193,10 +194,10 @@ const guideData = [
         suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
         modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
         totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam `,
-        category:'shippers',
+        category:'carrier',
         type:'video',
         date:'1 jun 2022',
-        image:shipper
+        image:bus
     },
     {
         title:'Lorem ipsum dolor sit amet consectetur adipisicing elit',
@@ -221,10 +222,10 @@ const guideData = [
         suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
         modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
         totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam `,
-        category:'shippers',
+        category:'carriar',
         type:'blog',
         date:'1 jun 2022',
-        image:shipper
+        image:bus1
     },
     {
         title:'Lorem ipsum dolor sit amet consectetur adipisicing elit',
@@ -333,10 +334,10 @@ const guideData = [
         suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab laudantium
         modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam 
         totam ratione voluptas quod exercitationem fuga. Possimus quis earum veniam `,
-        category:'shippers',
+        category:'brokers',
         type:'blog',
         date:'1 jun 2022',
-        image:shipper
+        image:callCenter1
     },
 ]
 
