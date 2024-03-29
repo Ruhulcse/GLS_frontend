@@ -34,6 +34,9 @@ const Nav = () => {
                 </Link>
               </li>
               <NavLinks />
+              <Link to="/insurance">
+                <li className="cursor-pointer">Insurance</li>
+              </Link>
               <Link to="/contact">
                 <li className="cursor-pointer">Contact</li>
               </Link>
@@ -57,11 +60,24 @@ const Nav = () => {
                 </Link>
               </li>
               <NavLinks />
-              <Link to="/contact">
-                <li className="cursor-pointer">Contact</li>
+              <Link to="/insurance">
+                <li className=" py-4 px-2 inline-block cursor-pointer">
+                  Insurance
+                </li>
               </Link>
-              <li className="py-4 px-3 inline-block cursor-pointer">Login</li>
-              <li className="py-4 px-3 inline-block cursor-pointer">Sign Up</li>
+              <Link to="/contact">
+                <li className=" py-4 px-2 inline-block cursor-pointer">
+                  Contact
+                </li>
+              </Link>
+              <Link to="/logIn">
+                <li className="py-4 px-3 inline-block cursor-pointer">Login</li>
+              </Link>
+              <Link to="/signUp">
+                <li className="py-4 px-3 inline-block cursor-pointer">
+                  Sign Up
+                </li>
+              </Link>
             </ul>
           </div>
         </Container>

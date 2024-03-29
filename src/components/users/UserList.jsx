@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/display-name */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-key */
 import Card from '@/components/ui/Card';
 import Icon from '@/components/ui/Icon';
 import Tooltip from '@/components/ui/Tooltip';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
 	useGlobalFilter,
 	usePagination,
@@ -13,89 +14,91 @@ import {
 	useTable,
 } from 'react-table';
 
-import { advancedTable } from '@/constant/table-data';
-import GlobalFilter from '../../shared/TableFilter/GlobalFilter';
+import { getAllUsers } from '@/store/api/users/usersSlice';
+import { dateTime } from '@/util/helpers';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../Loading';
+import GlobalFilter from '../shared/TableFilter/GlobalFilter';
 
 const COLUMNS = [
+	// {
+	// 	Header: 'Id',
+	// 	accessor: 'id',
+	// 	Cell: row => {
+	// 		return <span>{row?.cell?.value}</span>;
+	// 	},
+	// },
 	{
-		Header: 'Id',
-		accessor: 'id',
+		Header: 'First Name',
+		accessor: 'firstName',
 		Cell: row => {
 			return <span>{row?.cell?.value}</span>;
 		},
 	},
 	{
-		Header: 'Job Id',
-		accessor: 'jobId',
+		Header: 'Last Name',
+		accessor: 'lastName',
 		Cell: row => {
-			return <span>#{row?.cell?.value}</span>;
+			return <span>{row?.cell?.value}</span>;
 		},
 	},
 	{
-		Header: 'customer',
-		accessor: 'customer',
+		Header: 'Email',
+		accessor: 'email',
 		Cell: row => {
 			return (
-				<div>
-					<span className='inline-flex items-center'>
-						<span className='w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600'>
-							<img
-								src={row?.cell?.value.image}
-								alt=''
-								className='object-cover w-full h-full rounded-full'
-							/>
-						</span>
-						<span className='text-sm text-slate-600 dark:text-slate-300 capitalize'>
-							{row?.cell?.value.name}
-						</span>
-					</span>
-				</div>
+				<span className='lowercase underline-offset-1'>
+					<a className='text-sky-400' href={`mailto:${row?.cell?.value}`}>
+						{row?.cell?.value}
+					</a>
+				</span>
 			);
 		},
 	},
+	{
+		Header: 'Created At',
+		accessor: 'createdAt',
+		Cell: row => {
+			return <span>{dateTime(row?.cell?.value)}</span>;
+		},
+	},
 
-	{
-		Header: 'Title',
-		accessor: 'title',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
-		},
-	},
-	{
-		Header: 'Origin',
-		accessor: 'origin',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
-		},
-	},
-	{
-		Header: 'Destination',
-		accessor: 'destination',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
-		},
-	},
-	{
-		Header: 'Duration',
-		accessor: 'duration',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
-		},
-	},
+	// {
+	//     Header: "customer",
+	//     accessor: "customer",
+	//     Cell: (row) => {
+	//       return (
+	//         <div>
+	//           <span className="inline-flex items-center">
+	//             <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
+	//               <img
+	//                 src={row?.cell?.value.image}
+	//                 alt=""
+	//                 className="object-cover w-full h-full rounded-full"
+	//               />
+	//             </span>
+	//             <span className="text-sm text-slate-600 dark:text-slate-300 capitalize">
+	//               {row?.cell?.value.name}
+	//             </span>
+	//           </span>
+	//         </div>
+	//       );
+	//     },
+	//   },
 	{
 		Header: 'status',
-		accessor: 'status',
+		accessor: 'userStatus',
 		Cell: row => {
 			return (
 				<span className='block w-full'>
 					<span
 						className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-							row?.cell?.value === 'paid'
+							row?.cell?.value?.toLowerCase() === 'active'
 								? 'text-success-500 bg-success-500'
 								: ''
 						} 
             ${
-							row?.cell?.value === 'due'
+							row?.cell?.value?.toLowerCase() === 'pending'
 								? 'text-warning-500 bg-warning-500'
 								: ''
 						}
@@ -117,6 +120,7 @@ const COLUMNS = [
 		Header: 'action',
 		accessor: 'action',
 		Cell: row => {
+			console.log('row:', row);
 			return (
 				<div className='flex space-x-3 rtl:space-x-reverse'>
 					<Tooltip content='View' placement='top' arrow animation='shift-away'>
@@ -168,9 +172,15 @@ const IndeterminateCheckbox = React.forwardRef(
 	}
 );
 
-const ShipmentListGrid = ({ title = 'Shipment List' }) => {
+const UserList = ({ title = 'User List' }) => {
 	const columns = useMemo(() => COLUMNS, []);
-	const data = useMemo(() => advancedTable, []);
+	const dispatch = useDispatch();
+	const { users: data, loading } = useSelector(state => state.users);
+	console.log('UserList == users:', data);
+
+	useEffect(() => {
+		dispatch(getAllUsers());
+	}, [dispatch]);
 
 	const tableInstance = useTable(
 		{
@@ -222,6 +232,11 @@ const ShipmentListGrid = ({ title = 'Shipment List' }) => {
 	} = tableInstance;
 
 	const { globalFilter, pageIndex, pageSize } = state;
+
+	if (loading) {
+		return <Loading />;
+	}
+
 	return (
 		<>
 			<Card>
@@ -374,4 +389,4 @@ const ShipmentListGrid = ({ title = 'Shipment List' }) => {
 	);
 };
 
-export default ShipmentListGrid;
+export default UserList;

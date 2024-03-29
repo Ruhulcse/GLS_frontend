@@ -19,6 +19,7 @@ const ShipmentForm = () => {
 		handleSubmit,
 	} = useForm({
 		resolver: yupResolver(FormValidationSchema),
+		mode: 'all',
 	});
 
 	const onSubmit = data => {

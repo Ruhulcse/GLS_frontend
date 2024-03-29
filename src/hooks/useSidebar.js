@@ -4,6 +4,7 @@ import { handleSidebarCollapsed } from "@/store/layout";
 const useSidebar = () => {
   const dispatch = useDispatch();
   const collapsed = useSelector((state) => state.layout.isCollapsed);
+  console.log("useSidebar == collapsed:", collapsed)
 
   // ** Toggles Menu Collapsed
   const setMenuCollapsed = (val) => dispatch(handleSidebarCollapsed(val));

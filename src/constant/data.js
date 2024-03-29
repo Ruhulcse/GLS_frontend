@@ -25,6 +25,11 @@ export const menuItems = [
       },
     ],
   },
+  {
+    title: "Users",
+    icon: "heroicons-outline:users",
+    link: "users",
+  },
 ];
 
 export const topMenu = [
