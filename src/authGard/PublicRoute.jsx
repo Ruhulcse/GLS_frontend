@@ -1,11 +1,11 @@
-import useAuth from '@/hooks/useAuth'
+/* eslint-disable react/prop-types */
+import { selectCurrentToken } from '@/store/api/auth/authSlice';
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
-import { Navigate } from 'react-router-dom'
-
-function PublicRoute({children}) {
-    const isLoggedIn = useAuth()
-    console.log("i am public route");
-  return !isLoggedIn? children: <Navigate to='/dashboard' />
+function PublicRoute({ children }) {
+	const token = useSelector(selectCurrentToken);
+	return token ? <Navigate to='/dashboard' replace /> : children;
 }
 
-export default PublicRoute
+export default PublicRoute;

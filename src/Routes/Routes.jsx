@@ -21,9 +21,9 @@ import SignUp from './../auth/SignUp';
 import Guide from './../pages/guide/Guide';
 
 //import PrivateRoute from "@/authGard/PrivateRoute";
-import Text from '@/components/Text';
 
 import PrivateRoute from '@/authGard/PrivateRoute';
+import PublicRoute from '@/authGard/PublicRoute';
 import Insurance from '@/components/Insurance/Insurance';
 import ProfilePage from '@/pages/admin/profile';
 import UserListPage from '@/pages/admin/users/user-list';
@@ -104,40 +104,48 @@ export const router = createBrowserRouter([
 			},
 			{
 				path: '/signUp',
-				element: <SignUp />,
+				element: (
+					<PublicRoute>
+						<SignUp />
+					</PublicRoute>
+				),
 			},
 			{
 				path: '/logIn',
-				element: <Login />,
-			},
-			{
-				path: '/hello',
-				element: <Text />,
+				element: (
+					<PublicRoute>
+						<Login />
+					</PublicRoute>
+				),
 			},
 		],
 	},
 	{
-		element: <AdminLayout />,
+		element: (
+			<PrivateRoute>
+				<AdminLayout />
+			</PrivateRoute>
+		),
 		children: [
 			{
 				path: '/dashboard',
-				element: <PrivateRoute element={Dashboard} />,
+				element: <Dashboard />,
 			},
 			{
 				path: '/shipments',
-				element: <PrivateRoute element={ShipmentList} />,
+				element: <ShipmentList />,
 			},
 			{
 				path: '/create-shipment',
-				element: <PrivateRoute element={ShipmentFormPage} />,
+				element: <ShipmentFormPage />,
 			},
 			{
 				path: '/users',
-				element: <PrivateRoute element={UserListPage} />,
+				element: <UserListPage />,
 			},
 			{
 				path: '/profile/:id',
-				element: <PrivateRoute element={ProfilePage} />,
+				element: <ProfilePage />,
 			},
 		],
 	},

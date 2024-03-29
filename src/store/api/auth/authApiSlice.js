@@ -15,25 +15,25 @@ export const authApi = apiSlice.injectEndpoints({
 			query: data => ({
 				url: '/login',
 				method: 'POST',
-				body: data,
+				body: { ...data },
 			}),
-			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-				const result = await queryFulfilled;
-				localStorage.setItem(
-					'auth',
-					JSON.stringify({
-						accessToken: result.data.token,
-						user_id: result.data._id,
-					})
-				),
-					dispatch(
-						setUser({
-							token: result.data.token,
-							user_id: result.data._id,
-						})
-					);
-				dispatch(getUser({ user_id: result.data._id }));
-			},
+			// async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+			// 	const result = await queryFulfilled;
+			// 	localStorage.setItem(
+			// 		'auth',
+			// 		JSON.stringify({
+			// 			accessToken: result.data.token,
+			// 			user_id: result.data._id,
+			// 		})
+			// 	),
+			// 		dispatch(
+			// 			setUser({
+			// 				token: result.data.token,
+			// 				user_id: result.data._id,
+			// 			})
+			// 		);
+			// 	dispatch(getUser({ user_id: result.data._id }));
+			// },
 		}),
 	}),
 });
