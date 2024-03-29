@@ -32,7 +32,7 @@ function Login() {
     email:email.value,
     password:password.value
    })
-    //navigate("/hello");
+    navigate("/dashboard");
     // You can add further logic for submitting the form data here
   };
   return (

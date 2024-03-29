@@ -4,7 +4,6 @@
 /* eslint-disable react/jsx-key */
 import Card from '@/components/ui/Card';
 import Icon from '@/components/ui/Icon';
-import Tooltip from '@/components/ui/Tooltip';
 import React, { useEffect, useMemo } from 'react';
 import {
 	useGlobalFilter,
@@ -14,169 +13,207 @@ import {
 	useTable,
 } from 'react-table';
 
+import useToast from '@/hooks/useToast';
 import { getAllUsers } from '@/store/api/users/usersSlice';
+import fetchWrapper from '@/util/fetchWrapper';
 import { dateTime } from '@/util/helpers';
+import { Menu } from '@headlessui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../Loading';
 import GlobalFilter from '../shared/TableFilter/GlobalFilter';
+import Dropdown from '../ui/Dropdown';
 
-const COLUMNS = [
-	// {
-	// 	Header: 'Id',
-	// 	accessor: 'id',
-	// 	Cell: row => {
-	// 		return <span>{row?.cell?.value}</span>;
-	// 	},
-	// },
-	{
-		Header: 'First Name',
-		accessor: 'firstName',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
+const UserList = ({ title = 'User List' }) => {
+	const { errorToast, successToast } = useToast();
+	const actions = [
+		{
+			name: 'Active',
+			icon: 'heroicons-outline:check-badge',
 		},
-	},
-	{
-		Header: 'Last Name',
-		accessor: 'lastName',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
+		{
+			name: 'Deactivated',
+			icon: 'heroicons:x-mark',
 		},
-	},
-	{
-		Header: 'Email',
-		accessor: 'email',
-		Cell: row => {
-			return (
-				<span className='lowercase underline-offset-1'>
-					<a className='text-sky-400' href={`mailto:${row?.cell?.value}`}>
-						{row?.cell?.value}
-					</a>
-				</span>
-			);
+		{
+			name: 'Suspended',
+			icon: 'heroicons-outline:exclamation-circle',
 		},
-	},
-	{
-		Header: 'Created At',
-		accessor: 'createdAt',
-		Cell: row => {
-			return <span>{dateTime(row?.cell?.value)}</span>;
+		{
+			name: 'Rejected',
+			icon: 'heroicons-outline:trash',
 		},
-	},
+		{
+			name: 'Blocked',
+			icon: 'heroicons-outline:no-symbol',
+		},
+	];
 
-	// {
-	//     Header: "customer",
-	//     accessor: "customer",
-	//     Cell: (row) => {
-	//       return (
-	//         <div>
-	//           <span className="inline-flex items-center">
-	//             <span className="w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600">
-	//               <img
-	//                 src={row?.cell?.value.image}
-	//                 alt=""
-	//                 className="object-cover w-full h-full rounded-full"
-	//               />
-	//             </span>
-	//             <span className="text-sm text-slate-600 dark:text-slate-300 capitalize">
-	//               {row?.cell?.value.name}
-	//             </span>
-	//           </span>
-	//         </div>
-	//       );
-	//     },
-	//   },
-	{
-		Header: 'status',
-		accessor: 'userStatus',
-		Cell: row => {
-			return (
-				<span className='block w-full'>
-					<span
-						className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-							row?.cell?.value?.toLowerCase() === 'active'
-								? 'text-success-500 bg-success-500'
-								: ''
-						} 
+	const COLUMNS = [
+		{
+			Header: 'First Name',
+			accessor: 'firstName',
+			Cell: row => {
+				return <span>{row?.cell?.value}</span>;
+			},
+		},
+		{
+			Header: 'Last Name',
+			accessor: 'lastName',
+			Cell: row => {
+				return <span>{row?.cell?.value}</span>;
+			},
+		},
+		{
+			Header: 'Email',
+			accessor: 'email',
+			Cell: row => {
+				return (
+					<span className='lowercase underline-offset-1'>
+						<a className='text-sky-400' href={`mailto:${row?.cell?.value}`}>
+							{row?.cell?.value}
+						</a>
+					</span>
+				);
+			},
+		},
+		{
+			Header: 'Created At',
+			accessor: 'createdAt',
+			Cell: row => {
+				return <span>{dateTime(row?.cell?.value)}</span>;
+			},
+		},
+
+		{
+			Header: 'status',
+			accessor: 'userStatus',
+			Cell: row => {
+				return (
+					<span className='block w-full'>
+						<span
+							className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
+								row?.cell?.value?.toLowerCase() === 'active'
+									? 'text-success-500 bg-success-500'
+									: ''
+							} 
             ${
 							row?.cell?.value?.toLowerCase() === 'pending'
 								? 'text-warning-500 bg-warning-500'
 								: ''
 						}
             ${
-							row?.cell?.value === 'cancled'
+							row?.cell?.value?.toLowerCase() === 'cancled'
 								? 'text-danger-500 bg-danger-500'
 								: ''
 						}
+
+						${
+							row?.cell?.value?.toLowerCase() === 'deactivated'
+								? 'text-white-500 bg-gray-600'
+								: ''
+						}
+
+						${
+							row?.cell?.value?.toLowerCase() === 'suspended'
+								? 'text-red-500 bg-red-600'
+								: ''
+						}
+
+						${
+							row?.cell?.value?.toLowerCase() === 'rejected'
+								? 'text-red-500 bg-red-500'
+								: ''
+						}
+
+						${
+							row?.cell?.value?.toLowerCase() === 'blocked'
+								? 'text-red-500 bg-red-700'
+								: ''
+						}
+
             
              `}
-					>
-						{row?.cell?.value}
+						>
+							{row?.cell?.value}
+						</span>
 					</span>
-				</span>
-			);
+				);
+			},
 		},
-	},
-	{
-		Header: 'action',
-		accessor: 'action',
-		Cell: row => {
-			console.log('row:', row);
+		{
+			Header: 'action',
+			accessor: 'action',
+			Cell: row => {
+				const filteredActions = actions.filter(
+					item =>
+						item.name.toLowerCase() !==
+						row?.cell?.row?.original?.userStatus?.toLowerCase()
+				);
+				return (
+					<div>
+						<Dropdown
+							classMenuItems='right-0 w-[140px] top-[110%] '
+							label={
+								<span className='text-xl text-center block w-full'>
+									<Icon icon='heroicons-outline:dots-vertical' />
+								</span>
+							}
+						>
+							<div className='divide-y divide-slate-100 dark:divide-slate-800'>
+								{filteredActions?.map((item, i) => (
+									<Menu.Item
+										key={i}
+										onClick={() =>
+											updateUserStatus(
+												row?.cell?.row?.original?._id,
+												item?.name
+											)
+										}
+									>
+										<div
+											className={`hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50 w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
+										>
+											<span className='text-base'>
+												<Icon icon={item.icon} />
+											</span>
+											<span>{item.name}</span>
+										</div>
+									</Menu.Item>
+								))}
+							</div>
+						</Dropdown>
+					</div>
+				);
+			},
+		},
+	];
+
+	const IndeterminateCheckbox = React.forwardRef(
+		({ indeterminate, ...rest }, ref) => {
+			const defaultRef = React.useRef();
+			const resolvedRef = ref || defaultRef;
+
+			React.useEffect(() => {
+				resolvedRef.current.indeterminate = indeterminate;
+			}, [resolvedRef, indeterminate]);
+
 			return (
-				<div className='flex space-x-3 rtl:space-x-reverse'>
-					<Tooltip content='View' placement='top' arrow animation='shift-away'>
-						<button className='action-btn' type='button'>
-							<Icon icon='heroicons:eye' />
-						</button>
-					</Tooltip>
-					<Tooltip content='Edit' placement='top' arrow animation='shift-away'>
-						<button className='action-btn' type='button'>
-							<Icon icon='heroicons:pencil-square' />
-						</button>
-					</Tooltip>
-					<Tooltip
-						content='Delete'
-						placement='top'
-						arrow
-						animation='shift-away'
-						theme='danger'
-					>
-						<button className='action-btn' type='button'>
-							<Icon icon='heroicons:trash' />
-						</button>
-					</Tooltip>
-				</div>
+				<>
+					<input
+						type='checkbox'
+						ref={resolvedRef}
+						{...rest}
+						className='table-checkbox'
+					/>
+				</>
 			);
-		},
-	},
-];
+		}
+	);
 
-const IndeterminateCheckbox = React.forwardRef(
-	({ indeterminate, ...rest }, ref) => {
-		const defaultRef = React.useRef();
-		const resolvedRef = ref || defaultRef;
-
-		React.useEffect(() => {
-			resolvedRef.current.indeterminate = indeterminate;
-		}, [resolvedRef, indeterminate]);
-
-		return (
-			<>
-				<input
-					type='checkbox'
-					ref={resolvedRef}
-					{...rest}
-					className='table-checkbox'
-				/>
-			</>
-		);
-	}
-);
-
-const UserList = ({ title = 'User List' }) => {
 	const columns = useMemo(() => COLUMNS, []);
 	const dispatch = useDispatch();
-	const { users: data, loading } = useSelector(state => state.users);
-	console.log('UserList == users:', data);
+	const { users, loading } = useSelector(state => state.users);
+	// const { user_id } = useSelector(state => state.auth);
 
 	useEffect(() => {
 		dispatch(getAllUsers());
@@ -185,7 +222,7 @@ const UserList = ({ title = 'User List' }) => {
 	const tableInstance = useTable(
 		{
 			columns,
-			data,
+			data: users,
 		},
 
 		useGlobalFilter,
@@ -212,6 +249,21 @@ const UserList = ({ title = 'User List' }) => {
 			]);
 		}
 	);
+
+	const updateUserStatus = async (id, status) => {
+		console.log('updateUserStatus == id, status:', id, status);
+		try {
+			const response = await fetchWrapper.put(`user/${id}`, {
+				userStatus: status,
+			});
+			console.log('updateUserStatus == response:', response);
+			if (response.status === 200) {
+				dispatch(getAllUsers());
+			}
+		} catch (error) {
+			errorToast(error);
+		}
+	};
 	const {
 		getTableProps,
 		getTableBodyProps,

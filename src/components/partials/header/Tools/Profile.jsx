@@ -2,13 +2,13 @@
 import Dropdown from '@/components/ui/Dropdown';
 import Icon from '@/components/ui/Icon';
 import { Menu } from '@headlessui/react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import UserAvatar from '@/assets/images/all-img/user.png';
 import { logOut } from '@/store/api/auth/authSlice';
 
-const profileLabel = () => {
+const profileLabel = user => {
 	return (
 		<div className='flex items-center'>
 			<div className='flex-1 ltr:mr-[10px] rtl:ml-[10px]'>
@@ -22,7 +22,7 @@ const profileLabel = () => {
 			</div>
 			<div className='flex-none text-slate-600 dark:text-white text-sm font-normal items-center lg:flex hidden overflow-hidden text-ellipsis whitespace-nowrap'>
 				<span className='overflow-hidden text-ellipsis whitespace-nowrap w-[85px] block'>
-					Albert Flores
+					{user?.firstName} {user?.lastName}
 				</span>
 				<span className='text-base inline-block ltr:ml-[10px] rtl:mr-[10px]'>
 					<Icon icon='heroicons-outline:chevron-down'></Icon>
@@ -35,6 +35,7 @@ const profileLabel = () => {
 const Profile = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const { user } = useSelector(state => state.user);
 
 	const handleLogout = () => {
 		// Clear user data from local storage
@@ -103,7 +104,7 @@ const Profile = () => {
 	];
 
 	return (
-		<Dropdown label={profileLabel()} classMenuItems='w-[180px] top-[58px]'>
+		<Dropdown label={profileLabel(user)} classMenuItems='w-[180px] top-[58px]'>
 			{ProfileMenu.map((item, index) => (
 				<Menu.Item key={index}>
 					{({ active }) => (

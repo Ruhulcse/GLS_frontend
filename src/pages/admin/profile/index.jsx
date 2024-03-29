@@ -5,9 +5,9 @@ import Profile from '@/components/user/Profile';
 
 const ProfilePage = () => {
 	return (
-		<div>
+		<>
 			<Profile />
-		</div>
+		</>
 	);
 };
 
