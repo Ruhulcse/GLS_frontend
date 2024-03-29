@@ -5,20 +5,20 @@ import { Link } from 'react-router-dom';
 
 // import images
 import ProfileImage from '@/assets/images/users/user-1.jpg';
-import { getUser } from '@/store/api/user/userSlice';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import Button from '@/components/ui/Button';
+import { humanDate } from '@/util/helpers';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import ProfileModalForm from './Form/ProfileModalForm';
+import BasicArea from '@/pages/admin/chart/appex-chart/BasicArea';
 
 const Profile = () => {
-	const dispatch = useDispatch();
+	const [showEditProfileModal, setShowEditProfileModal] = useState(false);
 	const { user } = useSelector(state => state.user);
 
-	useEffect(() => {
-		dispatch(getUser({ user_id: '6601e50217fc70b39ecc269b' }));
-	}, [dispatch]);
 	return (
 		<div>
-			<div className='space-y-5 profile-page'>
+			<div className='space-y-5 profile-page items-stretch'>
 				<div className='profiel-wrap px-[35px] pb-10 md:pt-[84px] pt-10 rounded-lg bg-white dark:bg-slate-800 lg:flex lg:space-y-0 space-y-6 justify-between items-end relative z-[1]'>
 					<div className='bg-slate-900 dark:bg-slate-700 absolute left-0 top-0 md:h-1/2 h-[150px] w-full z-[-1] rounded-t-lg'></div>
 					<div className='profile-box flex-none md:text-start text-center'>
@@ -49,8 +49,8 @@ const Profile = () => {
 						</div>
 					</div>
 
-					{/* <div className='profile-info-500 md:flex md:text-start text-center flex-1 max-w-[516px] md:space-y-0 space-y-4'>
-						<div className='flex-1'>
+					<div className='profile-info-500 md:flex md:text-start text-center flex-1 max-w-[516px] md:space-y-0 space-y-4'>
+						{/* <div className='flex-1'>
 							<div className='text-base text-slate-900 dark:text-slate-300 font-medium mb-1'>
 								$32,400
 							</div>
@@ -66,22 +66,43 @@ const Profile = () => {
 							<div className='text-sm text-slate-600 font-light dark:text-slate-300'>
 								Board Card
 							</div>
-						</div>
+						</div> */}
 
 						<div className='flex-1'>
-							<div className='text-base text-slate-900 dark:text-slate-300 font-medium mb-1'>
-								3200
+							<div className='text-base text-end text-slate-900 dark:text-slate-300 font-medium mb-1'>
+								<Button
+									icon='heroicons-outline:pencil'
+									text='Edit Profile'
+									className='btn-primary hover:outline-none border-0'
+									onClick={() => setShowEditProfileModal(true)}
+								/>
 							</div>
-							<div className='text-sm text-slate-600 font-light dark:text-slate-300'>
+							{/* <div className='text-sm text-slate-600 font-light dark:text-slate-300'>
 								Calender Events
-							</div>
+							</div> */}
 						</div>
-					</div> */}
+					</div>
 				</div>
 				<div className='grid grid-cols-12 gap-6'>
 					<div className='lg:col-span-4 col-span-12'>
 						<Card title='Info'>
 							<ul className='list space-y-8'>
+								<li className='flex space-x-3 rtl:space-x-reverse'>
+									<div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+										<Icon icon='heroicons:user' />
+									</div>
+									<div className='flex-1'>
+										<div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+											Name
+										</div>
+										<a
+											href={`mailto:${user?.email}`}
+											className='text-base text-slate-600 dark:text-slate-50'
+										>
+											{user?.firstName} {user?.lastName}
+										</a>
+									</div>
+								</li>
 								<li className='flex space-x-3 rtl:space-x-reverse'>
 									<div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
 										<Icon icon='heroicons:envelope' />
@@ -94,8 +115,21 @@ const Profile = () => {
 											href={`mailto:${user?.email}`}
 											className='text-base text-slate-600 dark:text-slate-50'
 										>
-											{user?.email}
+											{user?.email ?? 'N/A'}
 										</a>
+									</div>
+								</li>
+
+								<li className='flex space-x-3 rtl:space-x-reverse'>
+									<div className='flex-none text-2xl text-slate-600 dark:text-slate-300'>
+										<Icon icon='heroicons:calendar-days' />
+									</div>
+									<div className='flex-1'>
+										<div className='uppercase text-xs text-slate-500 dark:text-slate-300 mb-1 leading-[12px]'>
+											Date of Birth
+										</div>
+
+										{humanDate(user?.dateOfBirth)}
 									</div>
 								</li>
 
@@ -108,10 +142,10 @@ const Profile = () => {
 											PHONE
 										</div>
 										<a
-											href='tel:0189749676767'
+											href={`tel:${user?.phoneNumber}`}
 											className='text-base text-slate-600 dark:text-slate-50'
 										>
-											+1-202-555-0151
+											{user?.phoneNumber ?? 'N/A'}
 										</a>
 									</div>
 								</li>
@@ -125,20 +159,27 @@ const Profile = () => {
 											LOCATION
 										</div>
 										<div className='text-base text-slate-600 dark:text-slate-50'>
-											Home# 320/N, Road# 71/B, Mohakhali, Dhaka-1207, Bangladesh
+											{user?.address}, {user?.postalCode}
 										</div>
 									</div>
 								</li>
 							</ul>
 						</Card>
 					</div>
-					{/* <div className='lg:col-span-8 col-span-12'>
+					<div className='lg:col-span-8 col-span-12'>
 						<Card title='User Overview'>
 							<BasicArea height={190} />
 						</Card>
-					</div> */}
+					</div>
 				</div>
 			</div>
+
+			{showEditProfileModal && (
+				<ProfileModalForm
+					showEditProfileModal={showEditProfileModal}
+					setShowEditProfileModal={setShowEditProfileModal}
+				/>
+			)}
 		</div>
 	);
 };

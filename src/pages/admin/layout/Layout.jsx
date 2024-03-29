@@ -24,11 +24,11 @@ const Layout = () => {
 	const navigate = useNavigate();
 	const isLoggedIn = useAuth();
 
-	useEffect(() => {
-		if (isLoggedIn) {
-			navigate('/dashboard');
-		}
-	}, [isLoggedIn, navigate]);
+	// useEffect(() => {
+	// 	if (!isLoggedIn) {
+	// 		navigate('/login');
+	// 	}
+	// }, [isLoggedIn, navigate]);
 
 	const switchHeaderClass = () => {
 		if (menuType === 'horizontal' || menuHidden) {

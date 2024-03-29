@@ -8,8 +8,8 @@ const Layout = () => {
 	const navigate = useNavigate();
 	const isLoggedIn = useAuth();
 	useEffect(() => {
-		if (isLoggedIn) {
-			navigate('/dashboard');
+		if (!isLoggedIn) {
+			// navigate(0);
 		}
 	}, [isLoggedIn, navigate]);
 	return (
