@@ -1,10 +1,17 @@
 /* eslint-disable react/prop-types */
-import useAuth from '@/hooks/useAuth';
-import { Navigate } from 'react-router-dom';
+import { selectCurrentToken } from '@/store/api/auth/authSlice';
+import { useSelector } from 'react-redux';
+import { Navigate, useLocation } from 'react-router-dom';
 
-function PrivateRoute({ element: Element }) {
-	const isLoggedIn = useAuth();
-	return isLoggedIn ? <Element /> : <Navigate to='/logIn' replace={true} />;
+function PrivateRoute({ children }) {
+	const token = useSelector(selectCurrentToken);
+	const location = useLocation();
+
+	return token ? (
+		children
+	) : (
+		<Navigate to='/login' state={{ from: location }} replace />
+	);
 }
 
 export default PrivateRoute;

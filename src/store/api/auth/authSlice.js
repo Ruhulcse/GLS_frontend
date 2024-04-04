@@ -1,15 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { createSlice } from '@reduxjs/toolkit';
 
-//const storedUser = JSON.parse(localStorage.getItem("user"));
+const storedUser = JSON.parse(localStorage.getItem('auth'));
 
 export const authSlice = createSlice({
 	name: 'auth',
 	initialState: {
-		token: null,
-		isLoggedIn: false,
-		user_id: null,
-		// email:undefined
+		token: storedUser?.accessToken ? storedUser?.accessToken : null,
+		isLoggedIn: storedUser?.accessToken ? true : false,
+		user_id: storedUser?.user_id ? storedUser?.user_id : null,
 	},
 	reducers: {
 		setUser: (state, action) => {
@@ -22,10 +21,12 @@ export const authSlice = createSlice({
 			state.token = null;
 			state.isLoggedIn = false;
 			state.user_id = null;
-			//state.isAuth = false;
 		},
 	},
 });
 
 export const { setUser, logOut } = authSlice.actions;
 export default authSlice.reducer;
+
+export const selectCurrentUser = state => state.auth.user_id;
+export const selectCurrentToken = state => state.auth.token;

@@ -213,7 +213,7 @@ const UserList = ({ title = 'User List' }) => {
 	const columns = useMemo(() => COLUMNS, []);
 	const dispatch = useDispatch();
 	const { users, loading } = useSelector(state => state.users);
-	// const { user_id } = useSelector(state => state.auth);
+	const { user_id } = useSelector(state => state.auth);
 
 	useEffect(() => {
 		dispatch(getAllUsers());

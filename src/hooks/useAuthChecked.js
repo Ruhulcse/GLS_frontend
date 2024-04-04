@@ -15,6 +15,7 @@ function useAuthChecked() {
 					setUser({
 						token: auth.accessToken,
 						user_id: auth.user_id,
+						isLoggedIn: true
 					})
 				);
 				dispatch(getUser({ user_id: auth.user_id }));
