@@ -4,7 +4,7 @@
 import Card from '@/components/ui/Card';
 import Icon from '@/components/ui/Icon';
 import Tooltip from '@/components/ui/Tooltip';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
 	useGlobalFilter,
 	usePagination,
@@ -14,6 +14,8 @@ import {
 } from 'react-table';
 
 import { advancedTable } from '@/constant/table-data';
+import { getAllShipments } from '@/store/api/shipments/shipmentsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import GlobalFilter from '../../shared/TableFilter/GlobalFilter';
 
 const COLUMNS = [
@@ -171,11 +173,17 @@ const IndeterminateCheckbox = React.forwardRef(
 const ShipmentListGrid = ({ title = 'Shipment List' }) => {
 	const columns = useMemo(() => COLUMNS, []);
 	const data = useMemo(() => advancedTable, []);
+	const dispatch = useDispatch();
+	const { shipments, loading } = useSelector(state => state.shipments);
+
+	useEffect(() => {
+		dispatch(getAllShipments());
+	}, [dispatch]);
 
 	const tableInstance = useTable(
 		{
 			columns,
-			data,
+			data: shipments,
 		},
 
 		useGlobalFilter,

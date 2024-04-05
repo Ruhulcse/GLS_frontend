@@ -1,66 +1,111 @@
+import Button from '@/components/ui/Button';
+import Textinput from '@/components/ui/Textinput';
+import useToast from '@/hooks/useToast';
 import { useLoginMutation } from '@/store/api/auth/authApiSlice';
 import { setUser } from '@/store/api/auth/authSlice';
 import { getUser } from '@/store/api/user/userSlice';
-import { useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { objectToArray, transferObj } from '../util/objMaping/objectMap';
+import * as yup from 'yup';
 import logo from './../assets/home/logo.png';
-import { loginFiled } from './loginFiled';
+
+const schema = yup
+	.object({
+		email: yup.string().email('Invalid email').required('Email is Required'),
+		password: yup.string().required('Password is Required'),
+	})
+	.required();
 function Login() {
-	const [formState, setFormState] = useState(transferObj(loginFiled));
+	// const [formState, setFormState] = useState(transferObj(loginFiled));
 	const dispatch = useDispatch();
-	const formData = objectToArray(formState);
-	const [login, { data, error }] = useLoginMutation();
+	// const formData = objectToArray(formState);
+	const { errorToast } = useToast();
+
+	const [login, { isLoading, data, error }] = useLoginMutation();
+
+	const {
+		register,
+		formState: { errors },
+		handleSubmit,
+	} = useForm({
+		resolver: yupResolver(schema),
+		mode: 'all',
+	});
 
 	const navigate = useNavigate();
 
-	const handleChange = e => {
-		const { name, value } = e.target;
-		setFormState({
-			...formState,
-			[name]: {
-				...formState[name],
-				value: value,
-			},
-		});
-	};
-
-	const handleSubmit = async e => {
-		e.preventDefault();
-		const { email, password } = formState;
+	const onSubmit = async data => {
 		try {
-			const userData = await login({
-				email: email.value,
-				password: password.value,
-			}).unwrap();
+			const userData = await login(data).unwrap();
 
-			if (userData?.token?.length) {
-				dispatch(
-					setUser({
-						token: userData.token,
-						user_id: userData._id,
-					})
-				);
-				dispatch(getUser({ user_id: userData._id }));
-				localStorage.setItem(
-					'auth',
-					JSON.stringify({
-						accessToken: userData.token,
-						user_id: userData._id,
-					})
-				),
-					navigate('/dashboard');
-			}
-
-			console.log('userData', userData);
+			dispatch(
+				setUser({
+					token: userData?.token,
+					user_id: userData?._id,
+				})
+			);
+			dispatch(getUser({ user_id: userData?._id }));
+			localStorage.setItem(
+				'auth',
+				JSON.stringify({
+					accessToken: userData?.token,
+					user_id: userData?._id,
+				})
+			);
+			navigate('/dashboard');
 		} catch (error) {
-			console.error(error);
+			errorToast(error.message);
 		}
-
-		// navigate("/dashboard");
-		// You can add further logic for submitting the form data here
 	};
+
+	// const handleChange = e => {
+	// 	const { name, value } = e.target;
+	// 	setFormState({
+	// 		...formState,
+	// 		[name]: {
+	// 			...formState[name],
+	// 			value: value,
+	// 		},
+	// 	});
+	// };
+
+	// const handleSubmit = async e => {
+	// 	e.preventDefault();
+	// 	const { email, password } = formState;
+	// 	try {
+	// 		const userData = await login({
+	// 			email: email.value,
+	// 			password: password.value,
+	// 		}).unwrap();
+
+	// 		if (userData?.token?.length) {
+	// 			dispatch(
+	// 				setUser({
+	// 					token: userData.token,
+	// 					user_id: userData._id,
+	// 				})
+	// 			);
+	// 			dispatch(getUser({ user_id: userData._id }));
+	// 			localStorage.setItem(
+	// 				'auth',
+	// 				JSON.stringify({
+	// 					accessToken: userData.token,
+	// 					user_id: userData._id,
+	// 				})
+	// 			),
+	// 				navigate('/dashboard');
+	// 		}
+
+	//
+	// 	} catch (error) {
+	//
+	// 	}
+
+	// 	// navigate("/dashboard");
+	// 	// You can add further logic for submitting the form data here
+	// };
 	return (
 		<div>
 			<div className="h-screen w-full bg-[url('./../../src/assets/home/truck.jpg')] bg-cover bg-no-repeat flex justify-center items-center"></div>
@@ -69,7 +114,7 @@ function Login() {
 				<div className='h-full w-full flex justify-center items-center'>
 					<form
 						className='bg-gradient-to-tl from-[#afc0ee] to-[#6d5cf0] rounded-xl  min-h-96 w-96 lg:w-[420px] shadow-xl'
-						onSubmit={handleSubmit}
+						onSubmit={handleSubmit(onSubmit)}
 					>
 						<div className='mb-12 grid justify-center'>
 							<img
@@ -78,41 +123,54 @@ function Login() {
 								alt=''
 							/>
 
-							{...formData.map((item, i) => (
-								<div className='flex flex-col my-px'>
-									<label htmlFor='' className='text-base font-medium my-[2px]'>
-										{item.title}
-									</label>
-									<input
-										type={item.type}
-										placeholder={item.placeholder}
-										name={item.name}
-										onChange={handleChange}
-										value={item.value}
-										className='w-64 lg:w-72 px-2 p-1.5 rounded-lg'
-									/>
-								</div>
-							))}
+							<Textinput
+								name='email'
+								label='email'
+								type='text'
+								defaultValue="ruhul.cse123@gmail.com"
+								placeholder='Enter your email'
+								register={register}
+								error={errors.email}
+								className='h-[48px] w-full'
+								autoComplete='email'
+							/>
 
-							<button
+							<Textinput
+								name='password'
+								label='password'
+								type='password'
+								defaultValue="test123"
+								placeholder='Enter your password'
+								register={register}
+								error={errors.password}
+								className='h-[48px]'
+								autoComplete='current-password'
+							/>
+							<Button
+								type='submit'
+								text='Sign in'
+								className='btn btn-dark block w-full text-center mt-4'
+								isLoading={isLoading}
+							/>
+							{/* <button
 								className='inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all hover:bg-black-500'
 								type='submit'
 							>
 								Sign in
-							</button>
-						</div>
-						<div className='flex justify-between mb-4 mx-6 mt-[-12px] items-center'>
-							<div className='text-base text-blue-950 font-bold'>
-								Don't have an account?
-							</div>
-							<div
-								className='text-xl font-bold cursor-pointer hover:text-black-500'
-								onClick={() => navigate('/signUp')}
-							>
-								Sign Up
-							</div>
+							</button> */}
 						</div>
 					</form>
+					<div className='flex justify-between mb-4 mx-6 mt-[-12px] items-center'>
+						<div className='text-base text-blue-950 font-bold'>
+							Don&apos;t have an account?
+						</div>
+						<div
+							className='text-xl font-bold cursor-pointer hover:text-black-500'
+							onClick={() => navigate('/signUp')}
+						>
+							Sign Up
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
