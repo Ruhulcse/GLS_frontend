@@ -12,13 +12,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Select from "@/components/ui/Select";
 import useToast from "@/hooks/useToast";
 import Button from "@/components/ui/Button";
-const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
 const schema = yup.object({
   firstName: yup.string().label("First Name").required(),
   lastName: yup.string().label("Last Name").required(),
   email: yup.string().email("invalid email").required("email is required"),
-  phoneNumber: yup.string().matches(phoneRegExp, "Phone number is not valid"),
+  phoneNumber: yup.string().required(),
   password: yup.string().required(),
   confirmPassword: yup
     .string()
