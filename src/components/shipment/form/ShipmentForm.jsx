@@ -1,6 +1,11 @@
+import FormGroup from '@/components/ui/FormGroup';
+import Select from '@/components/ui/Select';
 import Textinput from '@/components/ui/Textinput';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import useToast from '@/hooks/useToast';
+import fetchWrapper from '@/util/fetchWrapper';
+import Flatpickr from 'react-flatpickr';
+import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 const FormValidationSchema = yup
@@ -13,32 +18,85 @@ const FormValidationSchema = yup
 	.required();
 
 const ShipmentForm = () => {
+	const { errorToast } = useToast();
+	const navigate = useNavigate();
+	const cargoOptions = [
+		{
+			label: 'Electronics',
+			value: 'Electronics',
+		},
+		{
+			label: 'Clothing',
+			value: 'Clothing',
+		},
+		{
+			label: 'Food Items',
+			value: 'Food Items',
+		},
+		{
+			label: 'Books',
+			value: 'Books',
+		},
+		{
+			label: 'Furniture',
+			value: 'Gurniture',
+		},
+		{
+			label: 'Automobile Parts',
+			value: 'Auto Parts',
+		},
+	];
 	const {
 		register,
+		control,
 		formState: { errors },
 		handleSubmit,
 	} = useForm({
-		resolver: yupResolver(FormValidationSchema),
+		// resolver: yupResolver(FormValidationSchema),
 		mode: 'all',
 	});
 
-	const onSubmit = data => {
-		console.log(data);
+	const onSubmit = async data => {
+		console.log('onSubmit == data:', data);
+		try {
+			const response = await fetchWrapper.post(`shipments`, data);
+			console.log('onSubmit == response:', response);
+			navigate('/shipments');
+		} catch (error) {
+			errorToast(error);
+		}
 	};
 
 	return (
 		<div>
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className='lg:grid-cols-2 grid gap-5 grid-cols-1 '
+				className='lg:grid-cols-3 grid gap-5 grid-cols-1 '
 			>
-				<Textinput
-					label='Title'
+				<Select
+					label='Cargo Type'
 					type='text'
-					placeholder='Title'
-					name='title'
+					// placeholder='cargoType'
+					name='cargoType'
 					register={register}
-					error={errors.title}
+					error={errors.cargoType}
+					options={cargoOptions}
+				/>
+				<Textinput
+					label='Weight (in KG)'
+					type='number'
+					placeholder='Weight (in KG)'
+					name='weightKG'
+					register={register}
+					error={errors.weightKG}
+				/>
+				<Textinput
+					label='Offering Price'
+					type='number'
+					placeholder='Offering Price'
+					name='offeringPrice'
+					register={register}
+					error={errors.offeringPrice}
 				/>
 
 				<Textinput
@@ -60,17 +118,97 @@ const ShipmentForm = () => {
 				/>
 
 				<Textinput
-					label='Duration'
-					type='text'
-					placeholder='Duration'
-					name='duration'
+					label='Number of Loads'
+					type='number'
+					placeholder='Number of Loads'
+					name='numberOfLoads'
 					register={register}
-					error={errors.duration}
+					error={errors.numberOfLoads}
 				/>
 
-				<div className='lg:col-span-2 col-span-1'>
+				<Textinput
+					label='Length'
+					type='number'
+					placeholder='Length'
+					name='length'
+					register={register}
+					error={errors.length}
+				/>
+				<Textinput
+					label='height'
+					type='number'
+					placeholder='height'
+					name='height'
+					register={register}
+					error={errors.height}
+				/>
+				<Textinput
+					label='width'
+					type='number'
+					placeholder='width'
+					name='width'
+					register={register}
+					error={errors.width}
+				/>
+
+				<FormGroup
+					label='Pickup Date'
+					id='default-picker'
+					error={errors.startDate}
+				>
+					<Controller
+						name='pickUpDate'
+						control={control}
+						render={({ field }) => (
+							<Flatpickr
+								className='form-control py-2'
+								id='hf-picker'
+								placeholder='Pickup Date'
+								// value={user?.dateOfBirth}
+								onChange={date => {
+									field.onChange(date);
+								}}
+								options={{
+									altInput: true,
+									altFormat: 'F j, Y',
+									dateFormat: 'Y-m-d',
+								}}
+							/>
+						)}
+					/>
+				</FormGroup>
+
+				<FormGroup
+					label='delivery Date'
+					id='default-picker'
+					error={errors.startDate}
+				>
+					<Controller
+						name='deliveryDate'
+						control={control}
+						render={({ field }) => (
+							<Flatpickr
+								className='form-control py-2'
+								id='hf-picker'
+								placeholder='Delivery Date'
+								onChange={date => {
+									field.onChange(date);
+								}}
+								options={{
+									altInput: true,
+									altFormat: 'F j, Y',
+									dateFormat: 'Y-m-d',
+								}}
+							/>
+						)}
+					/>
+				</FormGroup>
+
+				<div className='lg:col-span-3 col-span-1'>
 					<div className='ltr:text-right rtl:text-left'>
-						<button className='btn btn-dark  text-center'>Submit</button>
+						<button type='submit' className='btn btn-dark  text-center'>
+							Submit
+						</button>
 					</div>
 				</div>
 			</form>
