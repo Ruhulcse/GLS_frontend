@@ -15,54 +15,49 @@ import {
 
 import { advancedTable } from '@/constant/table-data';
 import { getAllShipments } from '@/store/api/shipments/shipmentsSlice';
+import { dateTime, moneyFormatter } from '@/util/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import GlobalFilter from '../../shared/TableFilter/GlobalFilter';
 
 const COLUMNS = [
 	{
-		Header: 'Id',
-		accessor: 'id',
+		Header: 'Type',
+		accessor: 'cargoType',
 		Cell: row => {
 			return <span>{row?.cell?.value}</span>;
 		},
 	},
 	{
-		Header: 'Job Id',
-		accessor: 'jobId',
+		Header: 'Number of Loads',
+		accessor: 'numberOfLoads',
 		Cell: row => {
 			return <span>#{row?.cell?.value}</span>;
 		},
 	},
-	{
-		Header: 'customer',
-		accessor: 'customer',
-		Cell: row => {
-			return (
-				<div>
-					<span className='inline-flex items-center'>
-						<span className='w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600'>
-							<img
-								src={row?.cell?.value.image}
-								alt=''
-								className='object-cover w-full h-full rounded-full'
-							/>
-						</span>
-						<span className='text-sm text-slate-600 dark:text-slate-300 capitalize'>
-							{row?.cell?.value.name}
-						</span>
-					</span>
-				</div>
-			);
-		},
-	},
 
-	{
-		Header: 'Title',
-		accessor: 'title',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
-		},
-	},
+	// {
+	// 	Header: 'customer',
+	// 	accessor: 'customer',
+	// 	Cell: row => {
+	// 		return (
+	// 			<div>
+	// 				<span className='inline-flex items-center'>
+	// 					<span className='w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600'>
+	// 						<img
+	// 							src={row?.cell?.value.image}
+	// 							alt=''
+	// 							className='object-cover w-full h-full rounded-full'
+	// 						/>
+	// 					</span>
+	// 					<span className='text-sm text-slate-600 dark:text-slate-300 capitalize'>
+	// 						{row?.cell?.value.name}
+	// 					</span>
+	// 				</span>
+	// 			</div>
+	// 		);
+	// 	},
+	// },
+
 	{
 		Header: 'Origin',
 		accessor: 'origin',
@@ -78,10 +73,31 @@ const COLUMNS = [
 		},
 	},
 	{
-		Header: 'Duration',
-		accessor: 'duration',
+		Header: 'Weight (in kg)',
+		accessor: 'weightKG',
 		Cell: row => {
 			return <span>{row?.cell?.value}</span>;
+		},
+	},
+	{
+		Header: 'Offering Price',
+		accessor: 'offeringPrice',
+		Cell: row => {
+			return <span>{moneyFormatter(row?.cell?.value, 'USD')}</span>;
+		},
+	},
+	{
+		Header: 'Delivery Date',
+		accessor: 'deliveryDate',
+		Cell: row => {
+			return <span>{dateTime(row?.cell?.value)}</span>;
+		},
+	},
+	{
+		Header: 'PickUp Date',
+		accessor: 'pickUpDate',
+		Cell: row => {
+			return <span>{dateTime(row?.cell?.value)}</span>;
 		},
 	},
 	{
@@ -92,7 +108,7 @@ const COLUMNS = [
 				<span className='block w-full'>
 					<span
 						className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-							row?.cell?.value === 'paid'
+							row?.cell?.value.toLowerCase() === 'posted'
 								? 'text-success-500 bg-success-500'
 								: ''
 						} 
