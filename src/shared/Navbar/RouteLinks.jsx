@@ -35,4 +35,22 @@ export const links = [
             },
         ]
     },
+    {
+        name:"Product",
+        submenu:true,
+        sublink:[
+            {
+                name:"Insurance",
+                link:"/insurance"
+            },
+            {
+                name:"Load",
+                link:"/load"
+            },
+            {
+                name:"Product Finder",
+                link:"/finder"
+            }
+        ]
+    }
 ]

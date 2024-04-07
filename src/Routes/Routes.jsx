@@ -21,12 +21,14 @@ import SignUp from './../auth/SignUp';
 import Guide from './../pages/guide/Guide';
 
 //import PrivateRoute from "@/authGard/PrivateRoute";
+// import Text from '@/components/Text';
 
 import PrivateRoute from '@/authGard/PrivateRoute';
-import PublicRoute from '@/authGard/PublicRoute';
 import Insurance from '@/components/Insurance/Insurance';
 import ProfilePage from '@/pages/admin/profile';
 import UserListPage from '@/pages/admin/users/user-list';
+import Load from '@/pages/Product/Load';
+import ProductFinder from '@/pages/Product/ProductFinder';
 
 const ShipmentFormPage = lazy(() =>
 	import('@/pages/admin/shipments/shipment-form')
@@ -100,56 +102,52 @@ export const router = createBrowserRouter([
 			},
 			{
 				path: '/insurance',
-				element: <Insurance></Insurance>,
+				element: <Insurance></Insurance>
+			},
+			{
+				path:'/load',
+				element:<Load></Load>
+			},
+			{
+				path:'/finder',
+				element:<ProductFinder></ProductFinder>
 			},
 			{
 				path: '/signUp',
-				element: (
-					<PublicRoute>
-						<SignUp />
-					</PublicRoute>
-				),
+				element: <SignUp />,
 			},
 			{
 				path: '/logIn',
-				element: (
-					<PublicRoute>
-						<Login />
-					</PublicRoute>
-				),
+				element: <Login />,
+			},
+			{
+				path: '/hello',
+				element: <Text />,
 			},
 		],
 	},
 	{
-		element: (
-			<PrivateRoute>
-				<AdminLayout />
-			</PrivateRoute>
-		),
+		element: <AdminLayout />,
 		children: [
 			{
 				path: '/dashboard',
-				element: <Dashboard />,
+				element: <PrivateRoute element={Dashboard} />,
 			},
 			{
 				path: '/shipments',
-				element: <ShipmentList />,
+				element: <PrivateRoute element={ShipmentList} />,
 			},
 			{
 				path: '/create-shipment',
-				element: <ShipmentFormPage />,
+				element: <PrivateRoute element={ShipmentFormPage} />,
 			},
 			{
 				path: '/users',
-				element: <UserListPage />,
+				element: <PrivateRoute element={UserListPage} />,
 			},
 			{
 				path: '/profile/:id',
-				element: <ProfilePage />,
-			},
-			{
-				path: '*',
-				element: <Dashboard />,
+				element: <PrivateRoute element={ProfilePage} />,
 			},
 		],
 	},
