@@ -23,7 +23,6 @@ const FormValidationSchema = yup
     width: yup.string().required(),
     deliveryDate: yup.string().required(),
     pickUpDate: yup.string().required(),
-    cargoType: yup.string().required(),
     height: yup.string().required(),
   })
   .required();
