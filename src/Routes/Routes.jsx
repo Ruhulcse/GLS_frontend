@@ -4,7 +4,6 @@ import CardDetails from '@/pages/guide/subPage/CardDetails';
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../Layout/Layout';
-import Login from '../auth/Login';
 import Learn from '../components/CarrierSections/Learn';
 import Register from '../components/CarrierSections/Register';
 import BlogPage from '../pages/Blog/BlogPage';
@@ -17,14 +16,17 @@ import Carrier from '../pages/Solutions/Carrier';
 import Contact from '../pages/Solutions/Contact';
 import Shippers from '../pages/Solutions/Shippers';
 import AdminLayout from '../pages/admin/layout/Layout';
-import SignUp from './../auth/SignUp';
 import Guide from './../pages/guide/Guide';
 
 //import PrivateRoute from "@/authGard/PrivateRoute";
+// import Text from '@/components/Text';
 
+import LoginUpdate from '@/auth/LoginUpdate';
+import SignUpUpdate from '@/auth/SignUpUpdate';
 import PrivateRoute from '@/authGard/PrivateRoute';
-import PublicRoute from '@/authGard/PublicRoute';
 import Insurance from '@/components/Insurance/Insurance';
+import Load from '@/pages/Product/Load';
+import ProductFinder from '@/pages/Product/ProductFinder';
 import ProfilePage from '@/pages/admin/profile';
 import UserListPage from '@/pages/admin/users/user-list';
 
@@ -103,20 +105,24 @@ export const router = createBrowserRouter([
 				element: <Insurance></Insurance>,
 			},
 			{
+				path: '/load',
+				element: <Load></Load>,
+			},
+			{
+				path: '/finder',
+				element: <ProductFinder></ProductFinder>,
+			},
+			{
 				path: '/signUp',
-				element: (
-					<PublicRoute>
-						<SignUp />
-					</PublicRoute>
-				),
+				element: <SignUpUpdate />,
 			},
 			{
 				path: '/logIn',
-				element: (
-					<PublicRoute>
-						<Login />
-					</PublicRoute>
-				),
+				element: <LoginUpdate />,
+			},
+			{
+				path: '/hello',
+				element: <Text />,
 			},
 		],
 	},
@@ -146,10 +152,6 @@ export const router = createBrowserRouter([
 			{
 				path: '/profile/:id',
 				element: <ProfilePage />,
-			},
-			{
-				path: '*',
-				element: <Dashboard />,
 			},
 		],
 	},

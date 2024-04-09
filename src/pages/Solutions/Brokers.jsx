@@ -8,7 +8,7 @@ import Pricing from "../../components/Pricing/Pricing";
 import BrokersTeam from "../../components/Brokers/BrokersTeam";
 const Brokers = () => {
   return (
-    <div className=" overflow-x-hidden">
+    <div id="broker" className=" overflow-x-hidden">
       <Banner
         bgImage={TruckOne}
         heading="Solutions for"
