@@ -2,9 +2,16 @@
 /* eslint-disable react/display-name */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-key */
+import Loading from '@/components/Loading';
+import GlobalFilter from '@/components/shared/TableFilter/GlobalFilter';
 import Card from '@/components/ui/Card';
 import Icon from '@/components/ui/Icon';
+import Tooltip from '@/components/ui/Tooltip';
+import useToast from '@/hooks/useToast';
+import { useGetBlogsQuery, useRemoveBlogMutation } from '@/store/api/blogs/blogsApi';
+import { dateTime } from '@/util/helpers';
 import React, { useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import {
 	useGlobalFilter,
 	usePagination,
@@ -12,218 +19,109 @@ import {
 	useSortBy,
 	useTable,
 } from 'react-table';
-
-import useToast from '@/hooks/useToast';
-import { getAllUsers } from '@/store/api/users/usersSlice';
-import fetchWrapper from '@/util/fetchWrapper';
-import { dateTime } from '@/util/helpers';
-import { Menu } from '@headlessui/react';
-import { useDispatch, useSelector } from 'react-redux';
-import Loading from '../Loading';
-import GlobalFilter from '../shared/TableFilter/GlobalFilter';
-import Dropdown from '../ui/Dropdown';
-
-const UserList = ({ title = 'User List' }) => {
-	const { errorToast, successToast } = useToast();
-	const actions = [
-		{
-			name: 'Active',
-			icon: 'heroicons-outline:check-badge',
+const COLUMNS = [
+	{
+		Header: 'Blog Title',
+		accessor: 'title',
+		Cell: row => {
+			return <span>{row?.cell?.value}</span>;
 		},
-		{
-			name: 'Deactivated',
-			icon: 'heroicons:x-mark',
+	},
+	{
+		Header: 'Category',
+		accessor: 'category',
+		Cell: row => {
+			return <span>{row?.cell?.value}</span>;
 		},
-		{
-			name: 'Suspended',
-			icon: 'heroicons-outline:exclamation-circle',
+	},
+	{
+		Header: 'Status',
+		accessor: 'status',
+		Cell: row => {
+			return <span>{row?.cell?.value}</span>;
 		},
-		{
-			name: 'Rejected',
-			icon: 'heroicons-outline:trash',
+	},
+	{
+		Header: 'Published At',
+		accessor: 'createdAt',
+		Cell: row => {
+			return <span>{dateTime(row?.cell?.value)}</span>;
 		},
-		{
-			name: 'Blocked',
-			icon: 'heroicons-outline:no-symbol',
-		},
-	];
+	},
 
-	const COLUMNS = [
-		{
-			Header: 'First Name',
-			accessor: 'firstName',
-			Cell: row => {
-				return <span>{row?.cell?.value}</span>;
-			},
-		},
-		{
-			Header: 'Last Name',
-			accessor: 'lastName',
-			Cell: row => {
-				return <span>{row?.cell?.value}</span>;
-			},
-		},
-		{
-			Header: 'Email',
-			accessor: 'email',
-			Cell: row => {
-				return (
-					<span className='lowercase underline-offset-1'>
-						<a className='text-sky-400' href={`mailto:${row?.cell?.value}`}>
-							{row?.cell?.value}
-						</a>
-					</span>
-				);
-			},
-		},
-		{
-			Header: 'Created At',
-			accessor: 'createdAt',
-			Cell: row => {
-				return <span>{dateTime(row?.cell?.value)}</span>;
-			},
-		},
-
-		{
-			Header: 'status',
-			accessor: 'userStatus',
-			Cell: row => {
-				return (
-					<span className='block w-full'>
-						<span
-							className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-								row?.cell?.value?.toLowerCase() === 'active'
-									? 'text-success-500 bg-success-500'
-									: ''
-							} 
-            ${
-							row?.cell?.value?.toLowerCase() === 'pending'
-								? 'text-warning-500 bg-warning-500'
-								: ''
-						}
-            ${
-							row?.cell?.value?.toLowerCase() === 'cancled'
-								? 'text-danger-500 bg-danger-500'
-								: ''
-						}
-
-						${
-							row?.cell?.value?.toLowerCase() === 'deactivated'
-								? 'text-white-500 bg-gray-600'
-								: ''
-						}
-
-						${
-							row?.cell?.value?.toLowerCase() === 'suspended'
-								? 'text-red-500 bg-red-600'
-								: ''
-						}
-
-						${
-							row?.cell?.value?.toLowerCase() === 'rejected'
-								? 'text-red-500 bg-red-500'
-								: ''
-						}
-
-						${
-							row?.cell?.value?.toLowerCase() === 'blocked'
-								? 'text-red-500 bg-red-700'
-								: ''
-						}
-
-            
-             `}
-						>
-							{row?.cell?.value}
-						</span>
-					</span>
-				);
-			},
-		},
-		{
-			Header: 'action',
-			accessor: 'action',
-			Cell: row => {
-				const filteredActions = actions.filter(
-					item =>
-						item.name.toLowerCase() !==
-						row?.cell?.row?.original?.userStatus?.toLowerCase()
-				);
-				return (
-					<div>
-						<Dropdown
-							classMenuItems='right-0 w-[140px] top-[110%] '
-							label={
-								<span className='text-xl text-center block w-full'>
-									<Icon icon='heroicons-outline:dots-vertical' />
-								</span>
-							}
-						>
-							<div className='divide-y divide-slate-100 dark:divide-slate-800'>
-								{filteredActions?.map((item, i) => (
-									<Menu.Item
-										key={i}
-										onClick={() =>
-											updateUserStatus(
-												row?.cell?.row?.original?._id,
-												item?.name
-											)
-										}
-									>
-										<div
-											className={`hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50 w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
-										>
-											<span className='text-base'>
-												<Icon icon={item.icon} />
-											</span>
-											<span>{item.name}</span>
-										</div>
-									</Menu.Item>
-								))}
-							</div>
-						</Dropdown>
-					</div>
-				);
-			},
-		},
-	];
-
-	const IndeterminateCheckbox = React.forwardRef(
-		({ indeterminate, ...rest }, ref) => {
-			const defaultRef = React.useRef();
-			const resolvedRef = ref || defaultRef;
-
-			React.useEffect(() => {
-				resolvedRef.current.indeterminate = indeterminate;
-			}, [resolvedRef, indeterminate]);
-
+	{
+		Header: 'Action',
+		accessor: 'action',
+		Cell: row => {
+			const id = row?.cell?.row?.original?._id
+			const [removeUser, {isSuccess}] = useRemoveBlogMutation()
+			const { successToast } = useToast();
+			useEffect(()=>{
+				if(isSuccess){
+					successToast('blog removed successfully')
+				}
+			},[isSuccess])
 			return (
-				<>
-					<input
-						type='checkbox'
-						ref={resolvedRef}
-						{...rest}
-						className='table-checkbox'
-					/>
-				</>
+				<div className='flex space-x-3 rtl:space-x-reverse'>
+					<Tooltip content='View' placement='top' arrow animation='shift-away'>
+						<button className='action-btn' type='button'>
+							<Link to={`/blogs-details/${id}`}><Icon icon='heroicons:eye' /></Link>
+						</button>
+					</Tooltip>
+					<Tooltip content='Edit' placement='top' arrow animation='shift-away'>
+					<Link to={`/edit-blog/${id}`}>
+						<button className='action-btn' type='button'>
+							<Icon icon='heroicons:pencil-square' />
+						</button>
+						</Link>
+					</Tooltip>
+					<Tooltip
+						content='Delete'
+						placement='top'
+						arrow
+						animation='shift-away'
+						theme='danger'
+					>
+						<button className='action-btn' type='button' onClick={()=> removeUser(id)}>
+							<Icon icon='heroicons:trash' />
+						</button>
+					</Tooltip>
+				</div>
 			);
-		}
-	);
+		},
+	},
+];
 
+const IndeterminateCheckbox = React.forwardRef(
+	({ indeterminate, ...rest }, ref) => {
+		const defaultRef = React.useRef();
+		const resolvedRef = ref || defaultRef;
+
+		React.useEffect(() => {
+			resolvedRef.current.indeterminate = indeterminate;
+		}, [resolvedRef, indeterminate]);
+
+		return (
+			<>
+				<input
+					type='checkbox'
+					ref={resolvedRef}
+					{...rest}
+					className='table-checkbox'
+				/>
+			</>
+		);
+	}
+);
+
+const BlogList = ({ title = 'Blogs List' }) => {
 	const columns = useMemo(() => COLUMNS, []);
-	const dispatch = useDispatch();
-	const { users, loading } = useSelector(state => state.users);
-	console.log(users)
-	const { user_id } = useSelector(state => state.auth);
-
-	useEffect(() => {
-		dispatch(getAllUsers());
-	}, [dispatch]);
-
+	const { data, isLoading } = useGetBlogsQuery()
+	const blogs = data?.data
 	const tableInstance = useTable(
 		{
 			columns,
-			data: users,
+		    data:blogs,
 		},
 
 		useGlobalFilter,
@@ -250,21 +148,6 @@ const UserList = ({ title = 'User List' }) => {
 			]);
 		}
 	);
-
-	const updateUserStatus = async (id, status) => {
-		console.log('updateUserStatus == id, status:', id, status);
-		try {
-			const response = await fetchWrapper.put(`user/${id}`, {
-				userStatus: status,
-			});
-			console.log('updateUserStatus == response:', response);
-			if (response.status === 200) {
-				dispatch(getAllUsers());
-			}
-		} catch (error) {
-			errorToast(error);
-		}
-	};
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -286,7 +169,7 @@ const UserList = ({ title = 'User List' }) => {
 
 	const { globalFilter, pageIndex, pageSize } = state;
 
-	if (loading) {
+	if (isLoading) {
 		return <Loading />;
 	}
 
@@ -442,4 +325,4 @@ const UserList = ({ title = 'User List' }) => {
 	);
 };
 
-export default UserList;
+export default BlogList;
