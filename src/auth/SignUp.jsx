@@ -1,78 +1,80 @@
-/* eslint-disable react/jsx-key */
-import { useState } from "react";
-import { objectToArray, transferObj } from "../util/objMaping/objectMap";
-import logo from "./../assets/home/logo.png";
-import { formFiled } from "./form";
-import { useNavigate } from "react-router-dom";
-import { useRegisterUserMutation } from "@/store/api/auth/authApiSlice";
+import { car } from "@/assets";
 import Textinput from "@/components/ui/Textinput";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import React, { useState } from "react";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import Select from "@/components/ui/Select";
-import useToast from "@/hooks/useToast";
 import Button from "@/components/ui/Button";
-
+import {useRegisterUserMutation} from '@/store/api/auth/authApiSlice'
 const schema = yup.object({
-  firstName: yup.string().label("First Name").required(),
-  lastName: yup.string().label("Last Name").required(),
-  email: yup.string().email("invalid email").required("email is required"),
-  phoneNumber: yup.string().required(),
-  password: yup.string().required(),
-  confirmPassword: yup
-    .string()
-
-    .oneOf([yup.ref("password"), null], "Passwords must match!"),
-  userType: yup
-    .string()
-    .oneOf(["agent", "carrier", "broker", "shipper"])
-    .required("select user type"),
-});
+    firstName: yup.string().label("First Name").required(),
+    lastName: yup.string().label("Last Name").required(),
+    email: yup.string().email("invalid email").required("email is required"),
+    phoneNumber: yup.string().required(),
+    password: yup.string().required(),
+    confirmPassword: yup
+      .string()
+  
+      .oneOf([yup.ref("password"), null], "Passwords must match!"),
+    userType: yup
+      .string()
+      .oneOf(["agent", "carrier", "broker", "shipper"])
+      .required("select user type"),
+      agent_code: yup.string().required('Enter code')
+  }).required();
 
 function SignUp() {
-  const [agent, setAgent] = useState(false);
-  const { errorToast } = useToast();
-  const [SignUp, { data, isLoading, error: responseError }] =
-    useRegisterUserMutation();
   const navigate = useNavigate();
-
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({
-    resolver: yupResolver(schema),
-    mode: "all",
-  });
-
-  const onSubmit = async (data) => {
-    try {
-      await SignUp(data).unwrap();
-      navigate("/logIn");
-    } catch (error) {
-      errorToast(error);
-    }
-  };
-
+    const [agent,setAgent] = useState(false)
+    const [signUp,{isLoading}] = useRegisterUserMutation()
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+      } = useForm({
+        resolver: yupResolver(schema),
+        mode: "all",
+      });
+    
+      const onSubmit = async (data) => {
+        try {
+          await signUp(data).unwrap();
+          navigate("/logIn");
+        } catch (error) {
+          errorToast(error);
+        }
+      };
   return (
-    <div className="">
-      <div className=" h-screen w-full bg-[url('./../../src/assets/home/truck.jpg')] bg-cover bg-no-repeat flex justify-center items-center  relative"></div>
-      <div className="h-[110vh] bg-black opacity-50 absolute inset-0"></div>
-      <div className=" w-full absolute inset-0">
-        <div className="mt-12 h-full w-full flex justify-center items-center">
-          <form
-            className="bg-gradient-to-tl from-[#afc0ee] to-[#6d5cf0] rounded-xl  min-h-96 w-96 lg:w-[420px] shadow-xl mt-16 "
+    <div className="min-h-[95vh] sm:h-[9vh] bg-gradient-to-tr to-[#ede8e8] from-[#f4c5c5]">
+      <div className="flex justify-center items-center h-full">
+        <div className="bg-gradient-to-tl from-[#b1c2f1] to-[#6d6d6f] min-h-5/6 w-5/6 grid xl:grid-cols-2 md:grid-cols-3 rounded-xl shadow-2xl ">
+            {/* welcome */}
+            <div className="hidden lg:block xl:col-span-1 rounded-xl">
+               
+                <div className="h-full w-full relative rounded-xl"> <img src={car} alt="" className="h-full w-full object-fill rounded-xl" />
+                <div className="bg-black-500 inset-0 absolute opacity-25">
+                </div>
+                <div className=" inset-0 absolute rounded-xl">
+                  <div className="text-white  text-center xl:justify-center xl:items-center xl:flex xl:flex-col h-full w-full">
+                    <div className="text-6xl font-bold">welcome to GLS</div>
+                    <div className="font-medium text-base mt-24">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint atque ullam, ratione tempora veritatis eligendi deserunt labore ut distinctio tenetur exercitationem illum quasi alias eum. </div>
+
+                  </div>
+                 
+                </div>
+                </div>
+            </div>
+            {/* form */}
+            <div className="flex justify-center items-center md:col-span-3 lg:col-span-2 xl:col-span-1">
+            <form
+            className=""
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className="mb-12 grid justify-center">
-              <img
-                src={logo}
-                className="h-12 w-12 m-4 inline-block mx-auto"
-                alt=""
-              />
-              <p className="flex justify-center text-xl font-bold text-black-500">
-                welcome to GLS
-              </p>
+            <div className="mb-12 grid justify-center ">
+              <div className="text-black-500 justify-center text-center font-bold text-2xl lg:hidden">welcome to GLS</div>
+            
               <div className="flex gap-3 items-center py-2">
                 <input
                   type="checkbox"
@@ -86,7 +88,8 @@ function SignUp() {
                 </label>
               </div>
 
-              <Textinput
+             <div className="grid sm:grid-cols-2 gap-5 grid-cols-1 ">
+             <Textinput
                 label="First Name"
                 type="text"
                 name="firstName"
@@ -108,7 +111,9 @@ function SignUp() {
                 register={register}
                 className="w-[15rem]"
               />
-              <Textinput
+             </div>
+             <div className="grid sm:grid-cols-2 gap-5">
+             <Textinput
                 label="Email"
                 type="email"
                 name="email"
@@ -129,7 +134,9 @@ function SignUp() {
                 register={register}
                 className="w-[15rem]"
               />
-              <Textinput
+             </div>
+             <div className="grid sm:grid-cols-2 gap-5">
+             <Textinput
                 label="Password"
                 placeholder="Password"
                 type="password"
@@ -149,8 +156,9 @@ function SignUp() {
                 register={register}
                 className="w-[15rem]"
               />
+             </div>
               {agent ? (
-                <div className="flex gap-3 justify-between">
+                <div className="sm:grid sm:grid-cols-2 gap-5 flex grid-cols-1">
                   <Select
                     label="User type"
                     defaultValue=""
@@ -161,15 +169,15 @@ function SignUp() {
                     //placeholder="Select User type"
                   />
                   <Textinput
-                    label="Code"
-                    type="number"
-                    name="code"
+                    label="Agent code"
+                    type="text"
+                    name="agent_code"
                     //className="right-0"
                     autoComplete="code"
-                    error={errors.code}
+                    error={errors.agent_code}
                     placeholder="Code"
                     register={register}
-                    className="w-28"
+                    className="w-24 sm:block"
                   />
                 </div>
               ) : (
@@ -215,6 +223,7 @@ function SignUp() {
               </div>
             </div>
           </form>
+            </div>
         </div>
       </div>
     </div>

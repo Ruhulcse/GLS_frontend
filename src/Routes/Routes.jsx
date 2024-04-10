@@ -20,9 +20,6 @@ import Guide from './../pages/guide/Guide';
 
 //import PrivateRoute from "@/authGard/PrivateRoute";
 // import Text from '@/components/Text';
-
-import LoginUpdate from '@/auth/LoginUpdate';
-import SignUpUpdate from '@/auth/SignUpUpdate';
 import PrivateRoute from '@/authGard/PrivateRoute';
 import PublicRoute from '@/authGard/PublicRoute';
 import Insurance from '@/components/Insurance/Insurance';
@@ -31,6 +28,8 @@ import ProductFinder from '@/pages/Product/ProductFinder';
 import ProfilePage from '@/pages/admin/profile';
 import ShipmentViewPage from '@/pages/admin/shipments/shipment-view';
 import UserListPage from '@/pages/admin/users/user-list';
+import SignUp from '@/auth/SignUp';
+import Login from '@/auth/Login';
 
 const ShipmentFormPage = lazy(() =>
 	import('@/pages/admin/shipments/shipment-form')
