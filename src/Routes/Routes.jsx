@@ -121,7 +121,7 @@ export const router = createBrowserRouter([
 				path: '/signUp',
 				element: (
 					<PublicRoute>
-						<SignUpUpdate />
+						<SignUp />
 					</PublicRoute>
 				),
 			},
@@ -129,7 +129,7 @@ export const router = createBrowserRouter([
 				path: '/logIn',
 				element: (
 					<PublicRoute>
-						<LoginUpdate />
+						<Login />
 					</PublicRoute>
 				),
 			},
