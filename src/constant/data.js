@@ -26,6 +26,22 @@ export const menuItems = [
     ],
   },
   {
+    title: "Blogs",
+    icon: "heroicons-outline:truck",
+    link: "#",
+    isHide: true,
+    child: [
+      {
+        childtitle: "Blogs List",
+        childlink: "blogs",
+      },
+      {
+        childtitle: "Create Blog",
+        childlink: "create-blog",
+      },
+    ],
+  },
+  {
     title: "Users",
     icon: "heroicons-outline:users",
     link: "users",
@@ -542,10 +558,14 @@ export const bottomFilterLists = [
   },
 ];
 
-import meetsImage1 from "@/assets/images/svg/sk.svg";
-import meetsImage2 from "@/assets/images/svg/path.svg";
+import file1Img from "@/assets/images/icon/file-1.svg";
+import file2Img from "@/assets/images/icon/pdf-1.svg";
+import file4Img from "@/assets/images/icon/pdf-2.svg";
+import file5Img from "@/assets/images/icon/scr-1.svg";
+import file3Img from "@/assets/images/icon/zip-1.svg";
 import meetsImage3 from "@/assets/images/svg/dc.svg";
-import meetsImage4 from "@/assets/images/svg/sk.svg";
+import meetsImage2 from "@/assets/images/svg/path.svg";
+import { default as meetsImage1, default as meetsImage4 } from "@/assets/images/svg/sk.svg";
 
 export const meets = [
   {
@@ -573,11 +593,6 @@ export const meets = [
     meet: "Zoom meeting",
   },
 ];
-import file1Img from "@/assets/images/icon/file-1.svg";
-import file2Img from "@/assets/images/icon/pdf-1.svg";
-import file3Img from "@/assets/images/icon/zip-1.svg";
-import file4Img from "@/assets/images/icon/pdf-2.svg";
-import file5Img from "@/assets/images/icon/scr-1.svg";
 
 export const files = [
   {
@@ -609,9 +624,9 @@ export const files = [
 
 // ecommarce data
 
-import blackJumper from "@/assets/images/e-commerce/product-card/classical-black-tshirt.png";
 import blackTshirt from "@/assets/images/e-commerce/product-card/black-t-shirt.png";
 import checkShirt from "@/assets/images/e-commerce/product-card/check-shirt.png";
+import blackJumper from "@/assets/images/e-commerce/product-card/classical-black-tshirt.png";
 import grayJumper from "@/assets/images/e-commerce/product-card/gray-jumper.png";
 import grayTshirt from "@/assets/images/e-commerce/product-card/gray-t-shirt.png";
 import pinkBlazer from "@/assets/images/e-commerce/product-card/pink-blazer.png";

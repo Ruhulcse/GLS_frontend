@@ -1,4 +1,8 @@
+import EditBlog from '@/components/Blogs/EditBlog';
 import ScrollTop from '@/components/ScrollTop/ScrollTop';
+import Blogs from '@/pages/admin/Blogs/Blogs-list';
+import CreateBlog from '@/pages/admin/Blogs/Create-Blog';
+import DetailsBlog from '@/pages/admin/Blogs/DetailsBlog';
 import ShipmentList from '@/pages/admin/shipments/shipment-list';
 import CardDetails from '@/pages/guide/subPage/CardDetails';
 import { lazy } from 'react';
@@ -20,9 +24,8 @@ import Guide from './../pages/guide/Guide';
 
 //import PrivateRoute from "@/authGard/PrivateRoute";
 // import Text from '@/components/Text';
-
-import LoginUpdate from '@/auth/LoginUpdate';
-import SignUpUpdate from '@/auth/SignUpUpdate';
+import Login from '@/auth/Login';
+import SignUp from '@/auth/SignUp';
 import PrivateRoute from '@/authGard/PrivateRoute';
 import Insurance from '@/components/Insurance/Insurance';
 import Load from '@/pages/Product/Load';
@@ -114,11 +117,11 @@ export const router = createBrowserRouter([
 			},
 			{
 				path: '/signUp',
-				element: <SignUpUpdate />,
+				element: <SignUp/>,
 			},
 			{
 				path: '/logIn',
-				element: <LoginUpdate />,
+				element: <Login />,
 			},
 			{
 				path: '/hello',
@@ -144,6 +147,22 @@ export const router = createBrowserRouter([
 			{
 				path: '/create-shipment',
 				element: <ShipmentFormPage />,
+			},
+			{
+				path: '/blogs',
+				element: <Blogs/>,
+			},
+			{
+				path: '/blogs-details/:id',
+				element: <DetailsBlog/>,
+			},
+			{
+				path: '/edit-blog/:id',
+				element: <EditBlog/>,
+			},
+			{
+				path: '/create-blog',
+				element: <CreateBlog/>,
 			},
 			{
 				path: '/users',
