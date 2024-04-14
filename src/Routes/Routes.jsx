@@ -27,10 +27,12 @@ import Guide from './../pages/guide/Guide';
 import Login from '@/auth/Login';
 import SignUp from '@/auth/SignUp';
 import PrivateRoute from '@/authGard/PrivateRoute';
+import PublicRoute from '@/authGard/PublicRoute';
 import Insurance from '@/components/Insurance/Insurance';
 import Load from '@/pages/Product/Load';
 import ProductFinder from '@/pages/Product/ProductFinder';
 import ProfilePage from '@/pages/admin/profile';
+import ShipmentViewPage from '@/pages/admin/shipments/shipment-view';
 import UserListPage from '@/pages/admin/users/user-list';
 
 const ShipmentFormPage = lazy(() =>
@@ -117,16 +119,24 @@ export const router = createBrowserRouter([
 			},
 			{
 				path: '/signUp',
-				element: <SignUp/>,
+				element: (
+					<PublicRoute>
+						<SignUp />
+					</PublicRoute>
+				),
 			},
 			{
 				path: '/logIn',
-				element: <Login />,
+				element: (
+					<PublicRoute>
+						<Login />
+					</PublicRoute>
+				),
 			},
-			{
-				path: '/hello',
-				element: <Text />,
-			},
+			// {
+			// 	path: '/hello',
+			// 	element: <Text />,
+			// },
 		],
 	},
 	{
@@ -171,6 +181,14 @@ export const router = createBrowserRouter([
 			{
 				path: '/profile/:id',
 				element: <ProfilePage />,
+			},
+			{
+				path: '/shipment/:id',
+				element: <ShipmentViewPage />,
+			},
+			{
+				path: '/shipment/edit/:id',
+				element: <ShipmentFormPage />,
 			},
 		],
 	},

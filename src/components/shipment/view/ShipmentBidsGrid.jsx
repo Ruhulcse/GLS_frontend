@@ -4,8 +4,7 @@
 /* eslint-disable react/jsx-key */
 import Card from '@/components/ui/Card';
 import Icon from '@/components/ui/Icon';
-import Tooltip from '@/components/ui/Tooltip';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
 	useGlobalFilter,
 	usePagination,
@@ -14,160 +13,78 @@ import {
 	useTable,
 } from 'react-table';
 
-import { advancedTable } from '@/constant/table-data';
-import { getAllShipments } from '@/store/api/shipments/shipmentsSlice';
-import { dateTime, moneyFormatter } from '@/util/helpers';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { humanDate, moneyFormatter } from '@/util/helpers';
+import { useSelector } from 'react-redux';
 import GlobalFilter from '../../shared/TableFilter/GlobalFilter';
 
 const COLUMNS = [
 	{
-		Header: 'Type',
-		accessor: 'cargoType',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
-		},
-	},
-	{
-		Header: 'Number of Loads',
-		accessor: 'numberOfLoads',
-		Cell: row => {
-			return <span>#{row?.cell?.value}</span>;
-		},
-	},
-
-	// {
-	// 	Header: 'customer',
-	// 	accessor: 'customer',
-	// 	Cell: row => {
-	// 		return (
-	// 			<div>
-	// 				<span className='inline-flex items-center'>
-	// 					<span className='w-7 h-7 rounded-full ltr:mr-3 rtl:ml-3 flex-none bg-slate-600'>
-	// 						<img
-	// 							src={row?.cell?.value.image}
-	// 							alt=''
-	// 							className='object-cover w-full h-full rounded-full'
-	// 						/>
-	// 					</span>
-	// 					<span className='text-sm text-slate-600 dark:text-slate-300 capitalize'>
-	// 						{row?.cell?.value.name}
-	// 					</span>
-	// 				</span>
-	// 			</div>
-	// 		);
-	// 	},
-	// },
-
-	{
-		Header: 'Origin',
-		accessor: 'origin',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
-		},
-	},
-	{
-		Header: 'Destination',
-		accessor: 'destination',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
-		},
-	},
-	{
-		Header: 'Weight (in kg)',
-		accessor: 'weightKG',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
-		},
-	},
-	{
-		Header: 'Offering Price',
-		accessor: 'offeringPrice',
+		Header: 'Bid Amount',
+		accessor: 'bidAmount',
 		Cell: row => {
 			return <span>{moneyFormatter(row?.cell?.value, 'USD')}</span>;
 		},
 	},
 	{
-		Header: 'Delivery Date',
-		accessor: 'deliveryDate',
+		Header: 'Proposed Timeline',
+		accessor: 'proposedTimeline',
 		Cell: row => {
-			return <span>{dateTime(row?.cell?.value)}</span>;
+			return <span>{humanDate(row?.cell?.value)}</span>;
 		},
 	},
 	{
-		Header: 'PickUp Date',
-		accessor: 'pickUpDate',
-		Cell: row => {
-			return <span>{dateTime(row?.cell?.value)}</span>;
-		},
-	},
-	{
-		Header: 'status',
+		Header: 'Status',
 		accessor: 'status',
 		Cell: row => {
 			return (
 				<span className='block w-full'>
 					<span
 						className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-							row?.cell?.value.toLowerCase() === 'posted'
+							row?.cell?.value?.toLowerCase() === 'active'
 								? 'text-success-500 bg-success-500'
 								: ''
 						} 
-            ${
-							row?.cell?.value === 'due'
-								? 'text-warning-500 bg-warning-500'
-								: ''
-						}
-            ${
-							row?.cell?.value === 'cancled'
-								? 'text-danger-500 bg-danger-500'
-								: ''
-						}
-            
-             `}
+${
+	row?.cell?.value?.toLowerCase() === 'pending'
+		? 'text-warning-500 bg-warning-500'
+		: ''
+}
+${
+	row?.cell?.value?.toLowerCase() === 'cancled'
+		? 'text-danger-500 bg-danger-500'
+		: ''
+}
+
+			${
+				row?.cell?.value?.toLowerCase() === 'deactivated'
+					? 'text-white-500 bg-gray-600'
+					: ''
+			}
+
+			${
+				row?.cell?.value?.toLowerCase() === 'suspended'
+					? 'text-red-500 bg-red-600'
+					: ''
+			}
+
+			${
+				row?.cell?.value?.toLowerCase() === 'rejected'
+					? 'text-red-500 bg-red-500'
+					: ''
+			}
+
+			${
+				row?.cell?.value?.toLowerCase() === 'blocked'
+					? 'text-red-500 bg-red-700'
+					: ''
+			}
+
+
+ `}
 					>
 						{row?.cell?.value}
 					</span>
 				</span>
-			);
-		},
-	},
-	{
-		Header: 'action',
-		accessor: 'action',
-		Cell: row => {
-			console.log('row:', row.cell.row.original);
-			return (
-				<div className='flex space-x-3 rtl:space-x-reverse'>
-					<Tooltip content='View' placement='top' arrow animation='shift-away'>
-						<Link to={`/shipment/${row.cell.row.original?._id}`}>
-							<button className='action-btn' type='button'>
-								<Icon icon='heroicons:eye' />
-							</button>
-						</Link>
-					</Tooltip>
-					<Tooltip content='Edit' placement='top' arrow animation='shift-away'>
-						{/* <button className='action-btn' type='button'> */}
-						<Link to={`/shipment/edit/${row.cell.row.original?._id}`}>
-							<button className='action-btn' type='button'>
-								<Icon icon='heroicons:pencil-square' />
-							</button>
-						</Link>
-						{/* </button> */}
-					</Tooltip>
-					<Tooltip
-						content='Delete'
-						placement='top'
-						arrow
-						animation='shift-away'
-						theme='danger'
-					>
-						<button className='action-btn' type='button'>
-							<Icon icon='heroicons:trash' />
-						</button>
-					</Tooltip>
-				</div>
 			);
 		},
 	},
@@ -195,20 +112,14 @@ const IndeterminateCheckbox = React.forwardRef(
 	}
 );
 
-const ShipmentListGrid = ({ title = 'Shipment List' }) => {
+const ShipmentBidsGrid = ({ title = 'Shipment Bids' }) => {
 	const columns = useMemo(() => COLUMNS, []);
-	const data = useMemo(() => advancedTable, []);
-	const dispatch = useDispatch();
-	const { shipments, loading } = useSelector(state => state.shipments);
-
-	useEffect(() => {
-		dispatch(getAllShipments());
-	}, [dispatch]);
+	const { bids } = useSelector(state => state.shipment.shipment);
 
 	const tableInstance = useTable(
 		{
 			columns,
-			data: shipments,
+			data: bids,
 		},
 
 		useGlobalFilter,
@@ -407,4 +318,4 @@ const ShipmentListGrid = ({ title = 'Shipment List' }) => {
 	);
 };
 
-export default ShipmentListGrid;
+export default ShipmentBidsGrid;
