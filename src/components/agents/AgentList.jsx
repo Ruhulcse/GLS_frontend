@@ -14,6 +14,7 @@ import {
 } from 'react-table';
 
 import useToast from '@/hooks/useToast';
+import { getAllAgents } from '@/store/api/agents/agentsSlice';
 import { getAllUsers } from '@/store/api/users/usersSlice';
 import fetchWrapper from '@/util/fetchWrapper';
 import { dateTime } from '@/util/helpers';
@@ -23,7 +24,7 @@ import Loading from '../Loading';
 import GlobalFilter from '../shared/TableFilter/GlobalFilter';
 import Dropdown from '../ui/Dropdown';
 
-const UserList = ({ title = 'User List' }) => {
+const AgentList = ({ title = 'Agent List' }) => {
 	const { errorToast, successToast } = useToast();
 	const actions = [
 		{
@@ -157,41 +158,39 @@ const UserList = ({ title = 'User List' }) => {
 						row?.cell?.row?.original?.userStatus?.toLowerCase()
 				);
 				return (
-					row.cell?.row?.original?._id !== user_id && (
-						<div>
-							<Dropdown
-								classMenuItems='right-0 w-[140px] top-[110%] '
-								label={
-									<span className='text-xl text-center block w-full'>
-										<Icon icon='heroicons-outline:dots-vertical' />
-									</span>
-								}
-							>
-								<div className='divide-y divide-slate-100 dark:divide-slate-800'>
-									{filteredActions?.map((item, i) => (
-										<Menu.Item
-											key={i}
-											onClick={() =>
-												updateUserStatus(
-													row?.cell?.row?.original?._id,
-													item?.name
-												)
-											}
+					<div>
+						<Dropdown
+							classMenuItems='right-0 w-[140px] top-[110%] '
+							label={
+								<span className='text-xl text-center block w-full'>
+									<Icon icon='heroicons-outline:dots-vertical' />
+								</span>
+							}
+						>
+							<div className='divide-y divide-slate-100 dark:divide-slate-800'>
+								{filteredActions?.map((item, i) => (
+									<Menu.Item
+										key={i}
+										onClick={() =>
+											updateUserStatus(
+												row?.cell?.row?.original?._id,
+												item?.name
+											)
+										}
+									>
+										<div
+											className={`hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50 w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
 										>
-											<div
-												className={`hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50 w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
-											>
-												<span className='text-base'>
-													<Icon icon={item.icon} />
-												</span>
-												<span>{item.name}</span>
-											</div>
-										</Menu.Item>
-									))}
-								</div>
-							</Dropdown>
-						</div>
-					)
+											<span className='text-base'>
+												<Icon icon={item.icon} />
+											</span>
+											<span>{item.name}</span>
+										</div>
+									</Menu.Item>
+								))}
+							</div>
+						</Dropdown>
+					</div>
 				);
 			},
 		},
@@ -219,19 +218,20 @@ const UserList = ({ title = 'User List' }) => {
 		}
 	);
 
-	const { users, loading } = useSelector(state => state.users);
-	const { user_id } = useSelector(state => state.auth);
 	const columns = useMemo(() => COLUMNS, []);
 	const dispatch = useDispatch();
+	const { agents, loading } = useSelector(state => state.agents);
+	console.log('ágents', agents);
+	const { user_id } = useSelector(state => state.auth);
 
 	useEffect(() => {
-		dispatch(getAllUsers());
+		dispatch(getAllAgents());
 	}, [dispatch]);
 
 	const tableInstance = useTable(
 		{
 			columns,
-			data: users,
+			data: agents,
 		},
 
 		useGlobalFilter,
@@ -260,13 +260,14 @@ const UserList = ({ title = 'User List' }) => {
 	);
 
 	const updateUserStatus = async (id, status) => {
+		console.log('updateUserStatus == id, status:', id, status);
 		try {
 			const response = await fetchWrapper.put(`user/${id}`, {
 				userStatus: status,
 			});
-
+			console.log('updateUserStatus == response:', response);
 			if (response.status === 200) {
-				dispatch(getAllUsers());
+				dispatch(getAllAgents());
 			}
 		} catch (error) {
 			errorToast(error);
@@ -449,4 +450,4 @@ const UserList = ({ title = 'User List' }) => {
 	);
 };
 
-export default UserList;
+export default AgentList;

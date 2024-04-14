@@ -14,19 +14,19 @@ import * as yup from 'yup';
 
 const FormValidationSchema = yup
 	.object({
-		title: yup.string().required(),
 		origin: yup.string().required(),
 		destination: yup.string().required(),
-		duration: yup.string().required(),
 		cargoType: yup.string().required(),
 		weightKG: yup.string().required(),
 		offeringPrice: yup.string().required(),
-		numberOfLoads: yup.string().required(),
-		length: yup.string().required(),
-		width: yup.string().required(),
-		deliveryDate: yup.string().required(),
-		pickUpDate: yup.string().required(),
-		height: yup.string().required(),
+		numberOfLoads: yup.number().required(),
+		dimensions: yup.object().shape({
+			length: yup.number().required(),
+			width: yup.number().required(),
+			height: yup.number().required(),
+		}),
+		deliveryDate: yup.date().required(),
+		pickUpDate: yup.date().required(),
 	})
 	.required();
 
@@ -34,7 +34,7 @@ const ShipmentForm = () => {
 	const { id } = useParams();
 	const { shipment } = useSelector(state => state.shipment);
 	const dispatch = useDispatch();
-	const { errorToast } = useToast();
+	const { errorToast, successToast } = useToast();
 	const navigate = useNavigate();
 	const cargoOptions = [
 		{
@@ -67,22 +67,59 @@ const ShipmentForm = () => {
 		control,
 		formState: { errors },
 		handleSubmit,
+		reset,
 	} = useForm({
 		resolver: yupResolver(FormValidationSchema),
 		mode: 'all',
+		// reValidateMode: 'onChange',
 	});
 
 	useEffect(() => {
-		id && dispatch(getShipment({ id }));
+		if (id) {
+			dispatch(getShipment({ id }));
+		}
 	}, [id, dispatch]);
 
+	useEffect(() => {
+		if (id && shipment) {
+			reset(prev => ({
+				...prev,
+				...shipment,
+				length: shipment?.dimensions?.length,
+				width: shipment?.dimensions?.width,
+				height: shipment?.dimensions?.height,
+			}));
+		}
+	}, [id, reset, shipment]);
+
 	const onSubmit = async data => {
+		if (id) {
+			updateData(data);
+		} else {
+			storeData(data);
+		}
+	};
+
+	const storeData = async data => {
 		try {
 			const response = await fetchWrapper.post(`shipments`, data);
-
-			navigate('/shipments');
+			if (response) {
+				successToast('Shipment saved successfully!');
+				navigate('/shipments');
+			}
 		} catch (error) {
-			errorToast(error);
+			errorToast(error.message);
+		}
+	};
+	const updateData = async data => {
+		try {
+			const response = await fetchWrapper.put(`shipments/${id}`, data);
+			if (response) {
+				successToast('Update Success!');
+				navigate('/shipments');
+			}
+		} catch (error) {
+			errorToast(error.message);
 		}
 	};
 
@@ -93,87 +130,136 @@ const ShipmentForm = () => {
 				className='lg:grid-cols-3 grid gap-5 grid-cols-1 '
 			>
 				<Select
-					label='Cargo Type'
+					label={
+						<div>
+							Cargo Type <span className='text-red-500'>*</span>
+						</div>
+					}
 					type='text'
 					// placeholder='cargoType'
+					// defaultValue={shipment.cargoType}
 					name='cargoType'
 					register={register}
 					error={errors.cargoType}
 					options={cargoOptions}
 				/>
 				<Textinput
-					label='Weight (in KG)'
+					label={
+						<div>
+							Weight (in KG) <span className='text-red-500'>*</span>
+						</div>
+					}
 					type='number'
 					placeholder='Weight (in KG)'
 					name='weightKG'
+					// defaultValue={shipment.weightKG}
 					register={register}
 					error={errors.weightKG}
 				/>
 				<Textinput
-					label='Offering Price'
+					label={
+						<div>
+							Offering Price (USD) <span className='text-red-500'>*</span>
+						</div>
+					}
 					type='number'
 					placeholder='Offering Price'
 					name='offeringPrice'
+					// defaultValue={shipment.offeringPrice}
 					register={register}
 					error={errors.offeringPrice}
 				/>
 
 				<Textinput
-					label='Origin'
+					label={
+						<div>
+							Origin <span className='text-red-500'>*</span>
+						</div>
+					}
 					type='text'
 					placeholder='Origin'
 					name='origin'
+					// defaultValue={shipment.origin}
 					register={register}
 					error={errors.origin}
 				/>
 
 				<Textinput
-					label='Destination'
+					label={
+						<div>
+							Destination <span className='text-red-500'>*</span>
+						</div>
+					}
 					type='text'
 					placeholder='Destination'
 					name='destination'
+					// defaultValue={shipment.destination}
 					register={register}
 					error={errors.destination}
 				/>
 
 				<Textinput
-					label='Number of Loads'
+					label={
+						<div>
+							Number of Loads <span className='text-red-500'>*</span>
+						</div>
+					}
 					type='number'
 					placeholder='Number of Loads'
 					name='numberOfLoads'
+					// defaultValue={shipment.numberOfLoads}
 					register={register}
 					error={errors.numberOfLoads}
 				/>
 
 				<Textinput
-					label='Length'
+					label={
+						<div>
+							Length <span className='text-red-500'>*</span>
+						</div>
+					}
 					type='number'
 					placeholder='Length'
-					name='length'
+					name='dimensions.length'
+					// defaultValue={shipment?.dimensions?.length}
 					register={register}
-					error={errors.length}
+					error={errors?.dimensions?.length}
 				/>
 				<Textinput
-					label='height'
+					label={
+						<div>
+							Height <span className='text-red-500'>*</span>
+						</div>
+					}
 					type='number'
-					placeholder='height'
-					name='height'
+					placeholder='Height'
+					name='dimensions.height'
+					// defaultValue={shipment?.dimensions?.height}
 					register={register}
-					error={errors.height}
+					error={errors?.dimensions?.height}
 				/>
 				<Textinput
-					label='width'
+					label={
+						<div>
+							Width <span className='text-red-500'>*</span>
+						</div>
+					}
 					type='number'
-					placeholder='length'
-					name='width'
+					placeholder='Width'
+					name='dimensions.width'
+					// defaultValue={shipment?.dimensions?.width}
 					register={register}
-					error={errors.width}
+					error={errors?.dimensions?.width}
 				/>
 
 				<FormGroup
-					label='Pickup Date'
+					label={
+						<div>
+							Pickup Date <span className='text-red-500'>*</span>
+						</div>
+					}
 					id='default-picker'
-					error={errors.startDate}
+					error={errors.pickUpDate}
 				>
 					<Controller
 						name='pickUpDate'
@@ -183,7 +269,7 @@ const ShipmentForm = () => {
 								className='form-control py-2'
 								id='hf-picker'
 								placeholder='Pickup Date'
-								// value={user?.dateOfBirth}
+								value={id && shipment?.pickUpDate}
 								onChange={date => {
 									field.onChange(date);
 								}}
@@ -198,9 +284,13 @@ const ShipmentForm = () => {
 				</FormGroup>
 
 				<FormGroup
-					label='delivery Date'
+					label={
+						<div>
+							Delivery Date <span className='text-red-500'>*</span>
+						</div>
+					}
 					id='default-picker'
-					error={errors.startDate}
+					error={errors.deliveryDate}
 				>
 					<Controller
 						name='deliveryDate'
@@ -209,6 +299,7 @@ const ShipmentForm = () => {
 							<Flatpickr
 								className='form-control py-2'
 								id='hf-picker'
+								value={id && shipment?.deliveryDate}
 								placeholder='Delivery Date'
 								onChange={date => {
 									field.onChange(date);
@@ -225,7 +316,7 @@ const ShipmentForm = () => {
 
 				<div className='lg:col-span-3 col-span-1'>
 					<div className='ltr:text-right rtl:text-left'>
-						<button type='submit' className='btn btn-dark  text-center'>
+						<button type='submit' className='btn  text-center'>
 							{id ? 'Update' : 'Submit'}
 						</button>
 					</div>

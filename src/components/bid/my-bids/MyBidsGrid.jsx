@@ -13,17 +13,17 @@ import {
 	useTable,
 } from 'react-table';
 
+import Loading from '@/components/Loading';
+import GlobalFilter from '@/components/shared/TableFilter/GlobalFilter';
+import Dropdown from '@/components/ui/Dropdown';
 import useToast from '@/hooks/useToast';
-import { getAllUsers } from '@/store/api/users/usersSlice';
-import fetchWrapper from '@/util/fetchWrapper';
-import { dateTime } from '@/util/helpers';
+import { getMyBids } from '@/store/api/myBids/myBidsSlice';
+import { dateTime, moneyFormatter } from '@/util/helpers';
 import { Menu } from '@headlessui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import Loading from '../Loading';
-import GlobalFilter from '../shared/TableFilter/GlobalFilter';
-import Dropdown from '../ui/Dropdown';
+import { Link } from 'react-router-dom';
 
-const UserList = ({ title = 'User List' }) => {
+const MyBidsGrid = ({ title = 'My Bids' }) => {
 	const { errorToast, successToast } = useToast();
 	const actions = [
 		{
@@ -50,50 +50,57 @@ const UserList = ({ title = 'User List' }) => {
 
 	const COLUMNS = [
 		{
-			Header: 'First Name',
-			accessor: 'firstName',
-			Cell: row => {
-				return <span>{row?.cell?.value}</span>;
-			},
-		},
-		{
-			Header: 'Last Name',
-			accessor: 'lastName',
-			Cell: row => {
-				return <span>{row?.cell?.value}</span>;
-			},
-		},
-		{
-			Header: 'Email',
-			accessor: 'email',
+			Header: 'Shipment Id',
+			accessor: 'shipmentId',
 			Cell: row => {
 				return (
-					<span className='lowercase underline-offset-1'>
-						<a className='text-sky-400' href={`mailto:${row?.cell?.value}`}>
+					<span className='text-blue-500 underline'>
+						<Link to={`/shipment/${row?.cell?.value}`} target='_blank'>
 							{row?.cell?.value}
-						</a>
+						</Link>
 					</span>
 				);
 			},
 		},
 		{
-			Header: 'Created At',
-			accessor: 'createdAt',
+			Header: 'Origin',
+			accessor: 'origin',
+			Cell: row => {
+				return <span>{row?.cell?.value}</span>;
+			},
+		},
+		{
+			Header: 'Destination',
+			accessor: 'destination',
+			Cell: row => {
+				return (
+					<span className='lowercase underline-offset-1'>
+						{row?.cell?.value}
+					</span>
+				);
+			},
+		},
+		{
+			Header: 'Bid Amount',
+			accessor: 'bidAmount',
+			Cell: row => {
+				return (
+					<span className='lowercase underline-offset-1'>
+						{moneyFormatter(row?.cell?.value)}
+					</span>
+				);
+			},
+		},
+		{
+			Header: 'Proposed Timeline',
+			accessor: 'proposedTimeline',
 			Cell: row => {
 				return <span>{dateTime(row?.cell?.value)}</span>;
 			},
 		},
 		{
-			Header: 'User Type',
-			accessor: 'userType',
-			Cell: row => {
-				return <span>{row?.cell?.value}</span>;
-			},
-		},
-
-		{
 			Header: 'status',
-			accessor: 'userStatus',
+			accessor: 'status',
 			Cell: row => {
 				return (
 					<span className='block w-full'>
@@ -147,54 +154,44 @@ const UserList = ({ title = 'User List' }) => {
 				);
 			},
 		},
-		{
-			Header: 'action',
-			accessor: 'action',
-			Cell: row => {
-				const filteredActions = actions.filter(
-					item =>
-						item.name.toLowerCase() !==
-						row?.cell?.row?.original?.userStatus?.toLowerCase()
-				);
-				return (
-					row.cell?.row?.original?._id !== user_id && (
-						<div>
-							<Dropdown
-								classMenuItems='right-0 w-[140px] top-[110%] '
-								label={
-									<span className='text-xl text-center block w-full'>
-										<Icon icon='heroicons-outline:dots-vertical' />
-									</span>
-								}
-							>
-								<div className='divide-y divide-slate-100 dark:divide-slate-800'>
-									{filteredActions?.map((item, i) => (
-										<Menu.Item
-											key={i}
-											onClick={() =>
-												updateUserStatus(
-													row?.cell?.row?.original?._id,
-													item?.name
-												)
-											}
-										>
-											<div
-												className={`hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50 w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
-											>
-												<span className='text-base'>
-													<Icon icon={item.icon} />
-												</span>
-												<span>{item.name}</span>
-											</div>
-										</Menu.Item>
-									))}
-								</div>
-							</Dropdown>
-						</div>
-					)
-				);
-			},
-		},
+		// {
+		// 	Header: 'action',
+		// 	accessor: 'action',
+		// 	Cell: row => {
+		// 		const filteredActions = actions.filter(
+		// 			item =>
+		// 				item.name.toLowerCase() !==
+		// 				row?.cell?.row?.original?.userStatus?.toLowerCase()
+		// 		);
+		// 		return (
+		// 			<div>
+		// 				<Dropdown
+		// 					classMenuItems='right-0 w-[140px] top-[110%] '
+		// 					label={
+		// 						<span className='text-xl text-center block w-full'>
+		// 							<Icon icon='heroicons-outline:dots-vertical' />
+		// 						</span>
+		// 					}
+		// 				>
+		// 					<div className='divide-y divide-slate-100 dark:divide-slate-800'>
+		// 						{filteredActions?.map((item, i) => (
+		// 							<Menu.Item key={i} onClick={() => console.log('log')}>
+		// 								<div
+		// 									className={`hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50 w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
+		// 								>
+		// 									<span className='text-base'>
+		// 										<Icon icon={item.icon} />
+		// 									</span>
+		// 									<span>{item.name}</span>
+		// 								</div>
+		// 							</Menu.Item>
+		// 						))}
+		// 					</div>
+		// 				</Dropdown>
+		// 			</div>
+		// 		);
+		// 	},
+		// },
 	];
 
 	const IndeterminateCheckbox = React.forwardRef(
@@ -219,19 +216,18 @@ const UserList = ({ title = 'User List' }) => {
 		}
 	);
 
-	const { users, loading } = useSelector(state => state.users);
-	const { user_id } = useSelector(state => state.auth);
 	const columns = useMemo(() => COLUMNS, []);
 	const dispatch = useDispatch();
+	const { myBids, loading } = useSelector(state => state.myBids);
 
 	useEffect(() => {
-		dispatch(getAllUsers());
+		dispatch(getMyBids());
 	}, [dispatch]);
 
 	const tableInstance = useTable(
 		{
 			columns,
-			data: users,
+			data: myBids,
 		},
 
 		useGlobalFilter,
@@ -259,19 +255,6 @@ const UserList = ({ title = 'User List' }) => {
 		}
 	);
 
-	const updateUserStatus = async (id, status) => {
-		try {
-			const response = await fetchWrapper.put(`user/${id}`, {
-				userStatus: status,
-			});
-
-			if (response.status === 200) {
-				dispatch(getAllUsers());
-			}
-		} catch (error) {
-			errorToast(error);
-		}
-	};
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -341,7 +324,7 @@ const UserList = ({ title = 'User List' }) => {
 									className='bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700'
 									{...getTableBodyProps}
 								>
-									{page.map(row => {
+									{page.length > 0  && page.map(row => {
 										prepareRow(row);
 										return (
 											<tr {...row.getRowProps()}>
@@ -449,4 +432,4 @@ const UserList = ({ title = 'User List' }) => {
 	);
 };
 
-export default UserList;
+export default MyBidsGrid;
