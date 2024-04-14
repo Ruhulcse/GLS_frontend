@@ -44,7 +44,23 @@ export const menuItems = [
   {
     title: "Users",
     icon: "heroicons-outline:users",
-    link: "users",
+    link: "#",
+    isHide: true,
+    child: [
+      {
+        childtitle: "User List",
+        childlink: "users",
+      },
+      {
+        childtitle: "Agent List",
+        childlink: "agents",
+      },
+    ],
+  },
+  {
+    title: "My Bids",
+    icon: "heroicons-outline:tag",
+    link: "bids",
   },
 ];
 

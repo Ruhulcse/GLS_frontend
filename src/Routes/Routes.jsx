@@ -31,6 +31,8 @@ import PublicRoute from '@/authGard/PublicRoute';
 import Insurance from '@/components/Insurance/Insurance';
 import Load from '@/pages/Product/Load';
 import ProductFinder from '@/pages/Product/ProductFinder';
+import AgentListPage from '@/pages/admin/agents/agent-list';
+import BidListPage from '@/pages/admin/bids/bids-list';
 import ProfilePage from '@/pages/admin/profile';
 import ShipmentViewPage from '@/pages/admin/shipments/shipment-view';
 import UserListPage from '@/pages/admin/users/user-list';
@@ -160,23 +162,31 @@ export const router = createBrowserRouter([
 			},
 			{
 				path: '/blogs',
-				element: <Blogs/>,
+				element: <Blogs />,
 			},
 			{
 				path: '/blogs-details/:id',
-				element: <DetailsBlog/>,
+				element: <DetailsBlog />,
 			},
 			{
 				path: '/edit-blog/:id',
-				element: <EditBlog/>,
+				element: <EditBlog />,
 			},
 			{
 				path: '/create-blog',
-				element: <CreateBlog/>,
+				element: <CreateBlog />,
 			},
 			{
 				path: '/users',
 				element: <UserListPage />,
+			},
+			{
+				path: '/agents',
+				element: <AgentListPage />,
+			},
+			{
+				path: '/bids',
+				element: <BidListPage />,
 			},
 			{
 				path: '/profile/:id',
