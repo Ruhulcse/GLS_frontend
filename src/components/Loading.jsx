@@ -3,7 +3,7 @@ import useDarkMode from '@/hooks/useDarkMode';
 const Loading = () => {
 	const [isDark] = useDarkMode();
 	return (
-		<div>
+		<div className='flex justify-center flex-col items-center'>
 			<svg
 				className={`animate-spin ltr:-ml-1 ltr:mr-3 rtl:-mr-1 rtl:ml-3 h-6 w-6 `}
 				xmlns='http://www.w3.org/2000/svg'

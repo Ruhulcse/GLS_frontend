@@ -4,7 +4,7 @@
 /* eslint-disable react/jsx-key */
 import Card from '@/components/ui/Card';
 import Icon from '@/components/ui/Icon';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
 	useGlobalFilter,
 	usePagination,
@@ -13,225 +13,113 @@ import {
 	useTable,
 } from 'react-table';
 
-import useToast from '@/hooks/useToast';
-import { getAllUsers } from '@/store/api/users/usersSlice';
-import fetchWrapper from '@/util/fetchWrapper';
-import { dateTime } from '@/util/helpers';
-import { Menu } from '@headlessui/react';
-import { useDispatch, useSelector } from 'react-redux';
-import Loading from '../Loading';
-import GlobalFilter from '../shared/TableFilter/GlobalFilter';
-import Dropdown from '../ui/Dropdown';
+import { humanDate, moneyFormatter } from '@/util/helpers';
+import { useSelector } from 'react-redux';
+import GlobalFilter from '../../shared/TableFilter/GlobalFilter';
 
-const UserList = ({ title = 'User List' }) => {
-	const { errorToast, successToast } = useToast();
-	const actions = [
-		{
-			name: 'Active',
-			icon: 'heroicons-outline:check-badge',
+const COLUMNS = [
+	{
+		Header: 'Bid Amount',
+		accessor: 'bidAmount',
+		Cell: row => {
+			return <span>{moneyFormatter(row?.cell?.value, 'USD')}</span>;
 		},
-		{
-			name: 'Deactivated',
-			icon: 'heroicons:x-mark',
+	},
+	{
+		Header: 'Proposed Timeline',
+		accessor: 'proposedTimeline',
+		Cell: row => {
+			return <span>{humanDate(row?.cell?.value)}</span>;
 		},
-		{
-			name: 'Suspended',
-			icon: 'heroicons-outline:exclamation-circle',
-		},
-		{
-			name: 'Rejected',
-			icon: 'heroicons-outline:trash',
-		},
-		{
-			name: 'Blocked',
-			icon: 'heroicons-outline:no-symbol',
-		},
-	];
-
-	const COLUMNS = [
-		{
-			Header: 'First Name',
-			accessor: 'firstName',
-			Cell: row => {
-				return <span>{row?.cell?.value}</span>;
-			},
-		},
-		{
-			Header: 'Last Name',
-			accessor: 'lastName',
-			Cell: row => {
-				return <span>{row?.cell?.value}</span>;
-			},
-		},
-		{
-			Header: 'Email',
-			accessor: 'email',
-			Cell: row => {
-				return (
-					<span className='lowercase underline-offset-1'>
-						<a className='text-sky-400' href={`mailto:${row?.cell?.value}`}>
-							{row?.cell?.value}
-						</a>
-					</span>
-				);
-			},
-		},
-		{
-			Header: 'Created At',
-			accessor: 'createdAt',
-			Cell: row => {
-				return <span>{dateTime(row?.cell?.value)}</span>;
-			},
-		},
-		{
-			Header: 'User Type',
-			accessor: 'userType',
-			Cell: row => {
-				return <span>{row?.cell?.value}</span>;
-			},
-		},
-
-		{
-			Header: 'status',
-			accessor: 'userStatus',
-			Cell: row => {
-				return (
-					<span className='block w-full'>
-						<span
-							className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-								row?.cell?.value?.toLowerCase() === 'active'
-									? 'text-success-500 bg-success-500'
-									: ''
-							} 
-            ${
-							row?.cell?.value?.toLowerCase() === 'pending'
-								? 'text-warning-500 bg-warning-500'
-								: ''
-						}
-            ${
-							row?.cell?.value?.toLowerCase() === 'cancled'
-								? 'text-danger-500 bg-danger-500'
-								: ''
-						}
-
-						${
-							row?.cell?.value?.toLowerCase() === 'deactivated'
-								? 'text-white-500 bg-gray-600'
-								: ''
-						}
-
-						${
-							row?.cell?.value?.toLowerCase() === 'suspended'
-								? 'text-red-500 bg-red-600'
-								: ''
-						}
-
-						${
-							row?.cell?.value?.toLowerCase() === 'rejected'
-								? 'text-red-500 bg-red-500'
-								: ''
-						}
-
-						${
-							row?.cell?.value?.toLowerCase() === 'blocked'
-								? 'text-red-500 bg-red-700'
-								: ''
-						}
-
-            
-             `}
-						>
-							{row?.cell?.value}
-						</span>
-					</span>
-				);
-			},
-		},
-		{
-			Header: 'action',
-			accessor: 'action',
-			Cell: row => {
-				const filteredActions = actions.filter(
-					item =>
-						item.name.toLowerCase() !==
-						row?.cell?.row?.original?.userStatus?.toLowerCase()
-				);
-				return (
-					row.cell?.row?.original?._id !== user_id && (
-						<div>
-							<Dropdown
-								classMenuItems='right-0 w-[140px] top-[110%] '
-								label={
-									<span className='text-xl text-center block w-full'>
-										<Icon icon='heroicons-outline:dots-vertical' />
-									</span>
-								}
-							>
-								<div className='divide-y divide-slate-100 dark:divide-slate-800'>
-									{filteredActions?.map((item, i) => (
-										<Menu.Item
-											key={i}
-											onClick={() =>
-												updateUserStatus(
-													row?.cell?.row?.original?._id,
-													item?.name
-												)
-											}
-										>
-											<div
-												className={`hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50 w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
-											>
-												<span className='text-base'>
-													<Icon icon={item.icon} />
-												</span>
-												<span>{item.name}</span>
-											</div>
-										</Menu.Item>
-									))}
-								</div>
-							</Dropdown>
-						</div>
-					)
-				);
-			},
-		},
-	];
-
-	const IndeterminateCheckbox = React.forwardRef(
-		({ indeterminate, ...rest }, ref) => {
-			const defaultRef = React.useRef();
-			const resolvedRef = ref || defaultRef;
-
-			React.useEffect(() => {
-				resolvedRef.current.indeterminate = indeterminate;
-			}, [resolvedRef, indeterminate]);
-
+	},
+	{
+		Header: 'Status',
+		accessor: 'status',
+		Cell: row => {
 			return (
-				<>
-					<input
-						type='checkbox'
-						ref={resolvedRef}
-						{...rest}
-						className='table-checkbox'
-					/>
-				</>
+				<span className='block w-full'>
+					<span
+						className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
+							row?.cell?.value?.toLowerCase() === 'active'
+								? 'text-success-500 bg-success-500'
+								: ''
+						} 
+${
+	row?.cell?.value?.toLowerCase() === 'pending'
+		? 'text-warning-500 bg-warning-500'
+		: ''
+}
+${
+	row?.cell?.value?.toLowerCase() === 'cancled'
+		? 'text-danger-500 bg-danger-500'
+		: ''
+}
+
+			${
+				row?.cell?.value?.toLowerCase() === 'deactivated'
+					? 'text-white-500 bg-gray-600'
+					: ''
+			}
+
+			${
+				row?.cell?.value?.toLowerCase() === 'suspended'
+					? 'text-red-500 bg-red-600'
+					: ''
+			}
+
+			${
+				row?.cell?.value?.toLowerCase() === 'rejected'
+					? 'text-red-500 bg-red-500'
+					: ''
+			}
+
+			${
+				row?.cell?.value?.toLowerCase() === 'blocked'
+					? 'text-red-500 bg-red-700'
+					: ''
+			}
+
+
+ `}
+					>
+						{row?.cell?.value}
+					</span>
+				</span>
 			);
-		}
-	);
+		},
+	},
+];
 
-	const { users, loading } = useSelector(state => state.users);
-	const { user_id } = useSelector(state => state.auth);
+const IndeterminateCheckbox = React.forwardRef(
+	({ indeterminate, ...rest }, ref) => {
+		const defaultRef = React.useRef();
+		const resolvedRef = ref || defaultRef;
+
+		React.useEffect(() => {
+			resolvedRef.current.indeterminate = indeterminate;
+		}, [resolvedRef, indeterminate]);
+
+		return (
+			<>
+				<input
+					type='checkbox'
+					ref={resolvedRef}
+					{...rest}
+					className='table-checkbox'
+				/>
+			</>
+		);
+	}
+);
+
+const ShipmentBidsGrid = ({ title = 'Shipment Bids' }) => {
 	const columns = useMemo(() => COLUMNS, []);
-	const dispatch = useDispatch();
-
-	useEffect(() => {
-		dispatch(getAllUsers());
-	}, [dispatch]);
+	const { bids } = useSelector(state => state.shipment.shipment);
 
 	const tableInstance = useTable(
 		{
 			columns,
-			data: users,
+			data: bids,
 		},
 
 		useGlobalFilter,
@@ -258,20 +146,6 @@ const UserList = ({ title = 'User List' }) => {
 			]);
 		}
 	);
-
-	const updateUserStatus = async (id, status) => {
-		try {
-			const response = await fetchWrapper.put(`user/${id}`, {
-				userStatus: status,
-			});
-
-			if (response.status === 200) {
-				dispatch(getAllUsers());
-			}
-		} catch (error) {
-			errorToast(error);
-		}
-	};
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -292,11 +166,6 @@ const UserList = ({ title = 'User List' }) => {
 	} = tableInstance;
 
 	const { globalFilter, pageIndex, pageSize } = state;
-
-	if (loading) {
-		return <Loading />;
-	}
-
 	return (
 		<>
 			<Card>
@@ -449,4 +318,4 @@ const UserList = ({ title = 'User List' }) => {
 	);
 };
 
-export default UserList;
+export default ShipmentBidsGrid;
