@@ -74,6 +74,7 @@ function Login() {
                 <div className="text-white  text-center justify-center items-center flex flex-col h-full w-full">
                   <div className="xl:text-6xl text-3xl  lg:text-5xl md:text-4xl font-bold ">
                     Welcome to GLS</div>
+                    
                   <div className="font-medium text-base mt-24">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint atque ullam, ratione tempora veritatis eligendi deserunt labore ut distinctio tenetur exercitationem illum quasi alias eum. </div>
 
                 </div>
@@ -90,7 +91,19 @@ function Login() {
         >
           <div className="mb-12 grid justify-center items-center mt-6">
             <div className="text-black-500 justify-center text-center font-bold text-2xl md:hidden">Welcome to GLS</div>
-          
+            <div className="flex gap-3 items-center justify-center font-bold text-xl  py-6">
+                Registration
+                {/* <input
+                  type="checkbox"
+                  //defaultChecked
+                  value={agent}
+                  onClick={() => setAgent(!agent)}
+                  className="checkbox bg-white"
+                />
+                <label className="text-lg font-medium text-black-500">
+                  Agent form
+                </label> */}
+              </div>
             
 
            <div className="grid  grid-cols-1 ">
