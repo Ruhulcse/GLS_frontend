@@ -204,12 +204,7 @@ function SignUp() {
                 className="btn btn-dark block w-full text-center mt-4"
                 isLoading={isLoading}
               />
-              {/* <Button
-                type="submit"
-                text="Sign in"
-                className="btn btn-dark block w-full text-center mt-4"
-                isLoading={isLoading}
-              /> */}
+              
             </div>
             <div className="flex justify-between mb-4 mx-0 mt-[-12px] items-center">
               <div className="text-base text-blue-950 font-bold">
