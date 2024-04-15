@@ -1,5 +1,5 @@
 import useSkin from '@/hooks/useSkin';
-
+import PropTypes from 'prop-types';
 const Card = ({
 	children,
 	title,
@@ -18,7 +18,7 @@ const Card = ({
         card rounded-md bg-white dark:bg-slate-800   ${
 					skin === 'bordered'
 						? ' border border-slate-200 dark:border-slate-700'
-						: 'shadow-base'
+						: 'shadow-lg'
 				}
    
     ${className}
@@ -36,6 +36,19 @@ const Card = ({
 			<main className={`card-body ${bodyClass}`}>{children}</main>
 		</div>
 	);
+};
+
+// do prop validation
+
+Card.propTypes = {
+	children: PropTypes.node.isRequired,
+	title: PropTypes.string,
+	subtitle: PropTypes.string,
+	headerslot: PropTypes.node,
+	className: PropTypes.string,
+	bodyClass: PropTypes.string,
+	noborder: PropTypes.bool,
+	titleClass: PropTypes.string,
 };
 
 export default Card;

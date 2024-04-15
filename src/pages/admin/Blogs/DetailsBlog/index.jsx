@@ -1,11 +1,11 @@
 
 import { useGetBlogsByIDQuery } from "@/store/api/blogs/blogsApi";
-import dateFormat from "dateformat";
+// import dateFormat from "dateformat";
 import { useParams } from "react-router-dom";
 const DetailsBlogPage = () => {
   const {id} = useParams()
   const { data } = useGetBlogsByIDQuery(id)
-  const date = dateFormat(data?.createdAt, "mmmm dS, yyyy")
+  // const date = dateFormat(data?.createdAt, "mmmm dS, yyyy")
   return (
     <div className="space-y-8">
      <div className="flex justify-center items-center">
@@ -13,7 +13,7 @@ const DetailsBlogPage = () => {
      </div>
      <div className="flex justify-between">
       <p>Category:{data?.category}</p>
-      <p>Published At <br /> <span>{date}</span></p>
+      {/* <p>Published At <br /> <span>{date}</span></p> */}
      </div>
      <div className="space-y-6">
       <h1 className="text-xl font-semibold">
