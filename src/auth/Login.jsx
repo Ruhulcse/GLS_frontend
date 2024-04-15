@@ -63,7 +63,7 @@ function Login() {
   return (
     <div className="h-[95vh] bg-gradient-to-tr to-[#ede8e8] from-[#f4c5c5]">
     <div className="flex justify-center items-center h-full">
-      <div className="bg-gradient-to-tl from-[#b1c2f1] to-[#6d6d6f] min-h-5/6 w-5/6 grid  grid-cols-12 rounded-xl shadow-2xl ">
+      <div className="bg-gradient-to-tl from-[#97aff1] to-[#c6f2f3de] min-h-5/6 w-5/6 grid  grid-cols-12 rounded-xl shadow-2xl ">
           {/* welcome */}
           <div className=" md:col-span-7 rounded-xl hidden md:block">
              
@@ -71,8 +71,9 @@ function Login() {
               <div className="bg-black-500 inset-0 absolute opacity-25">
               </div>
               <div className=" inset-0 absolute rounded-xl">
-                <div className="text-white  text-center xl:justify-center xl:items-center xl:flex xl:flex-col h-full w-full">
-                  <div className="text-6xl font-bold">welcome to GLS</div>
+                <div className="text-white  text-center justify-center items-center flex flex-col h-full w-full">
+                  <div className="xl:text-6xl text-3xl  lg:text-5xl md:text-4xl font-bold ">
+                    Welcome to GLS</div>
                   <div className="font-medium text-base mt-24">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint atque ullam, ratione tempora veritatis eligendi deserunt labore ut distinctio tenetur exercitationem illum quasi alias eum. </div>
 
                 </div>
@@ -88,7 +89,7 @@ function Login() {
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="mb-12 grid justify-center items-center mt-6">
-            <div className="text-black-500 justify-center text-center font-bold text-2xl md:hidden">welcome to GLS</div>
+            <div className="text-black-500 justify-center text-center font-bold text-2xl md:hidden">Welcome to GLS</div>
           
             
 

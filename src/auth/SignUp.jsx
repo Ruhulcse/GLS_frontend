@@ -49,7 +49,7 @@ function SignUp() {
   return (
     <div className="min-h-[95vh] sm:h-[9vh] bg-gradient-to-tr to-[#ede8e8] from-[#f4c5c5]">
       <div className="flex justify-center items-center h-full">
-        <div className="bg-gradient-to-tl from-[#b1c2f1] to-[#6d6d6f] min-h-5/6 w-5/6 grid xl:grid-cols-2 md:grid-cols-3 rounded-xl shadow-2xl ">
+        <div className="bg-gradient-to-tl from-[#97aff1] to-[#c6f2f3de] min-h-5/6 w-5/6 grid xl:grid-cols-2 md:grid-cols-3 rounded-xl shadow-2xl ">
             {/* welcome */}
             <div className="hidden lg:block xl:col-span-1 rounded-xl">
                
@@ -57,8 +57,8 @@ function SignUp() {
                 <div className="bg-black-500 inset-0 absolute opacity-25">
                 </div>
                 <div className=" inset-0 absolute rounded-xl">
-                  <div className="text-white  text-center xl:justify-center xl:items-center xl:flex xl:flex-col h-full w-full">
-                    <div className="text-6xl font-bold">welcome to GLS</div>
+                  <div className="text-white  text-center justify-center items-center flex flex-col h-full w-full">
+                    <div className="xl:text-6xl text-3xl md:text-4xl lg:text-4xl font-bold ">Welcome to GLS</div>
                     <div className="font-medium text-base mt-24">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint atque ullam, ratione tempora veritatis eligendi deserunt labore ut distinctio tenetur exercitationem illum quasi alias eum. </div>
 
                   </div>
@@ -73,7 +73,7 @@ function SignUp() {
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="mb-12 grid justify-center ">
-              <div className="text-black-500 justify-center text-center font-bold text-2xl lg:hidden">welcome to GLS</div>
+              <div className="text-black-500 justify-center text-center font-bold text-2xl lg:hidden">Welcome to GLS</div>
             
               <div className="flex gap-3 items-center py-2">
                 <input
@@ -161,12 +161,12 @@ function SignUp() {
                 <div className="sm:grid sm:grid-cols-2 gap-5 flex grid-cols-1">
                   <Select
                     label="User type"
-                    defaultValue=""
+                    defaultValue='agent'
                     options={["agent"]}
                     name="userType"
                     register={register}
                     error={errors.userType}
-                    //placeholder="Select User type"
+                    placeholder="Select User type"
                   />
                   <Textinput
                     label="Agent code"
@@ -177,7 +177,7 @@ function SignUp() {
                     error={errors.agent_code}
                     placeholder="Code"
                     register={register}
-                    className="w-24 sm:block"
+                    className="w-24 sm:w-full"
                   />
                 </div>
               ) : (
@@ -211,7 +211,7 @@ function SignUp() {
                 isLoading={isLoading}
               /> */}
             </div>
-            <div className="flex justify-between mb-4 mx-6 mt-[-12px] items-center">
+            <div className="flex justify-between mb-4 mx-0 mt-[-12px] items-center">
               <div className="text-base text-blue-950 font-bold">
                 Do you have an account?
               </div>
