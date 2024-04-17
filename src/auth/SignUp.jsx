@@ -31,7 +31,7 @@ function SignUp() {
     const [agent,setAgent] = useState(false)
     const [user,setUser] = useState('')
     const [signUp,{isLoading}] = useRegisterUserMutation()
-    console.log(user);
+    //console.log(user);
     useEffect(()=>{
       user==='agent'&& setAgent(false)
       
@@ -45,6 +45,13 @@ function SignUp() {
         resolver: yupResolver(schema),
         mode: "all",
       });
+      const handleType = () =>{
+        if(user==='agent'||user===''){
+          return false;
+        }
+        return true
+      }
+      //const type = handleType();
     
       const onSubmit = async (data) => {
         try {
@@ -174,6 +181,7 @@ function SignUp() {
 											render={() => (
 												<Select
 													//label='Basic Select'
+                          defaultValue=''
 													options={[ 'carrier', 'broker', 'shipper','agent']}
 													register={register}
 													onChange={e => setUser(e.target.value)}
@@ -183,7 +191,7 @@ function SignUp() {
 											)}
 										/>
 									</FormGroup>
-                      {user!=='agent'&&<div className="flex gap-3 items-center font-bold text-xl  py-4">
+                      {handleType()&&<div className="flex gap-3 items-center font-bold text-xl  py-4">
                
                 <input
                   type="checkbox"
