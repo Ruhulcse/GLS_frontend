@@ -1,13 +1,14 @@
 import { car } from "@/assets";
 import Textinput from "@/components/ui/Textinput";
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Select from "@/components/ui/Select";
 import Button from "@/components/ui/Button";
 import {useRegisterUserMutation} from '@/store/api/auth/authApiSlice'
+import FormGroup from "@/components/ui/FormGroup";
 const schema = yup.object({
     firstName: yup.string().label("First Name").required(),
     lastName: yup.string().label("Last Name").required(),
@@ -28,15 +29,29 @@ const schema = yup.object({
 function SignUp() {
   const navigate = useNavigate();
     const [agent,setAgent] = useState(false)
+    const [user,setUser] = useState('')
     const [signUp,{isLoading}] = useRegisterUserMutation()
+    //console.log(user);
+    useEffect(()=>{
+      user==='agent'&& setAgent(false)
+      
+    },[user])
+   
     const {
         register,
         formState: { errors },
-        handleSubmit,
+        handleSubmit,control
       } = useForm({
         resolver: yupResolver(schema),
         mode: "all",
       });
+      const handleType = () =>{
+        if(user==='agent'||user===''){
+          return false;
+        }
+        return true
+      }
+      //const type = handleType();
     
       const onSubmit = async (data) => {
         try {
@@ -49,7 +64,7 @@ function SignUp() {
   return (
     <div className="min-h-[95vh] sm:h-[9vh] bg-gradient-to-tr to-[#ede8e8] from-[#f4c5c5]">
       <div className="flex justify-center items-center h-full">
-        <div className="bg-gradient-to-tl from-[#b1c2f1] to-[#6d6d6f] min-h-5/6 w-5/6 grid xl:grid-cols-2 md:grid-cols-3 rounded-xl shadow-2xl ">
+        <div className="bg-gradient-to-tl from-[#97aff1] to-[#c6f2f3de] min-h-5/6 w-5/6 grid xl:grid-cols-2 md:grid-cols-3 rounded-xl shadow-2xl ">
             {/* welcome */}
             <div className="hidden lg:block xl:col-span-1 rounded-xl">
                
@@ -57,8 +72,8 @@ function SignUp() {
                 <div className="bg-black-500 inset-0 absolute opacity-25">
                 </div>
                 <div className=" inset-0 absolute rounded-xl">
-                  <div className="text-white  text-center xl:justify-center xl:items-center xl:flex xl:flex-col h-full w-full">
-                    <div className="text-6xl font-bold">welcome to GLS</div>
+                  <div className="text-white  text-center justify-center items-center flex flex-col h-full w-full">
+                    <div className="xl:text-6xl text-3xl md:text-4xl lg:text-4xl font-bold ">Welcome to GLS</div>
                     <div className="font-medium text-base mt-24">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint atque ullam, ratione tempora veritatis eligendi deserunt labore ut distinctio tenetur exercitationem illum quasi alias eum. </div>
 
                   </div>
@@ -73,10 +88,11 @@ function SignUp() {
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="mb-12 grid justify-center ">
-              <div className="text-black-500 justify-center text-center font-bold text-2xl lg:hidden">welcome to GLS</div>
+              <div className="text-black-500 justify-center text-center font-bold text-2xl lg:hidden">Welcome to GLS</div>
             
-              <div className="flex gap-3 items-center py-2">
-                <input
+              <div className="flex gap-3 items-center justify-center font-bold text-xl  py-6">
+                Registration
+                {/* <input
                   type="checkbox"
                   //defaultChecked
                   value={agent}
@@ -85,7 +101,7 @@ function SignUp() {
                 />
                 <label className="text-lg font-medium text-black-500">
                   Agent form
-                </label>
+                </label> */}
               </div>
 
              <div className="grid sm:grid-cols-2 gap-5 grid-cols-1 ">
@@ -112,6 +128,7 @@ function SignUp() {
                 className="w-[15rem]"
               />
              </div>
+             
              <div className="grid sm:grid-cols-2 gap-5">
              <Textinput
                 label="Email"
@@ -157,18 +174,37 @@ function SignUp() {
                 className="w-[15rem]"
               />
              </div>
-              {agent ? (
-                <div className="sm:grid sm:grid-cols-2 gap-5 flex grid-cols-1">
-                  <Select
-                    label="User type"
-                    defaultValue=""
-                    options={["agent"]}
-                    name="userType"
-                    register={register}
-                    error={errors.userType}
-                    //placeholder="Select User type"
-                  />
-                  <Textinput
+             <FormGroup label='User Type' error={errors.userType}>
+										<Controller
+											name='userType'
+											control={control}
+											render={() => (
+												<Select
+													//label='Basic Select'
+                          defaultValue=''
+													options={[ 'carrier', 'broker', 'shipper','agent']}
+													register={register}
+													onChange={e => setUser(e.target.value)}
+                          placeholder="Select User"
+												//	error={errors.userType}
+												/>
+											)}
+										/>
+									</FormGroup>
+                      {handleType()&&<div className="flex gap-3 items-center font-bold text-xl  py-4">
+               
+                <input
+                  type="checkbox"
+                  //defaultChecked
+                  value={agent}
+                  onClick={() => setAgent(!agent)}
+                  className="checkbox bg-white"
+                />
+                <label className="text-lg font-medium text-black-500">
+                  From Agent 
+                </label>
+              </div>}
+              {agent&&  <Textinput
                     label="Agent code"
                     type="text"
                     name="agent_code"
@@ -177,9 +213,41 @@ function SignUp() {
                     error={errors.agent_code}
                     placeholder="Code"
                     register={register}
-                    className="w-24 sm:block"
-                  />
-                </div>
+                    className="w-full"
+                  />}
+             {/* <Select
+                  label="User type"
+                  //defaultValue=""
+                  options={["shipper", "broker", "carrier","agent"]}
+                  onChange={handelChange}
+                  //name="userType"
+                  register={register}
+                  error={errors.userType}
+                  placeholder="Select User type"
+                /> */}
+              {/* {agent ? (
+                <div className="sm:grid sm:grid-cols-2 gap-5 flex grid-cols-1"> */}
+                  {/* <Select
+                    label="User type"
+                    defaultValue='agent'
+                    options={["agent"]}
+                    name="userType"
+                    register={register}
+                    error={errors.userType}
+                    placeholder="Select User type"
+                  /> */}
+                  {/* <Textinput
+                    label="Agent code"
+                    type="text"
+                    name="agent_code"
+                    //className="right-0"
+                    autoComplete="code"
+                    error={errors.agent_code}
+                    placeholder="Code"
+                    register={register}
+                    className="w-24 sm:w-full"
+                  /> */}
+                {/* </div>
               ) : (
                 <Select
                   label="User type"
@@ -190,7 +258,7 @@ function SignUp() {
                   error={errors.userType}
                   placeholder="Select User type"
                 />
-              )}
+              )} */}
               {/* <button
                 className="inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all hover:bg-black-500"
                 type="submit"
@@ -204,14 +272,9 @@ function SignUp() {
                 className="btn btn-dark block w-full text-center mt-4"
                 isLoading={isLoading}
               />
-              {/* <Button
-                type="submit"
-                text="Sign in"
-                className="btn btn-dark block w-full text-center mt-4"
-                isLoading={isLoading}
-              /> */}
+              
             </div>
-            <div className="flex justify-between mb-4 mx-6 mt-[-12px] items-center">
+            <div className="flex justify-between mb-4 mx-0 mt-[-12px] items-center">
               <div className="text-base text-blue-950 font-bold">
                 Do you have an account?
               </div>
