@@ -27,7 +27,7 @@ export const menuItems = [
   },
   {
     title: "Blogs",
-    icon: "heroicons-outline:truck",
+    icon: "heroicons-outline:book-open",
     link: "#",
     isHide: true,
     child: [
@@ -38,6 +38,27 @@ export const menuItems = [
       {
         childtitle: "Create Blog",
         childlink: "create-blog",
+      },
+    ],
+  },
+  {
+    title: "Resource",
+    icon: "heroicons:document-magnifying-glass",
+    link: "#",
+    child: [
+      {
+        childtitle: "Guide",
+        childlink: "Level-1",
+        multi_menu: [
+          {
+            multiTitle: "Guid List",
+            multiLink: "guideblog-list",
+          },
+          {
+            multiTitle: "Create Guide",
+            multiLink: "create-guide",
+          },
+        ],
       },
     ],
   },

@@ -1,4 +1,3 @@
-import EditBlog from '@/components/Blogs/EditBlog';
 import ScrollTop from '@/components/ScrollTop/ScrollTop';
 import Blogs from '@/pages/admin/Blogs/Blogs-list';
 import CreateBlog from '@/pages/admin/Blogs/Create-Blog';
@@ -31,6 +30,8 @@ import PublicRoute from '@/authGard/PublicRoute';
 import Insurance from '@/components/Insurance/Insurance';
 import Load from '@/pages/Product/Load';
 import ProductFinder from '@/pages/Product/ProductFinder';
+import GuideDetailsPage from '@/pages/admin/Recources/Guide/GuideBlogDetails';
+import GuideListPage from '@/pages/admin/Recources/Guide/GuideList';
 import AgentListPage from '@/pages/admin/agents/agent-list';
 import BidListPage from '@/pages/admin/bids/bids-list';
 import ProfilePage from '@/pages/admin/profile';
@@ -39,6 +40,12 @@ import UserListPage from '@/pages/admin/users/user-list';
 
 const ShipmentFormPage = lazy(() =>
 	import('@/pages/admin/shipments/shipment-form')
+);
+const BlogUploadForm = lazy(() =>
+	import('@/components/Blogs/form/BlogUploadFrom')
+);
+const GuideBlogUploadForm = lazy(() =>
+	import('@/pages/admin/Recources/Guide/CreateGuide')
 );
 const Dashboard = lazy(() => import('@/pages/dashboard'));
 //test commit updated
@@ -169,12 +176,28 @@ export const router = createBrowserRouter([
 				element: <DetailsBlog />,
 			},
 			{
-				path: '/edit-blog/:id',
-				element: <EditBlog />,
+				path: '/blog/edit-blog/:id',
+				element: <BlogUploadForm/>,
 			},
 			{
 				path: '/create-blog',
 				element: <CreateBlog />,
+			},
+			{
+				path: '/create-guide',
+				element: <GuideBlogUploadForm />,
+			},
+			{
+				path: '/guideblog-list',
+				element: <GuideListPage/>,
+			},
+			{
+				path: '/guideblog-details/:id',
+				element: <GuideDetailsPage/>,
+			},
+			{
+				path: '/guideblog/edit-guideblog/:id',
+				element: <GuideBlogUploadForm/>,
 			},
 			{
 				path: '/users',

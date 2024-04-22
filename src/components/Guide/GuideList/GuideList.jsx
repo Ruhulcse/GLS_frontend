@@ -2,10 +2,17 @@
 /* eslint-disable react/display-name */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-key */
+import Loading from '@/components/Loading';
+import GlobalFilter from '@/components/shared/TableFilter/GlobalFilter';
 import Card from '@/components/ui/Card';
 import Icon from '@/components/ui/Icon';
 import Tooltip from '@/components/ui/Tooltip';
-import React, { useEffect, useMemo, useState } from 'react';
+import { getAllGuideBlogs } from '@/store/api/guideblogs/guideblogsSlice';
+import fetchWrapper from '@/util/fetchWrapper';
+import { dateTime, swalConfirm } from '@/util/helpers';
+import React, { useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
 	useGlobalFilter,
 	usePagination,
@@ -14,135 +21,78 @@ import {
 	useTable,
 } from 'react-table';
 
-import Loading from '@/components/Loading';
-import { BidModal } from '@/components/bid/bid-modal/BidModal';
-import useToast from '@/hooks/useToast';
-import { getShipment } from '@/store/api/shipment/shipmentSlice';
-import { getAllShipments } from '@/store/api/shipments/shipmentsSlice';
-import fetchWrapper from '@/util/fetchWrapper';
-import {
-	dateTime,
-	moneyFormatter,
-	swalConfirm,
-	swalError,
-	swalSuccess,
-} from '@/util/helpers';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import GlobalFilter from '../../shared/TableFilter/GlobalFilter';
 
-const ShipmentListGrid = ({ title = 'Shipment List' }) => {
-	const { user } = useSelector(state => state.user);
-	const [shipmentId, setShipmentId] = useState(null);
+const IndeterminateCheckbox = React.forwardRef(
+	({ indeterminate, ...rest }, ref) => {
+		const defaultRef = React.useRef();
+		const resolvedRef = ref || defaultRef;
+
+		React.useEffect(() => {
+			resolvedRef.current.indeterminate = indeterminate;
+		}, [resolvedRef, indeterminate]);
+
+		return (
+			<>
+				<input
+					type='checkbox'
+					ref={resolvedRef}
+					{...rest}
+					className='table-checkbox'
+				/>
+			</>
+		);
+	}
+);
+
+const GuideList = ({ title = 'Guide List' }) => {
 	const COLUMNS = [
 		{
-			Header: 'Type',
-			accessor: 'cargoType',
+			Header: 'Guide Title',
+			accessor: 'title',
 			Cell: row => {
 				return <span>{row?.cell?.value}</span>;
 			},
 		},
 		{
-			Header: 'Number of Loads',
-			accessor: 'numberOfLoads',
-			Cell: row => {
-				return <span>#{row?.cell?.value}</span>;
-			},
-		},
-		{
-			Header: 'Origin',
-			accessor: 'origin',
+			Header: 'Category',
+			accessor: 'category',
 			Cell: row => {
 				return <span>{row?.cell?.value}</span>;
 			},
 		},
 		{
-			Header: 'Destination',
-			accessor: 'destination',
-			Cell: row => {
-				return <span>{row?.cell?.value}</span>;
-			},
-		},
-		{
-			Header: 'Weight (in kg)',
-			accessor: 'weightKG',
-			Cell: row => {
-				return <span>{row?.cell?.value}</span>;
-			},
-		},
-		{
-			Header: 'Offering Price',
-			accessor: 'offeringPrice',
-			Cell: row => {
-				return <span>{moneyFormatter(row?.cell?.value, 'USD')}</span>;
-			},
-		},
-		{
-			Header: 'PickUp Date',
-			accessor: 'pickUpDate',
-			Cell: row => {
-				return <span>{dateTime(row?.cell?.value)}</span>;
-			},
-		},
-		{
-			Header: 'Delivery Date',
-			accessor: 'deliveryDate',
-			Cell: row => {
-				return <span>{dateTime(row?.cell?.value)}</span>;
-			},
-		},
-
-		{
-			Header: 'status',
+			Header: 'Status',
 			accessor: 'status',
 			Cell: row => {
-				return (
-					<span className='block w-full'>
-						<span
-							className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-								row?.cell?.value.toLowerCase() === 'posted'
-									? 'text-success-500 bg-success-500'
-									: ''
-							} 
-				${row?.cell?.value === 'due' ? 'text-warning-500 bg-warning-500' : ''}
-				${row?.cell?.value === 'cancled' ? 'text-danger-500 bg-danger-500' : ''}
-				
-				 `}
-						>
-							{row?.cell?.value}
-						</span>
-					</span>
-				);
+				return <span>{row?.cell?.value}</span>;
 			},
 		},
 		{
-			Header: 'action',
+			Header: 'Published At',
+			accessor: 'createdAt',
+			Cell: row => {
+				return <span>{dateTime(row?.cell?.value)}</span>;
+			},
+		},
+	
+		{
+			Header: 'Action',
 			accessor: 'action',
-			Cell: ({ value, row }) => {
+			Cell:({ row }) => {
 				return (
 					<div className='flex space-x-3 rtl:space-x-reverse'>
-						<Tooltip
-							content='View'
-							placement='top'
-							arrow
-							animation='shift-away'
-						>
-							<Link to={`/shipment/${row.original?._id}`}>
-								<button className='action-btn' type='button'>
-									<Icon icon='heroicons:eye' />
-								</button>
+						<Tooltip content='View' placement='top' arrow animation='shift-away'>
+						<Link to={`/guideblog-details/${row.original?._id}`}>
+							<button className='action-btn' type='button'>
+								<Icon icon='heroicons:eye' />
+							</button>
 							</Link>
 						</Tooltip>
-						<Tooltip
-							content='Edit'
-							placement='top'
-							arrow
-							animation='shift-away'
-						>
-							<Link to={`/shipment/edit/${row.original?._id}`}>
-								<button className='action-btn' type='button'>
-									<Icon icon='heroicons:pencil-square' />
-								</button>
+						<Tooltip content='Edit' placement='top' arrow animation='shift-away'>
+						<Link to={`/guideblog/edit-guideblog/${row.original?._id}`}>
+							<button className='action-btn' type='button'>
+								<Icon icon='heroicons:pencil-square' />
+							</button>
 							</Link>
 						</Tooltip>
 						<Tooltip
@@ -152,60 +102,35 @@ const ShipmentListGrid = ({ title = 'Shipment List' }) => {
 							animation='shift-away'
 							theme='danger'
 						>
-							<button
-								className='action-btn'
-								type='button'
-								onClick={() => deleteShipment(row.original?._id)}
-							>
+							<button className='action-btn' type='button' onClick={() => deleteGuideBlog(row.original?._id)}>
 								<Icon icon='heroicons:trash' />
 							</button>
 						</Tooltip>
-
-						{/* bid button */}
-						{user.userType === 'carrier' && (
-							<Tooltip
-								content='Place Bid'
-								placement='top'
-								arrow
-								animation='shift-away'
-							>
-								<button
-									className='action-btn'
-									type='button'
-									onClick={() => handlePlaceBid(row.original?._id)}
-								>
-									<Icon icon='heroicons:tag' />
-								</button>
-							</Tooltip>
-						)}
 					</div>
 				);
 			},
 		},
 	];
-
-	const [isOpen, setIsOpen] = useState(false);
-	const columns = useMemo(() => COLUMNS, [user]);
-	const { errorToast } = useToast();
+	const columns = useMemo(() => COLUMNS, []);
 	const dispatch = useDispatch();
-	const { shipments, loading } = useSelector(state => state.shipments);
+	const { guideblogs, loading } = useSelector(state => state.guideblogs);
 	useEffect(() => {
-		dispatch(getAllShipments());
+		dispatch(getAllGuideBlogs());
 	}, [dispatch]);
 
-	const deleteShipment = async id => {
+	const deleteGuideBlog = async id => {
 		try {
 			swalConfirm(
-				'Are you sure you want to delete this shipment?',
+				'Are you sure you want to delete this blog?',
 				'Are you sure  ?',
 				'Yes, Delete'
 			).then(async result => {
 				if (result.isConfirmed) {
 					try {
-						const response = await fetchWrapper.delete(`shipments/${id}`);
+						const response = await fetchWrapper.delete(`guide/${id}`);
 						if (response.status === 200) {
-							dispatch(getAllShipments());
-							swalSuccess('Shipment deleted successfully');
+							dispatch(getAllGuideBlogs());
+							swalSuccess('Blog deleted successfully');
 						}
 					} catch (error) {
 						swalError(error);
@@ -216,43 +141,10 @@ const ShipmentListGrid = ({ title = 'Shipment List' }) => {
 			swalError(error);
 		}
 	};
-
-	const handlePlaceBid = async id => {
-		try {
-			setIsOpen(true);
-			setShipmentId(id);
-			dispatch(getShipment({ id }));
-		} catch (error) {
-			errorToast(error?.message);
-		}
-	};
-
-	const IndeterminateCheckbox = React.forwardRef(
-		({ indeterminate, ...rest }, ref) => {
-			const defaultRef = React.useRef();
-			const resolvedRef = ref || defaultRef;
-
-			React.useEffect(() => {
-				resolvedRef.current.indeterminate = indeterminate;
-			}, [resolvedRef, indeterminate]);
-
-			return (
-				<>
-					<input
-						type='checkbox'
-						ref={resolvedRef}
-						{...rest}
-						className='table-checkbox'
-					/>
-				</>
-			);
-		}
-	);
-
 	const tableInstance = useTable(
 		{
 			columns,
-			data: shipments,
+		    data:guideblogs
 		},
 
 		useGlobalFilter,
@@ -303,6 +195,7 @@ const ShipmentListGrid = ({ title = 'Shipment List' }) => {
 	if (loading) {
 		return <Loading />;
 	}
+
 	return (
 		<>
 			<Card>
@@ -451,9 +344,8 @@ const ShipmentListGrid = ({ title = 'Shipment List' }) => {
 				</div>
 				{/*end*/}
 			</Card>
-			<BidModal isOpen={isOpen} setIsOpen={setIsOpen} shipmentId={shipmentId}/>
 		</>
 	);
 };
 
-export default ShipmentListGrid;
+export default GuideList;

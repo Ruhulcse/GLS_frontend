@@ -1,16 +1,15 @@
-import Loading from "@/components/Loading";
 import useToast from "@/hooks/useToast";
-import { useGetBlogsByIDQuery, useUpdateBlogMutation } from "@/store/api/blogs/blogsApi";
+// import { useGetBlogsByIDQuery, useUpdateBlogMutation } from "@/store/api/blogs/blogsApi";
 import { Jodit } from "jodit-react";
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import TextEditor from "../form/TextEditor";
 
 const EditBlogForm = ({ id }) => {
-  const { data, isSuccess, isLoading } = useGetBlogsByIDQuery(id)
-  const [updateBlog] = useUpdateBlogMutation();
-  const [title, setTitle] = useState(data?.title)
-  const [category, setCategory] = useState(data?.category)
+  // const { data, isSuccess, isLoading } = useGetBlogsByIDQuery(id)
+  // const [updateBlog] = useUpdateBlogMutation();
+  const [title, setTitle] = useState()
+  const [category, setCategory] = useState()
   const [image, setImage] = useState(null)
   const [content, setContent] = useState('')
   const description = Jodit.modules.Helpers.stripTags(content);
@@ -23,32 +22,32 @@ const EditBlogForm = ({ id }) => {
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let base64Data;
-    if (image) {
-      base64Data = await toBase64(image);
-    }
-    const payload = {
-      "title":title,
-      "category":category,
-      "body":description,
-      "image":base64Data
-    }
-    if(isSuccess){
-      await updateBlog({id, body: payload})
-      successToast("Blog updates successfully")
-      navigate("/blogs")
-    }
-    if(isLoading){
-      return <Loading/>
-    }
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   let base64Data;
+  //   if (image) {
+  //     base64Data = await toBase64(image);
+  //   }
+  //   const payload = {
+  //     "title":title,
+  //     "category":category,
+  //     "body":description,
+  //     "image":base64Data
+  //   }
+  //   if(isSuccess){
+  //     await updateBlog({id, body: payload})
+  //     successToast("Blog updates successfully")
+  //     navigate("/blogs")
+  //   }
+  //   if(isLoading){
+  //     return <Loading/>
+  //   }
+  // };
 
   return (
     <div>
       <form
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
         
       >
         <div className="lg:grid-cols-2 grid gap-5 grid-cols-1 my-4">
@@ -67,7 +66,7 @@ const EditBlogForm = ({ id }) => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Title"
             required
-            defaultValue={data?.title}
+            // defaultValue={data?.title}
             onChange={(e)=> setTitle(e.target.value)}
           />
         </div>
@@ -78,7 +77,9 @@ const EditBlogForm = ({ id }) => {
           >
             Select Category
           </label>
-          <select defaultValue={data?.category} value={category} onChange={(e)=> setCategory(e.target.value)} className="select select-bordered w-full max-w-xs">
+          <select 
+          // defaultValue={data?.category} 
+          value={category} onChange={(e)=> setCategory(e.target.value)} className="select select-bordered w-full max-w-xs">
             <option disabled selected>
             Select Category
             </option>
@@ -101,7 +102,7 @@ const EditBlogForm = ({ id }) => {
           label="Content"
           name="content"
           setContent={setContent}
-          data={data}
+          // data={data}
         />
         </div>
         <div className="lg:col-span-2 col-span-1">
