@@ -10,25 +10,25 @@ expedita nostrum aliquam, veritatis earum odit blanditiis id quasi`;
 const categoryType = [
   {
     type: "Carrier",
-    value: "carrier",
+    value: "Carrier",
   },
   {
     type: "Brokers",
-    value: "brokers",
+    value: "Broker",
   },
   {
     type: "Shippers",
-    value: "shippers",
+    value: "Shipper",
   },
 ];
 const guideType = [
   {
     type: "Blog",
-    value: "blog",
+    value: "Guide Blog",
   },
   {
     type: "Video",
-    value: "video",
+    value: "Guide Video",
   },
 ];
 
