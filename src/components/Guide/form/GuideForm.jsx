@@ -26,16 +26,7 @@ const categories = [
     value: "Broker",
   },
 ];
-const types = [
-  {
-    label: "Guide Blog",
-    value: "Guide Blog",
-  },
-  {
-    label: "Guide Video",
-    value: "Guide Video",
-  },
-]
+
 const FormValidationSchema = yup
 	.object({
 		title: yup.string().required(),
@@ -46,7 +37,7 @@ const FormValidationSchema = yup
 	.required();
 const GuideForm = () => {
   const [tags, setTags] = useState([]);
-  const [videoType, setVideoType] = useState(true);
+  const [videoType, setVideoType] = useState(false);
   const [content, setContent] = useState('');
   const description = Jodit.modules.Helpers.stripTags(content);
   const { errorToast, successToast } = useToast();
@@ -84,12 +75,24 @@ useEffect(() => {
 const onSubmit = async data => {
   if (id) {
     updateData(data);
-    console.log('update')     
   } else {
     storeData(data);
+    console.log(data)
   }
 };
-
+const types = [
+  {
+    
+      label: "Guide Blog",
+      value: "Guide Blog",
+   
+  }
+  ,
+  {
+    label: "Guide Video",
+    value: "Guide Video",
+  },
+]
 const storeData = async data => {
   try {
     const payload = { ...data, tags, body: description }
@@ -118,38 +121,34 @@ const updateData = async data => {
   return (
     <div>
       <div className="flex gap-4 my-4">
-       <button onClick={()=> setVideoType(true)} className={`${videoType && "bg-black-700 text-white font-medium text-sm p-2 rounded-md"}`}>Guide Blog</button>
-       <button onClick={()=> setVideoType(false)} className={`${!videoType && "bg-black-700 text-white font-medium text-sm p-2 rounded-md"}`}>Guide Video</button>
+        {
+          id && guideblog.type === "Guide Blog" &&
+          <button className="bg-black-700 text-white font-medium text-sm p-2 rounded-md">Guide Blog</button>
+        }
+        {
+          id && guideblog.type === "Guide Video" &&
+          <button className="bg-black-700 text-white font-medium text-sm p-2 rounded-md">Guide Video</button>
+        }
+        {
+          !id && 
+         <>
+          <button onClick={()=> setVideoType(false)} className={`${!videoType && "bg-black-700 text-white font-medium text-sm p-2 rounded-md"}`}>Guide Blog</button>
+          <button onClick={()=> setVideoType(true)} className={`${videoType && "bg-black-700 text-white font-medium text-sm p-2 rounded-md"}`}>Guide Video</button>
+         </>
+        }
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
         <Select
           label="Type"
+          placeholder="Seletct Type"
           name="type"
+          // defaultValue={!videoType && "Guide Blog"}
+          disabled={false}
           register={register}
           options={types}
           error={errors.type}
           />
-         {/* {
-          videoType ?
-          <Textinput
-          label="Type"
-          placeholder="Guide Blog"
-          disabled={true}
-          value={"Guide Blog"}
-          name="type"
-          register={register}
-          />
-          :
-          <Textinput
-          label="Type"
-          disabled={true}
-          name="type"
-          value={"Guide Video"}
-          placeholder="Guide Video"
-          register={register}
-          />
-         } */}
         <Textinput 
         label="Title" 
         placeholder="Title" 
@@ -167,7 +166,7 @@ const updateData = async data => {
           error={errors.category}
         />
         {
-          !videoType &&
+          videoType &&
           <Textinput 
           type="text"
           label="Enter Video Link" 
@@ -192,9 +191,18 @@ const updateData = async data => {
         </div>
         <div className="my-4">
         {
-          videoType && (
+          !videoType && id && guideblog.type === "Guide Blog" && (
             <TextEditor
-            label={'Description'}
+            label={'Blog'}
+            setContent={setContent}
+            value={id && guideblog.body}
+            />
+          )
+        }
+        {
+          !videoType && !id && (
+            <TextEditor
+            label={'Blog'}
             setContent={setContent}
             value={id && guideblog.body}
             />

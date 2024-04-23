@@ -24,9 +24,9 @@ function GuideList({type,category,search}) {
     }
     return true
   }
-  // const filterBySearch = (item) =>{
-  //   item.filter()
-  // }
+  const filterBySearch = (item) =>{
+    item.filter()
+  }
   if(loading){
     return(
       <Loading/>
@@ -37,7 +37,7 @@ function GuideList({type,category,search}) {
     <div className='grid grid-cols-1 md:grid-cols-2 justify-center gap-4 mx-6 xl:grid-cols-3'>
         {guideblogs
         // .filter(filterByType)
-        // .filter(filterByCategory)
+        .filter(filterByCategory)
         // .filter((item)=>item.title.toLowerCase().includes(search))
         .map((item,i)=>(
             <GuideItem item={item} key={i}/>
