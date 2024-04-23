@@ -4,6 +4,7 @@
 @tailwind utilities;
 
 .cardTitle {
+.cardTitle {
   @apply sm:text-2xl text-xl font-bold mb-2 hidden sm:block;
 }
 .filterBtn {
