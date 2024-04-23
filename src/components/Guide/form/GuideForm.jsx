@@ -80,14 +80,13 @@ const onSubmit = async data => {
     console.log(data)
   }
 };
-const types = [
+const blogtype = [
   {
-    
-      label: "Guide Blog",
-      value: "Guide Blog",
-   
+    label: "Guide Blog",
+    value: "Guide Blog",
   }
-  ,
+]
+const videotype = [
   {
     label: "Guide Video",
     value: "Guide Video",
@@ -120,25 +119,28 @@ const updateData = async data => {
 };
   return (
     <div>
-      <div className="flex gap-4 my-4">
-        {
-          id && guideblog.type === "Guide Blog" &&
-          <button className="bg-black-700 text-white font-medium text-sm p-2 rounded-md">Guide Blog</button>
-        }
-        {
-          id && guideblog.type === "Guide Video" &&
-          <button className="bg-black-700 text-white font-medium text-sm p-2 rounded-md">Guide Video</button>
-        }
         {
           !id && 
-         <>
+      <div className="flex gap-4 my-4">
           <button onClick={()=> setVideoType(false)} className={`${!videoType && "bg-black-700 text-white font-medium text-sm p-2 rounded-md"}`}>Guide Blog</button>
           <button onClick={()=> setVideoType(true)} className={`${videoType && "bg-black-700 text-white font-medium text-sm p-2 rounded-md"}`}>Guide Video</button>
-         </>
-        }
       </div>
+        }
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
+        {
+          !videoType ?
+          <Select
+          label="Type"
+          placeholder="Seletct Type"
+          name="type"
+          // defaultValue={!videoType && "Guide Blog"}
+          disabled={false}
+          register={register}
+          options={blogtype}
+          error={errors.type}
+          />
+          :
         <Select
           label="Type"
           placeholder="Seletct Type"
@@ -146,9 +148,10 @@ const updateData = async data => {
           // defaultValue={!videoType && "Guide Blog"}
           disabled={false}
           register={register}
-          options={types}
+          options={videotype}
           error={errors.type}
           />
+        }
         <Textinput 
         label="Title" 
         placeholder="Title" 
@@ -166,7 +169,7 @@ const updateData = async data => {
           error={errors.category}
         />
         {
-          videoType &&
+          !videoType &&
           <Textinput 
           type="text"
           label="Enter Video Link" 
