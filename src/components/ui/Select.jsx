@@ -1,5 +1,5 @@
-import React, { Fragment } from "react";
 import Icon from "@/components/ui/Icon";
+import { Fragment } from "react";
 const Select = ({
   label,
   placeholder = "Select Option",
@@ -59,7 +59,7 @@ const Select = ({
             size={size}
             defaultValue={defaultValue}
           >
-            <option value="" disabled>
+            <option value="">
               {placeholder}
             </option>
             {options.map((option, i) => (

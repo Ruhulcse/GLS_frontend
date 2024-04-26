@@ -7,10 +7,11 @@ import GlobalFilter from '@/components/shared/TableFilter/GlobalFilter';
 import Card from '@/components/ui/Card';
 import Icon from '@/components/ui/Icon';
 import Tooltip from '@/components/ui/Tooltip';
-import useToast from '@/hooks/useToast';
-import { useGetBlogsQuery, useRemoveBlogMutation } from '@/store/api/blogs/blogsApi';
-import { dateTime } from '@/util/helpers';
+import { getAllBlogs } from '@/store/api/blog/blogSlice';
+import fetchWrapper from '@/util/fetchWrapper';
+import { dateTime, swalConfirm } from '@/util/helpers';
 import React, { useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
 	useGlobalFilter,
@@ -19,78 +20,7 @@ import {
 	useSortBy,
 	useTable,
 } from 'react-table';
-const COLUMNS = [
-	{
-		Header: 'Blog Title',
-		accessor: 'title',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
-		},
-	},
-	{
-		Header: 'Category',
-		accessor: 'category',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
-		},
-	},
-	{
-		Header: 'Status',
-		accessor: 'status',
-		Cell: row => {
-			return <span>{row?.cell?.value}</span>;
-		},
-	},
-	{
-		Header: 'Published At',
-		accessor: 'createdAt',
-		Cell: row => {
-			return <span>{dateTime(row?.cell?.value)}</span>;
-		},
-	},
 
-	{
-		Header: 'Action',
-		accessor: 'action',
-		Cell: row => {
-			const id = row?.cell?.row?.original?._id
-			const [removeUser, {isSuccess}] = useRemoveBlogMutation()
-			const { successToast } = useToast();
-			useEffect(()=>{
-				if(isSuccess){
-					successToast('blog removed successfully')
-				}
-			},[isSuccess])
-			return (
-				<div className='flex space-x-3 rtl:space-x-reverse'>
-					<Tooltip content='View' placement='top' arrow animation='shift-away'>
-						<button className='action-btn' type='button'>
-							<Link to={`/blogs-details/${id}`}><Icon icon='heroicons:eye' /></Link>
-						</button>
-					</Tooltip>
-					<Tooltip content='Edit' placement='top' arrow animation='shift-away'>
-					<Link to={`/edit-blog/${id}`}>
-						<button className='action-btn' type='button'>
-							<Icon icon='heroicons:pencil-square' />
-						</button>
-						</Link>
-					</Tooltip>
-					<Tooltip
-						content='Delete'
-						placement='top'
-						arrow
-						animation='shift-away'
-						theme='danger'
-					>
-						<button className='action-btn' type='button' onClick={()=> removeUser(id)}>
-							<Icon icon='heroicons:trash' />
-						</button>
-					</Tooltip>
-				</div>
-			);
-		},
-	},
-];
 
 const IndeterminateCheckbox = React.forwardRef(
 	({ indeterminate, ...rest }, ref) => {
@@ -115,13 +45,106 @@ const IndeterminateCheckbox = React.forwardRef(
 );
 
 const BlogList = ({ title = 'Blogs List' }) => {
+	const COLUMNS = [
+		{
+			Header: 'Blog Title',
+			accessor: 'title',
+			Cell: row => {
+				return <span>{row?.cell?.value}</span>;
+			},
+		},
+		{
+			Header: 'Category',
+			accessor: 'category',
+			Cell: row => {
+				return <span>{row?.cell?.value}</span>;
+			},
+		},
+		{
+			Header: 'Status',
+			accessor: 'status',
+			Cell: row => {
+				return <span>{row?.cell?.value}</span>;
+			},
+		},
+		{
+			Header: 'Published At',
+			accessor: 'createdAt',
+			Cell: row => {
+				return <span>{dateTime(row?.cell?.value)}</span>;
+			},
+		},
+	
+		{
+			Header: 'Action',
+			accessor: 'action',
+			Cell:({ row }) => {
+				return (
+					<div className='flex space-x-3 rtl:space-x-reverse'>
+						<Tooltip content='View' placement='top' arrow animation='shift-away'>
+						<Link to={`/blogs-details/${row.original?._id}`}>
+							<button className='action-btn' type='button'>
+								<Icon icon='heroicons:eye' />
+							</button>
+							</Link>
+						</Tooltip>
+						<Tooltip content='Edit' placement='top' arrow animation='shift-away'>
+						<Link to={`/blog/edit-blog/${row.original?._id}`}>
+							<button className='action-btn' type='button'>
+								<Icon icon='heroicons:pencil-square' />
+							</button>
+							</Link>
+						</Tooltip>
+						<Tooltip
+							content='Delete'
+							placement='top'
+							arrow
+							animation='shift-away'
+							theme='danger'
+						>
+							<button className='action-btn' type='button' onClick={() => deleteShipment(row.original?._id)}>
+								<Icon icon='heroicons:trash' />
+							</button>
+						</Tooltip>
+					</div>
+				);
+			},
+		},
+	];
 	const columns = useMemo(() => COLUMNS, []);
-	const { data, isLoading } = useGetBlogsQuery()
-	const blogs = data?.data
+	const dispatch = useDispatch();
+	const { blogs, loading } = useSelector(state => state.blogs);
+	useEffect(() => {
+		dispatch(getAllBlogs());
+	}, [dispatch]);
+
+	const deleteShipment = async id => {
+		try {
+			swalConfirm(
+				'Are you sure you want to delete this blog?',
+				'Are you sure  ?',
+				'Yes, Delete'
+			).then(async result => {
+				if (result.isConfirmed) {
+					try {
+						const response = await fetchWrapper.delete(`blogs/${id}`);
+						if (response.status === 200) {
+							dispatch(getAllBlogs());
+							swalSuccess('Shipment deleted successfully');
+						}
+					} catch (error) {
+						swalError(error);
+					}
+				}
+			});
+		} catch (error) {
+			swalError(error);
+		}
+	};
 	const tableInstance = useTable(
 		{
 			columns,
-		    data:blogs,
+		    data:blogs
 		},
 
 		useGlobalFilter,
@@ -169,7 +192,7 @@ const BlogList = ({ title = 'Blogs List' }) => {
 
 	const { globalFilter, pageIndex, pageSize } = state;
 
-	if (isLoading) {
+	if (loading) {
 		return <Loading />;
 	}
 

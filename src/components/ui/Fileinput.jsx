@@ -1,9 +1,9 @@
-import React from "react";
 
 const Fileinput = ({
   name,
   label = "Browse",
   onChange,
+  type,
   placeholder = "Choose a file or drop it here...",
   multiple,
   preview,
@@ -18,7 +18,7 @@ const Fileinput = ({
       <div className="filegroup">
         <label>
           <input
-            type="file"
+            type={type}
             onChange={onChange}
             className="bg-red-400 w-full hidden"
             name={name}

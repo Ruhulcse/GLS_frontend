@@ -10,13 +10,13 @@ import "../src/assets/scss/app.scss";
 import App from './App.jsx';
 import './index.css';
 import store from './store';
-import { blogsApi } from './store/api/blogs/blogsApi.js';
+// import { blogsApi } from './store/api/blogs/blogsApi.js';
 
 Aos.init({
 	duration: 1500,
 });
 
-store.dispatch(blogsApi.endpoints.getBlogs.initiate());
+// store.dispatch(blogsApi.endpoints.getBlogs.initiate());
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<React.StrictMode>

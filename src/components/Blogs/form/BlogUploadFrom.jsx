@@ -1,111 +1,162 @@
-import useToast from '@/hooks/useToast';
-import { usePostBlogMutation } from '@/store/api/blogs/blogsApi';
-import { Jodit } from 'jodit-react';
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import Fileinput from "@/components/ui/Fileinput";
+import Select from "@/components/ui/Select";
+import Textinput from "@/components/ui/Textinput";
+import useToast from "@/hooks/useToast";
+import { getBlog } from "@/store/api/blogs/blogsSlice";
+import fetchWrapper from "@/util/fetchWrapper";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Jodit } from "jodit-react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import * as yup from "yup";
 import TextEditor from "./TextEditor";
-
+const category = [
+  {
+    label: "Shipper",
+    value: "Shipper",
+  },
+  {
+    label: "Carrier",
+    value: "Carrier",
+  },
+  {
+    label: "Broker",
+    value: "Broker",
+  },
+];
+const FormValidationSchema = yup
+  .object({
+    title: yup.string().required(),
+    category: yup.string().required(),
+  })
+  .required();
 const BlogUploadForm = () => {
-  const [addBlog, { isSuccess,isError, error}] = usePostBlogMutation()
-  const [title, setTitle] = useState('')
-  const [category, setCategory] = useState('')
-  const [image, setImage] = useState(null)
-  const [content, setContent] = useState('')
+  const [title, setTitle] = useState("");
+  const [categorye, setCategory] = useState("");
+  const [image, setImage] = useState(null);
+  const [content, setContent] = useState("");
   const description = Jodit.modules.Helpers.stripTags(content);
-  const navigate = useNavigate()
-  const { errorToast, successToast } = useToast();
-  const toBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let base64Data;
-    if (image) {
-      base64Data = await toBase64(image);
-    }
-    const payload = {
-      title,
-      category,
-      body:description,
-      image:base64Data
-    }
-     if(payload){
-      addBlog(payload)
-      successToast("Blog Upload Successfully")
-      navigate("/blogs")
-     }
-     if(isError){
-       errorToast(error)
-      }
-};
+ 
+  const { id } = useParams();
+	const { blog } = useSelector(state => state.blog);
+	const dispatch = useDispatch();
+	const { errorToast, successToast } = useToast();
+	const navigate = useNavigate();
+	const {
+		register,
+		control,
+		formState: { errors },
+		handleSubmit,
+		reset,
+	} = useForm({
+		resolver: yupResolver(FormValidationSchema),
+		mode: 'all',
+		// reValidateMode: 'onChange',
+	});
 
+  const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+  const uplpadImage = (e) => {
+      setImage(e.target.files[0], false);
+    };
+
+	useEffect(() => {
+		if (id) {
+			dispatch(getBlog({ id }));
+		}
+	}, [id, dispatch]);
+
+	useEffect(() => {
+		if (id && blog) {
+			reset(prev => ({
+				...prev,
+				...blog,
+			}));
+		}
+	}, [id, reset, blog]);
+
+	const onSubmit = async data => {
+		if (id) {
+			updateData(data);   
+		} else {
+			storeData(data);
+		}
+	};
+
+	const storeData = async data => {
+		try {
+      const base64Data = await toBase64(image);
+      const payload = {...data, body:description, image:base64Data}
+			const response = await fetchWrapper.post(`blogs/create`, payload);
+			if (response) {
+				successToast('Blog saved successfully!');
+				navigate('/blogs');
+			}
+		} catch (error) {
+			errorToast(error.message);
+		}
+	};
+	const updateData = async data => {
+		try {
+      let base64Data
+      if(image){
+      base64Data = await toBase64(image);
+      }
+      const payload = {...data, body:description, image:base64Data}
+			const response = await fetchWrapper.put(`blogs/${id}`, payload);
+			if (response) {
+				successToast('Update Success!');
+				navigate('/blogs');
+			}
+		} catch (error) {
+			errorToast(error.message);
+		}
+	};
   return (
     <div>
-       <form
-        onSubmit={handleSubmit}
-        
-      >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="lg:grid-cols-2 grid gap-5 grid-cols-1 my-4">
-
-        <div>
-          <label
-            for="title"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Title
-          </label>
-          <input
+          <Textinput
             type="text"
-            id="title"
-            name="title"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            label="Title"
             placeholder="Title"
-            required
-            onChange={(e)=> setTitle(e.target.value)}
+            name="title"
+            register={register}
+            error={errors.title}
+          />
+          <Select
+            label="Select Category"
+            type="text"
+            name="category"
+            register={register}
+            options={category}
+            error={errors.category}
+          />
+          <Fileinput
+            type="file"
+            label="Upload Image"
+            placeholder="Choose your file"
+            onChange={uplpadImage}
+            name="image"
+            error={errors.image}
+            selectedFile={image}
           />
         </div>
-        <div>
-        <label
-            for="category"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Select Category
-          </label>
-          <select value={category} onChange={(e)=> setCategory(e.target.value)} className="select select-bordered w-full max-w-xs">
-            <option disabled selected>
-            Select Category
-            </option>
-            <option value="Shipment">Shipment</option>
-            <option value="Carrier">Carrier</option>
-          </select>
-        </div>
-        <div>
-        <label
-            for="upload image"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Upload Image
-          </label>
-          <input type="file" required onChange={(e)=> setImage(e.target.files[0], false)} />
-        </div>
-        </div>
-        <div className="mb-4">
-        <TextEditor
-          label="Content"
-          name="content"
-          setContent={setContent}
+        <TextEditor 
+        label="Content" 
+        setContent={setContent}
         />
-        </div>
-        <div className="lg:col-span-2 col-span-1">
-          <div className="ltr:text-right rtl:text-left">
-            <button className="btn btn-dark  text-center" type="submit">
-              Submit
-            </button>
-          </div>
+        <div className="ltr:text-right rtl:text-left my-4">
+          <button type="submit" className="btn  text-center">
+            Submit
+          </button>
         </div>
       </form>
     </div>
