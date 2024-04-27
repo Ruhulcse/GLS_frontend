@@ -152,6 +152,7 @@ const BlogUploadForm = () => {
         <TextEditor 
         label="Content" 
         setContent={setContent}
+        value={id && blog.body}
         />
         <div className="ltr:text-right rtl:text-left my-4">
           <button type="submit" className="btn  text-center">

@@ -1,4 +1,5 @@
 import TextEditor from "@/components/Blogs/form/TextEditor";
+import Fileinput from "@/components/ui/Fileinput";
 import Select from "@/components/ui/Select";
 import Textinput from "@/components/ui/Textinput";
 import useToast from "@/hooks/useToast";
@@ -32,12 +33,12 @@ const FormValidationSchema = yup
 		title: yup.string().required(),
 		category: yup.string().required(),
 		video: yup.string().optional(),
-		type: yup.string().required(),
 	})
 	.required();
 const GuideForm = () => {
   const [tags, setTags] = useState([]);
-  const [videoType, setVideoType] = useState(false);
+  const [videoType, setVideoType] = useState(true);
+  const [image, setImage] = useState(null);
   const [content, setContent] = useState('');
   const description = Jodit.modules.Helpers.stripTags(content);
   const { errorToast, successToast } = useToast();
@@ -57,6 +58,19 @@ const GuideForm = () => {
     // reValidateMode: 'onChange',
 });
 
+
+const toBase64 = (file) =>
+new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = (error) => reject(error);
+});
+
+const uplpadImage = (e) => {
+  setImage(e.target.files[0], false);
+};
+
 useEffect(() => {
   if (id) {
     dispatch(getGuideBlog({ id }));
@@ -71,31 +85,21 @@ useEffect(() => {
     }));
   }
 }, [id, reset, guideblog]);
-
+const type = !videoType ? 'Guide Blog' : 'Guide Video'
 const onSubmit = async data => {
   if (id) {
     updateData(data);
   } else {
     storeData(data);
-    console.log(data)
   }
 };
-const types = [
-  {
-    
-      label: "Guide Blog",
-      value: "Guide Blog",
-   
-  }
-  ,
-  {
-    label: "Guide Video",
-    value: "Guide Video",
-  },
-]
 const storeData = async data => {
   try {
-    const payload = { ...data, tags, body: description }
+    let base64Data
+    if(image){
+    base64Data = await toBase64(image);
+    }
+    const payload = { ...data, type, tags, body: description, image: base64Data }
     console.log(payload)
     const response = await fetchWrapper.post(`guide/create`, payload);
     if (response) {
@@ -104,11 +108,16 @@ const storeData = async data => {
     }
   } catch (error) {
     errorToast(error.message);
+    console.log(error)
   }
 };
 const updateData = async data => {
   try {
-    const payload = { ...data, tags, body: description }
+    let base64Data
+    if(image){
+    base64Data = await toBase64(image);
+    }
+    const payload = { ...data, type, tags, body: description, image:base64Data }
     const response = await fetchWrapper.put(`guide/${id}`, payload);
     if (response) {
       successToast('Update Success!');
@@ -120,35 +129,15 @@ const updateData = async data => {
 };
   return (
     <div>
-      <div className="flex gap-4 my-4">
-        {
-          id && guideblog.type === "Guide Blog" &&
-          <button className="bg-black-700 text-white font-medium text-sm p-2 rounded-md">Guide Blog</button>
-        }
-        {
-          id && guideblog.type === "Guide Video" &&
-          <button className="bg-black-700 text-white font-medium text-sm p-2 rounded-md">Guide Video</button>
-        }
         {
           !id && 
-         <>
-          <button onClick={()=> setVideoType(false)} className={`${!videoType && "bg-black-700 text-white font-medium text-sm p-2 rounded-md"}`}>Guide Blog</button>
-          <button onClick={()=> setVideoType(true)} className={`${videoType && "bg-black-700 text-white font-medium text-sm p-2 rounded-md"}`}>Guide Video</button>
-         </>
-        }
+      <div className="flex gap-4 my-4">
+          <button onClick={()=> setVideoType(!videoType)} className={`${videoType && "bg-black-700 text-white font-medium text-sm p-2 rounded-md"}`}>Video</button>
+          <button onClick={()=> setVideoType(!videoType)} className={`${!videoType && "bg-black-700 text-white font-medium text-sm p-2 rounded-md"}`}>Blog</button>
       </div>
+        }
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="lg:grid-cols-2 grid gap-5 grid-cols-1">
-        <Select
-          label="Type"
-          placeholder="Seletct Type"
-          name="type"
-          // defaultValue={!videoType && "Guide Blog"}
-          disabled={false}
-          register={register}
-          options={types}
-          error={errors.type}
-          />
         <Textinput 
         label="Title" 
         placeholder="Title" 
@@ -166,7 +155,18 @@ const updateData = async data => {
           error={errors.category}
         />
         {
-          videoType &&
+          videoType && !id &&
+          <Textinput 
+          type="text"
+          label="Enter Video Link" 
+          placeholder="Enter Video Link" 
+          name="video"
+          register={register}
+          error={errors.video}
+          />
+        }
+        {
+          id && guideblog.type === "Guide Video" &&
           <Textinput 
           type="text"
           label="Enter Video Link" 
@@ -188,10 +188,34 @@ const updateData = async data => {
             error={errors.tags}
           />
         </div>
+        {
+          id && guideblog.type === 'Guide Blog' &&
+          <Fileinput
+          type="file"
+          label="Upload Image"
+          placeholder="Choose your file"
+          onChange={uplpadImage}
+          name="image"
+          selectedFile={image}
+          className="mt-8"
+        />
+        }
+        {
+          !videoType &&
+          <Fileinput
+          type="file"
+          label="Upload Image"
+          placeholder="Choose your file"
+          onChange={uplpadImage}
+          name="image"
+          selectedFile={image}
+          className="mt-8"
+        />
+        }
         </div>
         <div className="my-4">
         {
-          !videoType && id && guideblog.type === "Guide Blog" && (
+          videoType && id && guideblog.type === "Guide Blog" && (
             <TextEditor
             label={'Blog'}
             setContent={setContent}

@@ -11,7 +11,6 @@ function GuideList({ type, category, search }) {
     dispatch(getAllGuideBlogs());
   }, [dispatch]);
   const filterByType = (item) => {
-    //const { type } = guideblogs;
     if (type.length > 0) {
       return item.type === type;
     }
