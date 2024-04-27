@@ -1,6 +1,6 @@
-import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useState } from "react";
 import Icon from "@/components/ui/Icon";
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useState } from "react";
 
 const Modal = ({
   activeModal,
