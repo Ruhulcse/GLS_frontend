@@ -1,5 +1,4 @@
-import BlogsList from "@/components/Blogs/Blogs-list"
-
+import BlogsList from "@/components/Blogs/Blogs-list";
 const BlogsListPage = () => {
   return (
     <>
