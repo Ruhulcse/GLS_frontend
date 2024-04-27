@@ -33,6 +33,7 @@ import Load from '@/pages/Product/Load';
 import ProductFinder from '@/pages/Product/ProductFinder';
 import AgentListPage from '@/pages/admin/agents/agent-list';
 import BidListPage from '@/pages/admin/bids/bids-list';
+import NotificationsPage from '@/pages/admin/notifications';
 import ProfilePage from '@/pages/admin/profile';
 import ShipmentViewPage from '@/pages/admin/shipments/shipment-view';
 import UserListPage from '@/pages/admin/users/user-list';
@@ -179,6 +180,10 @@ export const router = createBrowserRouter([
 			{
 				path: '/users',
 				element: <UserListPage />,
+			},
+			{
+				path: '/notifications',
+				element: <NotificationsPage />,
 			},
 			{
 				path: '/agents',
