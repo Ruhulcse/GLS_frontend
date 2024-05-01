@@ -113,8 +113,8 @@ const IndeterminateCheckbox = React.forwardRef(
 );
 
 const ShipmentBidsGrid = ({ title = 'Shipment Bids' }) => {
-	const columns = useMemo(() => COLUMNS, []);
 	const { bids } = useSelector(state => state.shipment.shipment);
+	const columns = useMemo(() => COLUMNS, [bids]);
 
 	const tableInstance = useTable(
 		{
