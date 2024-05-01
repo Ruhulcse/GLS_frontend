@@ -33,8 +33,6 @@ const FormValidationSchema = yup
   })
   .required();
 const BlogUploadForm = () => {
-  const [title, setTitle] = useState("");
-  const [categorye, setCategory] = useState("");
   const [image, setImage] = useState(null);
   const [content, setContent] = useState("");
   const description = Jodit.modules.Helpers.stripTags(content);
