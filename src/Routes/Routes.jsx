@@ -38,6 +38,7 @@ import NotificationsPage from '@/pages/admin/notifications';
 import ProfilePage from '@/pages/admin/profile';
 import ShipmentViewPage from '@/pages/admin/shipments/shipment-view';
 import UserListPage from '@/pages/admin/users/user-list';
+import ChatPage from '@/pages/admin/chat';
 
 const ShipmentFormPage = lazy(() =>
 	import('@/pages/admin/shipments/shipment-form')
@@ -227,6 +228,14 @@ export const router = createBrowserRouter([
 			{
 				path: '/shipment/edit/:id',
 				element: <ShipmentFormPage />,
+			},
+			{
+				path: '/chat',
+				element: <ChatPage />,
+			},
+			{
+				path: '/chat/:id',
+				element: <ChatPage />,
 			},
 		],
 	},

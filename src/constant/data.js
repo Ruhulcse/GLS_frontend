@@ -13,7 +13,7 @@ export const menuItems = [
     title: "Shippers",
     icon: "heroicons-outline:truck",
     link: "#",
-    isHide: true,
+    // isHide: true,
     child: [
       {
         childtitle: "Shipments",

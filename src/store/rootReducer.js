@@ -9,10 +9,11 @@ import shipments from './api/shipments/shipmentsSlice';
 import user from './api/user/userSlice';
 import users from './api/users/usersSlice';
 import layout from './layout';
-
+import chat from "../pages/admin/chat/store";
 const rootReducer = {
 	layout,
 	users,
+	chat,
 	user,
 	blogs,
 	blog,
