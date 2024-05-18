@@ -4,16 +4,15 @@ import { Link } from "react-router-dom";
 import Modal from "../ui/Modal";
 
 function GuideItem({ item }) {
-  console.log(item.tags);
   const publishDate = moment(item.createdAt).format("MMM Do YY");
-
+  const tagColor = ["bg-pink-500", "bg-blue-500", "bg-purple-500"];
   return (
     <div>
       {item.type === "Guide Video" ? (
-        <div className="h-auto min-h-48 w-auto min-w-80 rounded-md bg-white shadow-md">
-         <div className="p-5 space-y-4">
+        <div className="h-[30rem] w-auto min-w-80 rounded-md bg-white shadow-md">
+         <div className="p-5 space-y-6">
          <iframe
-            className="w-full h-60 rounded-md relative z-50"
+            className="w-full h-auto rounded-md relative z-50"
             src={item.video}
             title="YouTube video player"
             frameborder="0"
@@ -22,9 +21,9 @@ function GuideItem({ item }) {
           ></iframe>
           <div className="space-y-2">
               <div className="flex gap-2">
-                {item.tags.map((tag, i) => (
+                {item.tags.slice(0,3).map((tag, i) => (
                   <button
-                    className="bg-pink-500 text-xs text-slate-200 font-medium tracking-wide rounded-md px-2 py-1"
+                    className={`${tagColor[i]} text-xs text-slate-200 font-medium tracking-wide rounded-md px-2 py-1`}
                     key={i}
                   >
                     {tag}
@@ -35,7 +34,7 @@ function GuideItem({ item }) {
                 Published {publishDate}
               </p>
             </div>
-          <p className="text-base text-black-800 font-medium">{item.title}</p>
+          <p className="text-base text-black-800 font-medium">{sliceText(item?.title, 60)}</p>
             <div className="flex justify-between">
               <div className="flex gap-2">
                 <svg
@@ -53,7 +52,7 @@ function GuideItem({ item }) {
                   />
                 </svg>
               <p className="text-xs font-medium tracking-wide">
-                Owner
+               {item?.creator}
               </p>
               </div>
               <span className="text-xs font-medium tracking-wide">{item?.category}</span>
@@ -77,7 +76,7 @@ function GuideItem({ item }) {
          </div>
         </div>
       ) : (
-        <div className="h-auto min-h-48 w-auto min-w-80 rounded-md bg-white shadow-md">
+        <div className="h-[30rem] w-auto min-w-80 rounded-md bg-white shadow-md">
           <div className="p-5 space-y-4">
             <img
               src={item?.id ? item?.image : "https://static.vecteezy.com/system/resources/thumbnails/008/344/623/small/aerial-side-view-of-cargo-ship-carrying-container-and-running-on-blue-sea-for-export-goods-from-cargo-yard-port-to-custom-ocean-concept-technology-transportation-customs-clearance-photo.jpg"}
@@ -86,7 +85,7 @@ function GuideItem({ item }) {
             />
             <div className="space-y-2">
               <div className="flex gap-2">
-                {item.tags.map((tag, i) => (
+                {item.tags.slice(0,1).map((tag, i) => (
                   <button
                     className="bg-pink-500 text-xs text-slate-200 font-medium tracking-wide rounded-md px-2 py-1"
                     key={i}
@@ -116,13 +115,13 @@ function GuideItem({ item }) {
                   />
                 </svg>
               <p className="text-xs font-medium tracking-wide">
-                Owner
+                {item?.creator}
               </p>
               </div>
               <span className="text-xs font-medium tracking-wide">{item?.category}</span>
             </div>
             <h1 className="text-xl text-black-500 font-medium">
-              {item?.title}
+            {sliceText(item?.title, 60)}
             </h1>
             <p className="text-sm font-normal tracking-tight leading-normal text-black-500">{sliceText(item?.body, 100)}</p>
            
