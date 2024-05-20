@@ -83,6 +83,11 @@ export const menuItems = [
     icon: "heroicons-outline:tag",
     link: "bids",
   },
+  {
+    title: "My Plans",
+    icon: "heroicons-outline:banknotes",
+    link: "plans",
+  },
 ];
 
 export const topMenu = [
