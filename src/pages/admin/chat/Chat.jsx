@@ -134,7 +134,7 @@ const Chat = ({ firstId, secondId }) => {
 					sender: 'me',
 					img: image1,
 					receiverId: id,
-					time: moment(),
+					// time: moment(),
 				})
 			);
 		}
@@ -162,7 +162,7 @@ const Chat = ({ firstId, secondId }) => {
 					sender: 'them',
 					img: image1,
 					receiverId: message.senderId,
-					time: moment(),
+					// time: moment(),
 				})
 			);
 		});

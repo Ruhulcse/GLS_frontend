@@ -74,7 +74,7 @@ const ChatPage = () => {
 					sender: 'them',
 					// img: image1,
 					receiverId: message.senderId,
-					time: moment(),
+					// time: moment(),
 				})
 			);
 		});
