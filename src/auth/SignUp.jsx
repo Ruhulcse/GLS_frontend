@@ -1,14 +1,14 @@
 import { car } from "@/assets";
+import Button from "@/components/ui/Button";
+import FormGroup from "@/components/ui/FormGroup";
+import Select from "@/components/ui/Select";
 import Textinput from "@/components/ui/Textinput";
+import { useRegisterUserMutation } from '@/store/api/auth/authApiSlice';
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect, useState } from "react";
-import * as yup from "yup";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import Select from "@/components/ui/Select";
-import Button from "@/components/ui/Button";
-import {useRegisterUserMutation} from '@/store/api/auth/authApiSlice'
-import FormGroup from "@/components/ui/FormGroup";
+import * as yup from "yup";
 const schema = yup.object({
     firstName: yup.string().label("First Name").required(),
     lastName: yup.string().label("Last Name").required(),
@@ -16,9 +16,7 @@ const schema = yup.object({
     phoneNumber: yup.string().required(),
     password: yup.string().required(),
     confirmPassword: yup
-      .string()
-  
-      .oneOf([yup.ref("password"), null], "Passwords must match!"),
+      .string().oneOf([yup.ref("password"), null], "Passwords must match!"),
     userType: yup
       .string()
       .oneOf(["agent", "carrier", "broker", "shipper"])

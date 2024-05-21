@@ -13,7 +13,7 @@ export const menuItems = [
     title: "Shippers",
     icon: "heroicons-outline:truck",
     link: "#",
-    isHide: true,
+    // isHide: true,
     child: [
       {
         childtitle: "Shipments",
@@ -82,6 +82,11 @@ export const menuItems = [
     title: "My Bids",
     icon: "heroicons-outline:tag",
     link: "bids",
+  },
+  {
+    title: "My Plans",
+    icon: "heroicons-outline:banknotes",
+    link: "plans",
   },
 ];
 

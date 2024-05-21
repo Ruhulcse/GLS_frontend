@@ -19,9 +19,11 @@ import fetchWrapper from '@/util/fetchWrapper';
 import { dateTime } from '@/util/helpers';
 import { Menu } from '@headlessui/react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Loading from '../Loading';
 import GlobalFilter from '../shared/TableFilter/GlobalFilter';
 import Dropdown from '../ui/Dropdown';
+import Tooltip from '../ui/Tooltip';
 
 const UserList = ({ title = 'User List' }) => {
 	const { errorToast, successToast } = useToast();
@@ -158,7 +160,7 @@ const UserList = ({ title = 'User List' }) => {
 				);
 				return (
 					row.cell?.row?.original?._id !== user_id && (
-						<div>
+						<div className='flex space-x-3 rtl:space-x-reverse'>
 							<Dropdown
 								classMenuItems='right-0 w-[140px] top-[110%] '
 								label={
@@ -190,6 +192,19 @@ const UserList = ({ title = 'User List' }) => {
 									))}
 								</div>
 							</Dropdown>
+
+							<Tooltip
+								content='Chat'
+								placement='top'
+								arrow
+								animation='shift-away'
+							>
+								<Link to={`/chat/${row.cell?.row?.original?._id}`}>
+									<button className='action-btn' type='button'>
+										<Icon icon='heroicons:chat-bubble-oval-left-ellipsis' />
+									</button>
+								</Link>
+							</Tooltip>
 						</div>
 					)
 				);

@@ -4,9 +4,9 @@ import Select from "@/components/ui/Select";
 import Textinput from "@/components/ui/Textinput";
 import useToast from "@/hooks/useToast";
 import { getGuideBlog } from "@/store/api/guideblog/guidesblogSlice";
+import { getUser } from "@/store/api/user/userSlice";
 import fetchWrapper from "@/util/fetchWrapper";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Jodit } from "jodit-react";
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from "react-redux";
@@ -28,24 +28,33 @@ const categories = [
   },
 ];
 
-const FormValidationSchema = yup
-	.object({
-		title: yup.string().required(),
-		category: yup.string().required(),
-		video: yup.string().optional(),
-	})
-	.required();
 const GuideForm = () => {
   const [tags, setTags] = useState([]);
   const [videoType, setVideoType] = useState(true);
   const [image, setImage] = useState(null);
   const [content, setContent] = useState('');
-  const description = Jodit.modules.Helpers.stripTags(content);
   const { errorToast, successToast } = useToast();
   const navigate = useNavigate()
   const { id } = useParams();
   const dispatch = useDispatch();
 	const { guideblog } = useSelector(state => state.guideblog);
+  const { user } = useSelector(state => state.user);
+  const { firstName } = user
+	const { user_id } = useSelector(state => state.auth);
+  const tagsArray = guideblog?.tags
+  const result = tagsArray?.map((tag) => tag)
+	useEffect(() => {
+		dispatch(getUser({ user_id }));
+	}, [dispatch]);
+
+  const FormValidationSchema = yup
+	.object({
+		title: yup.string().required(),
+		category: yup.string().required(),
+		video: videoType && yup.string().required(),
+	})
+	.required();
+
   const {
     register,
     control,
@@ -99,7 +108,7 @@ const storeData = async data => {
     if(image){
     base64Data = await toBase64(image);
     }
-    const payload = { ...data, type, tags, body: description, image: base64Data }
+    const payload = { ...data, type, tags, body: content, image: base64Data }
     console.log(payload)
     const response = await fetchWrapper.post(`guide/create`, payload);
     if (response) {
@@ -117,7 +126,7 @@ const updateData = async data => {
     if(image){
     base64Data = await toBase64(image);
     }
-    const payload = { ...data, type, tags, body: description, image:base64Data }
+    const payload = { ...data, type, tags, body: content, image:base64Data }
     const response = await fetchWrapper.put(`guide/${id}`, payload);
     if (response) {
       successToast('Update Success!');
@@ -179,13 +188,11 @@ const updateData = async data => {
         <div>
           <label htmlFor="id" className="tag-label">Add Tags</label>
           <TagsInput
-            value={tags}
-            defaultValue={id && guideblog.tags}
+            value={id ? result : tags}
             onChange={setTags}
             name="tags"
             placeHolder="Enter Tags"
             className="h-20"
-            error={errors.tags}
           />
         </div>
         {
@@ -209,6 +216,7 @@ const updateData = async data => {
           onChange={uplpadImage}
           name="image"
           selectedFile={image}
+          error={errors.image}
           className="mt-8"
         />
         }
