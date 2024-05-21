@@ -7,23 +7,18 @@ import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { setUser } from "@/store/api/auth/authSlice";
-import { getUser } from "@/store/api/user/userSlice";
-import useToast from "@/hooks/useToast";
-import { useLoginMutation } from "@/store/api/auth/authApiSlice";
+import { useForgetPassMutation } from "@/store/api/auth/authApiSlice";
+import { useEffect, useState } from "react";
+
 const schema = yup
   .object({
     email: yup.string().email("Invalid email").required("Email is Required"),
-    password: yup.string().required("Password is Required"),
   })
   .required();
-function Login() {
-  const dispatch = useDispatch();
 
-  const { errorToast } = useToast();
-
-  const [login, { isLoading, data, error }] = useLoginMutation();
-
+function ForgetPassword() {
+  const [state,setState] = useState(false)
+  console.log(state);
   const {
     register,
     formState: { errors },
@@ -32,32 +27,21 @@ function Login() {
     resolver: yupResolver(schema),
     mode: "all",
   });
-
-  const navigate = useNavigate();
+  // useEffect(()=>{
+  //   setState(false)
+  // },[state])
+  const [forgetPass, { isLoading, data, error }] = useForgetPassMutation();
 
   const onSubmit = async (data) => {
     try {
-      const userData = await login(data).unwrap();
-
-      dispatch(
-        setUser({
-          token: userData?.token,
-          user_id: userData?._id,
-        })
-      );
-      dispatch(getUser({ user_id: userData?._id }));
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({
-          accessToken: userData?.token,
-          user_id: userData?._id,
-        })
-      );
-      navigate("/dashboard");
-    } catch (error) {
-      errorToast(error.message);
-    }
+      const email = await forgetPass(data).unwrap();
+      //console.log(email);
+      if(email) {
+        setState(true)
+      }
+    } catch (error) {}
   };
+
   return (
     <div className="h-[95vh] bg-gradient-to-tr to-[#ede8e8] from-[#f4c5c5]">
       <div className="flex justify-center items-center h-full">
@@ -97,7 +81,7 @@ function Login() {
                     Welcome to GLS
                   </div>
                   <div className="flex gap-3 items-center justify-center font-bold text-xl  py-6">
-                    Registration
+                    Forget Password
                   </div>
 
                   <div className="grid  grid-cols-1 ">
@@ -105,53 +89,27 @@ function Login() {
                       name="email"
                       label="email"
                       type="text"
-                      defaultValue="ruhul.cse123@gmail.com"
+                      defaultValue="faysalahmed.cse.98@gmail.com"
                       placeholder="Enter your email"
                       register={register}
                       error={errors.email}
                       className="w-[15rem]"
                       autoComplete="email"
                     />
-
-                    <Textinput
-                      name="password"
-                      label="password"
-                      type="password"
-                      defaultValue="test123"
-                      placeholder="Enter your password"
-                      register={register}
-                      error={errors.password}
-                      className="w-[15rem]"
-                      autoComplete="current-password"
-                    />
                   </div>
 
-                  <Button
-                    type="submit"
-                    text="Sign in"
-                    className="btn btn-dark block w-full text-center mt-4"
-                    isLoading={isLoading}
-                  />
-
-                <div className="flex justify-end">
-                <button
-                    className="font-bold mt-4 "
-                    onClick={() => navigate("/forgetPassword")}
-                  >
-                    Forget Password
-                  </button>
-                </div>
-                </div>
-                <div className="flex justify-between mb-4 mx-6 mt-[-12px] items-center">
-                  <div className="text-base text-blue-950 font-bold">
-                    Do you have an account?
-                  </div>
-                  <div
-                    className="text-xl font-bold cursor-pointer hover:text-black-500"
-                    onClick={() => navigate("/signUp")}
-                  >
-                    Sign In
-                  </div>
+                  {state?<Button
+                    type=""
+                    text="Go to mail"
+                    className="btn btn-dark block w-full text-center mt-4 disabled"
+                   // isLoading={isLoading}
+                   disabled={true}
+                  />:<Button
+                  type="submit"
+                  text="Send mail"
+                  className="btn btn-dark block w-full text-center mt-4"
+                  isLoading={isLoading}
+                />}
                 </div>
               </form>
             </div>
@@ -162,4 +120,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ForgetPassword;
