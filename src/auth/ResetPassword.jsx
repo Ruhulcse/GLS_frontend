@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import { useResetPassMutation } from "@/store/api/auth/authApiSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useToast from "@/hooks/useToast";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -29,6 +30,8 @@ function ResetPassword() {
   const id = query.get("token");
   const [token, setToken] = useState(id);
 
+  const {errorToast} = useToast()
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,7 +39,7 @@ function ResetPassword() {
   }, [id]);
 
   const [resetPassword, { error, isLoading }] = useResetPassMutation();
-  console.log("i am redux", error);
+
 
   const {
     register,
@@ -53,14 +56,14 @@ function ResetPassword() {
   }, [token, setValue]);
 
   const onSubmit = async (data) => {
-    console.log("Submitting data:", data);
+   
     try {
       const response = await resetPassword(data).unwrap();
       navigate("/login");
 
-      console.log("Response:", response);
+      
     } catch (err) {
-      console.log("Error onSubmit:", err);
+      errorToast(err.message)
     }
   };
 

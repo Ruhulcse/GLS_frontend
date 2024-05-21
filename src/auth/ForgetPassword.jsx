@@ -6,9 +6,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import { useForgetPassMutation } from "@/store/api/auth/authApiSlice";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
+import useToast from "@/hooks/useToast";
 
 const schema = yup
   .object({
@@ -18,7 +19,8 @@ const schema = yup
 
 function ForgetPassword() {
   const [state,setState] = useState(false)
-  console.log(state);
+  const {errorToast} = useToast()
+ 
   const {
     register,
     formState: { errors },
@@ -27,9 +29,7 @@ function ForgetPassword() {
     resolver: yupResolver(schema),
     mode: "all",
   });
-  // useEffect(()=>{
-  //   setState(false)
-  // },[state])
+  
   const [forgetPass, { isLoading, data, error }] = useForgetPassMutation();
 
   const onSubmit = async (data) => {
@@ -39,7 +39,9 @@ function ForgetPassword() {
       if(email) {
         setState(true)
       }
-    } catch (error) {}
+    } catch (error) {
+      errorToast(error.message)
+    }
   };
 
   return (
@@ -89,8 +91,8 @@ function ForgetPassword() {
                       name="email"
                       label="email"
                       type="text"
-                      defaultValue="faysalahmed.cse.98@gmail.com"
-                      placeholder="Enter your email"
+                      defaultValue=""
+                      placeholder="Enter email"
                       register={register}
                       error={errors.email}
                       className="w-[15rem]"
