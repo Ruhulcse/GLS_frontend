@@ -48,14 +48,6 @@ function SignUp() {
   } = useForm({
     resolver: yupResolver(schema),
     mode: "all",
-    defaultValues: {
-      firstName: "Testing",
-      lastName: "test",
-      email: "t@gmail.com",
-      password: "test12345",
-      confirmPassword: "test12345",
-      phoneNumber: "0123456",
-    },
   });
   const handleType = () => {
     if (user === "agent" || user === "") {
@@ -71,7 +63,8 @@ function SignUp() {
       await signUp(data).unwrap();
       navigate("/logIn");
     } catch (error) {
-      errorToast(error);
+      // errorToast(error);
+      console.log(error);
     }
   };
   return (
