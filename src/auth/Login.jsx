@@ -97,7 +97,7 @@ function Login() {
                     Welcome to GLS
                   </div>
                   <div className="flex gap-3 items-center justify-center font-bold text-xl  py-6">
-                    Registration
+                    Log In
                   </div>
 
                   <div className="grid  grid-cols-1 ">
@@ -144,13 +144,13 @@ function Login() {
                 </div>
                 <div className="flex justify-between mb-4 mx-6 mt-[-12px] items-center">
                   <div className="text-base text-blue-950 font-bold">
-                    Do you have an account?
+                    Don't have an account?
                   </div>
                   <div
                     className="text-xl font-bold cursor-pointer hover:text-black-500"
                     onClick={() => navigate("/signUp")}
                   >
-                    Sign In
+                    Sign Up
                   </div>
                 </div>
               </form>
