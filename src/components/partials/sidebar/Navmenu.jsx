@@ -1,12 +1,15 @@
+/* eslint-disable react/prop-types */
 import Icon from '@/components/ui/Icon';
 import useMobileMenu from '@/hooks/useMobileMenu';
+import { selectCurrentUserRole } from '@/store/api/auth/authSlice';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import Submenu from './Submenu';
 
 const Navmenu = ({ menus }) => {
 	const [activeSubmenu, setActiveSubmenu] = useState(null);
+	const userRole = useSelector(selectCurrentUserRole);
 
 	const toggleSubmenu = i => {
 		if (activeSubmenu === i) {
@@ -20,7 +23,6 @@ const Navmenu = ({ menus }) => {
 	const locationName = location.pathname.replace('/', '');
 	const [mobileMenu, setMobileMenu] = useMobileMenu();
 	const [activeMultiMenu, setMultiMenu] = useState(null);
-	const dispatch = useDispatch();
 
 	const toggleMultiMenu = j => {
 		if (activeMultiMenu === j) {
@@ -71,10 +73,14 @@ const Navmenu = ({ menus }) => {
 		}
 	}, [location]);
 
+	const canUserAccess = item => {
+		return item.canAccess?.includes(userRole);
+	};
+
 	return (
 		<>
 			<ul>
-				{menus.map((item, i) => (
+				{menus.filter(canUserAccess).map((item, i) => (
 					<li
 						key={i}
 						className={` single-sidebar-menu 
