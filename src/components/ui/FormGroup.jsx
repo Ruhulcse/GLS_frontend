@@ -34,15 +34,18 @@ const FormGroup = ({
 
 				{/* icon */}
 
-				<div className='flex text-xl absolute ltr:right-[14px] rtl:left-[14px] top-1/2 -translate-y-1/2  space-x-1 rtl:space-x-reverse'>
+				<div
+					style={{ right: '5px' }}
+					className="flex text-xl absolute ltr:right-[14px] rtl:left-[14px] top-1/2 -translate-y-1/2  space-x-1 rtl:space-x-reverse"
+				>
 					{error && (
-						<span className='text-danger-500'>
-							<Icon icon='heroicons-outline:information-circle' />
+						<span className="text-danger-500">
+							<Icon icon="heroicons-outline:information-circle" />
 						</span>
 					)}
 					{validate && (
-						<span className='text-success-500'>
-							<Icon icon='bi:check-lg' />
+						<span className="text-success-500">
+							<Icon icon="bi:check-lg" />
 						</span>
 					)}
 				</div>
@@ -72,7 +75,7 @@ const FormGroup = ({
 				</div>
 			)}
 			{/* only description */}
-			{description && <span className='input-description'>{description}</span>}
+			{description && <span className="input-description">{description}</span>}
 		</div>
 	);
 };
