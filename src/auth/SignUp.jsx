@@ -1,6 +1,7 @@
 import { car } from '@/assets';
 import Button from '@/components/ui/Button';
 import FormGroup from '@/components/ui/FormGroup';
+import PasswordStrengthIndicator from '@/components/ui/PasswordStrengthIndicator';
 import Select from '@/components/ui/Select';
 import Textinput from '@/components/ui/Textinput';
 import { useRegisterUserMutation } from '@/store/api/auth/authApiSlice';
@@ -23,7 +24,13 @@ function SignUp() {
 			lastName: yup.string().label('Last Name').required(),
 			email: yup.string().email('invalid email').required('email is required'),
 			phoneNumber: yup.string().required(),
-			password: yup.string().required(),
+			password: yup
+				.string()
+				.required()
+				.matches(
+					/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*+-/\[\]\(\)\>\<.,:;'"\}\{])(?=.{8,})/,
+					'Password must be 8 characters, with uppercase, lowercase, number, and special character.'
+				),
 			confirmPassword: yup
 				.string()
 				.oneOf([yup.ref('password'), null], 'Passwords must match!'),
@@ -45,10 +52,16 @@ function SignUp() {
 		formState: { errors },
 		handleSubmit,
 		control,
+		watch,
 	} = useForm({
 		resolver: yupResolver(schema),
 		mode: 'all',
 	});
+
+	const [pass, setPass] = useState('');
+
+	console.log('Password:', pass);
+
 	const handleType = () => {
 		if (user === 'agent' || user === '') {
 			return false;
@@ -167,16 +180,20 @@ function SignUp() {
 									/>
 								</div>
 								<div className="grid sm:grid-cols-2 gap-5">
-									<Textinput
-										label="Password"
-										placeholder="Password"
-										type="password"
-										name="password"
-										autoComplete="password"
-										error={errors.password}
-										register={register}
-										className="w-[15rem]"
-									/>
+									<div>
+										<Textinput
+											label="Password"
+											placeholder="Password"
+											type="password"
+											name="password"
+											autoComplete="password"
+											error={errors.password}
+											register={register}
+											className="w-[15rem]"
+											onChange={(e) => setPass(e.target.value)}
+										/>
+										<PasswordStrengthIndicator password={pass} />
+									</div>
 									<Textinput
 										label="Confirm Password"
 										type="password"
