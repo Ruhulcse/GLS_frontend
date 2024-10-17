@@ -49,7 +49,7 @@ function SignUp() {
 
 	const {
 		register,
-		formState: { errors },
+		formState: { errors, isValid },
 		handleSubmit,
 		control,
 		watch,
@@ -119,16 +119,6 @@ function SignUp() {
 
 								<div className="flex gap-3 items-center justify-center font-bold text-xl  py-6">
 									Registration
-									{/* <input
-                  type="checkbox"
-                  //defaultChecked
-                  value={agent}
-                  onClick={() => setAgent(!agent)}
-                  className="checkbox bg-white"
-                />
-                <label className="text-lg font-medium text-black-500">
-                  Agent form
-                </label> */}
 								</div>
 
 								<div className="grid sm:grid-cols-2 gap-5 grid-cols-1 ">
@@ -250,62 +240,13 @@ function SignUp() {
 										className="w-full"
 									/>
 								)}
-								{/* <Select
-                  label="User type"
-                  //defaultValue=""
-                  options={["shipper", "broker", "carrier","agent"]}
-                  onChange={handelChange}
-                  //name="userType"
-                  register={register}
-                  error={errors.userType}
-                  placeholder="Select User type"
-                /> */}
-								{/* {agent ? (
-                <div className="sm:grid sm:grid-cols-2 gap-5 flex grid-cols-1"> */}
-								{/* <Select
-                    label="User type"
-                    defaultValue='agent'
-                    options={["agent"]}
-                    name="userType"
-                    register={register}
-                    error={errors.userType}
-                    placeholder="Select User type"
-                  /> */}
-								{/* <Textinput
-                    label="Agent code"
-                    type="text"
-                    name="agent_code"
-                    //className="right-0"
-                    autoComplete="code"
-                    error={errors.agent_code}
-                    placeholder="Code"
-                    register={register}
-                    className="w-24 sm:w-full"
-                  /> */}
-								{/* </div>
-              ) : (
-                <Select
-                  label="User type"
-                  defaultValue=""
-                  options={["shipper", "broker", "carrier"]}
-                  name="userType"
-                  register={register}
-                  error={errors.userType}
-                  placeholder="Select User type"
-                />
-              )} */}
-								{/* <button
-                className="inline-block mx-auto mt-6 bg-gray-200 w-32 text-center rounded-full p-2 cursor-pointer hover:bg-black hover:text-white transition-all hover:bg-black-500"
-                type="submit"
-                isLoading={isLoading}
-              >
-                Sign Up
-              </button> */}
+
 								<Button
 									type="submit"
 									text="Sign Up"
-									className="btn btn-dark block w-full text-center mt-4"
+									disabled={!isValid}
 									isLoading={isLoading}
+									className="btn btn-dark block w-full text-center mt-4"
 								/>
 							</div>
 							<div className="flex justify-between mb-4 mx-0 mt-[-12px] items-center">
