@@ -1,54 +1,58 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 .cardTitle {
-  @apply sm:text-2xl text-xl font-bold mb-2 hidden sm:block;
+	@apply sm:text-2xl text-xl font-bold mb-2 hidden sm:block;
 }
 .filterBtn {
-  @apply my-1  rounded-md shadow-md hover:shadow-inner  py-2;
+	@apply my-1  rounded-md shadow-md hover:shadow-inner  py-2;
 }
 
 #root {
-  font-family: "Noto Sans", sans-serif;
+	font-family: 'Noto Sans', sans-serif;
 }
 
 .slick-active {
-  outline: none;
+	outline: none;
 }
 
 .slick-prev,
 .slick-next {
-  display: none !important;
+	display: none !important;
 }
 .slick-slide > div {
-  margin: 0 10px;
+	margin: 0 10px;
 }
 .slick-list > div {
-  margin: 0 -10px;
+	margin: 0 -10px;
 }
 .rti--input {
-  height: 20px;
-  display: block;
-  width: 100%;
-  font-weight: 500;
+	height: 20px;
+	display: block;
+	width: 100%;
+	font-weight: 500;
 }
 .rti--container {
-  margin-top: 8px;
-  font-size: small;
-  border: 1px solid #e3e9f1;
-  --rti-main: "#596678";
+	margin-top: 8px;
+	font-size: small;
+	border: 1px solid #e3e9f1;
+	--rti-main: '#596678';
 }
 .tag-label {
-  margin-bottom: 0.5rem;
-  display: block;
-  width: 100%;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-transform: capitalize;
-  line-height: 1.5rem;
-  --tw-text-opacity: 1;
-  color: rgb(71 85 105 / var(--tw-text-opacity));
+	margin-bottom: 0.5rem;
+	display: block;
+	width: 100%;
+	cursor: pointer;
+	font-size: 0.875rem;
+	font-weight: 500;
+	text-transform: capitalize;
+	line-height: 1.5rem;
+	--tw-text-opacity: 1;
+	color: rgb(71 85 105 / var(--tw-text-opacity));
+}
+
+html {
+	scroll-behavior: smooth;
 }

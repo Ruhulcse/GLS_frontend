@@ -1,17 +1,24 @@
 /* eslint-disable no-unused-vars */
-import { menuItems } from '@/constant/data';
+import { menuItems, shippersMenuItems } from '@/constant/data';
 import useSemiDark from '@/hooks/useSemiDark';
 import useSidebar from '@/hooks/useSidebar';
 import useSkin from '@/hooks/useSkin';
+import { selectCurrentUserType } from '@/store/api/auth/authSlice';
 import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import SimpleBar from 'simplebar-react';
 import SidebarLogo from './Logo';
 import Navmenu from './Navmenu';
 // import svgRabitImage from "@/assets/images/svg/rabit.svg";
 
 const Sidebar = () => {
+	const userType = useSelector(selectCurrentUserType);
+	console.log({ userType });
 	const scrollableNodeRef = useRef();
 	const [scroll, setScroll] = useState(false);
+	const selectedMenu = userType === 'shipper' ? shippersMenuItems : menuItems;
+	console.log({ selectedMenu });
+	console.log('ready');
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -59,10 +66,17 @@ const Sidebar = () => {
 				></div>
 
 				<SimpleBar
-					className='sidebar-menu px-4 h-[calc(100%-80px)]'
+					className="sidebar-menu px-4 h-[calc(100%-80px)]"
 					scrollableNodeProps={{ ref: scrollableNodeRef }}
 				>
-					<Navmenu menus={menuItems} />
+					<Navmenu
+						menus={
+							// eslint-disable-next-line no-constant-condition
+							userType === 'shipper' || 'carrier'
+								? shippersMenuItems
+								: menuItems
+						}
+					/>
 				</SimpleBar>
 			</div>
 		</div>
