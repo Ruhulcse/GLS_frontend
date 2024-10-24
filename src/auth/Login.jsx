@@ -136,6 +136,19 @@ function Login() {
 										isLoading={isLoading}
 									/>
 
+									{error?.status === 401 && (
+										<p
+											style={{
+												color: 'red',
+												textAlign: 'center',
+												paddingTop: '8px',
+												fontSize: '.8rem',
+											}}
+										>
+											Wrong Credentials, Try Again.
+										</p>
+									)}
+
 									<div className="flex justify-end">
 										<button
 											className="font-bold mt-4 "

@@ -90,45 +90,6 @@ export const menuItems = [
 	},
 ];
 
-export const shippersMenuItems = [
-	{
-		isHeadr: true,
-		title: 'menu',
-	},
-
-	{
-		title: 'Dashboard',
-		icon: 'heroicons-outline:home',
-		link: 'dashboard',
-	},
-	{
-		title: 'Shippers',
-		icon: 'heroicons-outline:truck',
-		link: '#',
-		// isHide: true,
-		child: [
-			{
-				childtitle: 'Shipments',
-				childlink: 'shipments',
-			},
-			{
-				childtitle: 'Create Shipment',
-				childlink: 'create-shipment',
-			},
-		],
-	},
-	{
-		title: 'My Bids',
-		icon: 'heroicons-outline:tag',
-		link: 'bids',
-	},
-	{
-		title: 'My Plans',
-		icon: 'heroicons-outline:banknotes',
-		link: 'plans',
-	},
-];
-
 export const topMenu = [
 	{
 		title: 'Dashboard',
