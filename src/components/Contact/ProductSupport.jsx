@@ -2,7 +2,7 @@ import React from "react";
 
 const ProductSupport = () => {
   return (
-    <div className=" text-white text-start">
+    <div className=" text-white text-start py-10">
       <h1 className="border-b-2 border-white  p-2 text-3xl font-bold ">
         Product Support
       </h1>
