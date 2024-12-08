@@ -2,7 +2,7 @@ import React from "react";
 
 const ProductSupport = () => {
   return (
-    <div className=" text-white text-start py-10">
+    <div className=" text-white text-start pt-10">
       <h1 className="border-b-2 border-white  p-2 text-3xl font-bold ">
         Product Support
       </h1>
@@ -12,7 +12,10 @@ const ProductSupport = () => {
             <h1 className="text-2xl font-bold  ">Load Board Services</h1>
             <div className="flex gap-2">
               <p>Phone:</p>
-              <p className="text-blue-600"> (800) 547-5417</p>
+              <p className="text-blue-600">
+                {" "}
+                <a href="+880 01301854873">(800) 547-5417</a>
+              </p>
             </div>
             <div className="flex gap-2">
               <p>Fax:</p>
@@ -76,7 +79,7 @@ const ProductSupport = () => {
       <h1 className="border-b-2 border-white  p-2 text-3xl font-bold ">
         General Marketing, PR & Partnerships
       </h1>
-      <div className="flex flex-col md:flex-row pb-20 justify-between">
+      <div className="flex flex-col md:flex-row  justify-between">
         <div className="p-2 mb-10">
           <h1 className="text-2xl font-bold py-3 ">
             General Marketing Inquiries
