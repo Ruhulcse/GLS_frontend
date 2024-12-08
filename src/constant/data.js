@@ -88,6 +88,11 @@ export const menuItems = [
 		icon: 'heroicons-outline:banknotes',
 		link: 'plans',
 	},
+	{
+		title: 'Contacts',
+		icon: 'heroicons-outline:envelope',
+		link: 'contacts',
+	},
 ];
 
 export const topMenu = [
