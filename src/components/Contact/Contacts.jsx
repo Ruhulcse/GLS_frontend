@@ -1,15 +1,16 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 const Contacts = () => {
-  const [userName, setUserName] = useState("");
-  const [last, setLast] = useState("");
+  const [firstName, setUserName] = useState("");
+  const [lastName, setLast] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState(" ");
   const [msg, setMsg] = useState("");
   const [errMsg, setMessage] = useState("");
   const [successMsg, setSuccesMsg] = useState("");
-
-  const formData = { userName, last, email, subject, msg };
+  const message = msg;
+  const formData = { firstName, lastName, email, subject, message };
   // email valided
   const emailValidation = () => {
     return String(email)
@@ -29,11 +30,11 @@ const Contacts = () => {
       setSuccesMsg("");
     }, 4000);
   };
-  const handleSent = (e) => {
+  const handleSent = async (e) => {
     e.preventDefault();
-    if (userName === "") {
+    if (firstName === "") {
       setMessage("Fast Name is required!");
-    } else if (last === "") {
+    } else if (lastName === "") {
       setMessage("Last is required!");
     } else if (email === "") {
       setMessage("Please give your Email!");
@@ -48,19 +49,29 @@ const Contacts = () => {
     } else if (msg.length > 250) {
       setMessage("Message cannot exceed 250 characters.");
     } else {
-      setSuccesMsg(
-        `Thank you dear ${userName}, Your Messages has been sent Successfully!`
-      );
-      console.log(formData);
-      setMessage("");
-      setUserName("");
-      setLast("");
-      setEmail("");
-      setSubject("");
-      setMsg("");
-      hideSuccessMessage();
-      hideMessage();
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/contact/send",
+          formData
+        );
+        if (response.status === 200 || response.status === 201) {
+          setSuccesMsg(
+            `Thank you dear ${firstName}, Your Messages has been sent Successfully!`
+          );
+        }
+      } catch (error) {
+        setMessage("Something went wrong. Please try again later.");
+        console.error("Error posting data: ", error);
+      }
     }
+    setMessage("");
+    setUserName("");
+    setLast("");
+    setEmail("");
+    setSubject("");
+    setMsg("");
+    hideSuccessMessage();
+    hideMessage();
   };
   return (
     <section className="w-full ">
@@ -86,7 +97,7 @@ const Contacts = () => {
                   First Name{" "}
                 </label>
                 <input
-                  value={userName}
+                  value={firstName}
                   onChange={(e) => setUserName(e.target.value)}
                   className={`${
                     errMsg === "Username is required!" && "outline-designColor"
@@ -104,7 +115,7 @@ const Contacts = () => {
                 </label>
                 <input
                   onChange={(e) => setLast(e.target.value)}
-                  value={last}
+                  value={lastName}
                   className={`${
                     errMsg === "Phone number is required!" &&
                     "outline-designColor"
