@@ -23,7 +23,6 @@
     "axios": "^1.6.8",
     "cleave.js": "^1.6.0",
     "clsx": "^2.1.0",
-    "date-fns": "^4.1.0",
     "framer-motion": "^11.0.14",
     "jodit-react": "^4.0.19",
     "moment": "^2.30.1",

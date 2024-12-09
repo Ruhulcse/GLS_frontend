@@ -44,6 +44,7 @@ import SuccessPage from "@/pages/admin/success";
 import ForgetPassword from "@/auth/ForgetPassword";
 import ReSetPassword from "@/auth/ResetPassword";
 import ContactList from "@/pages/admin/contactList";
+import Message from "@/pages/admin/contactList/Message";
 
 const ShipmentFormPage = lazy(() =>
   import("@/pages/admin/shipments/shipment-form")
@@ -257,6 +258,10 @@ export const router = createBrowserRouter([
       {
         path:"/contacts",
         element:<ContactList/>
+      },
+      {
+        path:"/message/:id",
+        element:<Message/>
       },
       {
         path: "/chat/:id",
