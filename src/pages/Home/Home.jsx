@@ -7,6 +7,7 @@ import MobileApp from '../../components/MobileApp/MobileApp'
 import Pricing from '../../components/Pricing/Pricing'
 import Services from '../../components/Services/Services'
 import Shippers from '../../components/Shippers/Shippers'
+import HomeVideo from '@/components/HomePagevideo'
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
       <Carrier></Carrier>
       <Brokers></Brokers>
       <Shippers></Shippers>
+      <HomeVideo/>
       <Pricing></Pricing>
       <ClientReview></ClientReview>
     </div>

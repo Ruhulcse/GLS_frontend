@@ -278,37 +278,5 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // {
-  //   path: "/blog",
-  //   element: <Layout></Layout>,
-  //   children: [
-  //     {
-  //       path: "/blog",
-  //       element: <BlogPage></BlogPage>,
-  //     },
-  //     {
-  //       path: "/blog/:id",
-  //       element: <BlogDetails />,
-  //     },
-  //     {
-  //       path: "/about/:id",
-  //       element: <AboutDetails />,
-  //     },
-  //   ],
-  // },
-  //       path: '/blogs/:category',
-  //       element: <BlogListPage/>
-  //     },
-
-  //   ],
-  // },
-
-  //   {
-  //     path:'/signUp',
-  //     element:<SignUp/>
-  //   },
-  //   {
-  //     path:'/logIn',
-  //     element:<Login/>
-  //   },
+ 
 ]);
