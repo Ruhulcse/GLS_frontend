@@ -3,8 +3,9 @@ import { humanDate, moneyFormatter } from '@/util/helpers';
 import PropTypes from 'prop-types';
 
 const ShipmentViewDetails = ({ shipment }) => {
+	
 	return (
-		<Card title={'Shipment Details'}>
+		<Card title={'Shipment Details'} subtitle={`Status : ${shipment.status.toUpperCase()}`} >
 			{/* <Timeline from='dhaka' to='CTG' /> */}
 
 			<div className='grid md:grid-cols-4 grid-cols-1 gap-4'>

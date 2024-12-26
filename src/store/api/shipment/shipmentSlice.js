@@ -13,6 +13,8 @@ export const getShipment = createAsyncThunk(
 	async ({ id }) => {
 		try {
 			const response = await fetchWrapper(`shipments/${id}`);
+		
+			
 			return response.data;
 		} catch (error) {
 			throw error.response ? error.response.data : error.message;

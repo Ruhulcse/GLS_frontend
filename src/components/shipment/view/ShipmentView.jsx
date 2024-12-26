@@ -10,21 +10,26 @@ const ShipmentView = () => {
 	const { id } = useParams();
 	const dispatch = useDispatch();
 	const { shipment } = useSelector(state => state.shipment);
+	const { user } = useSelector((state) => state.user);
+	console.log(id);
+	
 
 	useEffect(() => {
-		dispatch(getShipment({ id }));
+		dispatch(getShipment({id:id}));
 	}, [id, dispatch]);
 
 	return (
 		<>
 			<ShipmentViewDetails shipment={shipment} />
-			<Card title={'Bid List'} className='mt-5'>
+			{user.userType==='shipper' &&(
+				<Card title={'Bid List'} className='mt-5'>
 				{shipment?.bids?.length ? (
 					<ShipmentBidsGrid />
 				) : (
 					<div className='text-center text-danger-500'>No Bids Yet</div>
 				)}
 			</Card>
+			)}
 		</>
 	);
 };

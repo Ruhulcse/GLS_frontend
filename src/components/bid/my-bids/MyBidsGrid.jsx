@@ -22,32 +22,45 @@ import { dateTime, moneyFormatter } from '@/util/helpers';
 import { Menu } from '@headlessui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import fetchWrapper from '@/util/fetchWrapper';
 
 const MyBidsGrid = ({ title = 'My Bids' }) => {
 	const { errorToast, successToast } = useToast();
-	const actions = [
-		{
-			name: 'Active',
-			icon: 'heroicons-outline:check-badge',
-		},
-		{
-			name: 'Deactivated',
-			icon: 'heroicons:x-mark',
-		},
-		{
-			name: 'Suspended',
-			icon: 'heroicons-outline:exclamation-circle',
-		},
-		{
-			name: 'Rejected',
-			icon: 'heroicons-outline:trash',
-		},
-		{
-			name: 'Blocked',
-			icon: 'heroicons-outline:no-symbol',
-		},
-	];
+	// const actions = [
+	// 	{
+	// 		name: 'Active',
+	// 		icon: 'heroicons-outline:check-badge',
+	// 	},
+	// 	{
+	// 		name: 'Deactivated',
+	// 		icon: 'heroicons:x-mark',
+	// 	},
+	// 	{
+	// 		name: 'Suspended',
+	// 		icon: 'heroicons-outline:exclamation-circle',
+	// 	},
+	// 	{
+	// 		name: 'Rejected',
+	// 		icon: 'heroicons-outline:trash',
+	// 	},
+	// 	{
+	// 		name: 'Blocked',
+	// 		icon: 'heroicons-outline:no-symbol',
+	// 	},
+	// ];
 
+	const updatedDelivered = async(id,newStatus,bidId)=>{
+		try {
+			const response = await fetchWrapper.put(`/shipments/delivery/${id}`, {
+			  newStatus,
+			  bidId,
+			});
+			
+			dispatch(getMyBids());
+		  } catch (error) {
+			errorToast(error.message)
+		  }
+	}
 	const COLUMNS = [
 		{
 			Header: 'Shipment Id',
@@ -106,7 +119,7 @@ const MyBidsGrid = ({ title = 'My Bids' }) => {
 					<span className='block w-full'>
 						<span
 							className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-								row?.cell?.value?.toLowerCase() === 'active'
+								row?.cell?.value?.toLowerCase() === 'delivered'
 									? 'text-success-500 bg-success-500'
 									: ''
 							} 
@@ -154,44 +167,13 @@ const MyBidsGrid = ({ title = 'My Bids' }) => {
 				);
 			},
 		},
-		// {
-		// 	Header: 'action',
-		// 	accessor: 'action',
-		// 	Cell: row => {
-		// 		const filteredActions = actions.filter(
-		// 			item =>
-		// 				item.name.toLowerCase() !==
-		// 				row?.cell?.row?.original?.userStatus?.toLowerCase()
-		// 		);
-		// 		return (
-		// 			<div>
-		// 				<Dropdown
-		// 					classMenuItems='right-0 w-[140px] top-[110%] '
-		// 					label={
-		// 						<span className='text-xl text-center block w-full'>
-		// 							<Icon icon='heroicons-outline:dots-vertical' />
-		// 						</span>
-		// 					}
-		// 				>
-		// 					<div className='divide-y divide-slate-100 dark:divide-slate-800'>
-		// 						{filteredActions?.map((item, i) => (
-		// 							<Menu.Item key={i} onClick={() => console.log('log')}>
-		// 								<div
-		// 									className={`hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50 w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
-		// 								>
-		// 									<span className='text-base'>
-		// 										<Icon icon={item.icon} />
-		// 									</span>
-		// 									<span>{item.name}</span>
-		// 								</div>
-		// 							</Menu.Item>
-		// 						))}
-		// 					</div>
-		// 				</Dropdown>
-		// 			</div>
-		// 		);
-		// 	},
-		// },
+		{
+			Header: "action",
+			accessor: "action",
+			Cell: ({ row }) => (
+				<button onClick={()=>updatedDelivered(row.original.shipmentId,'delivered',row.original.bidId)}>Delivered</button>
+			)
+		}
 	];
 
 	const IndeterminateCheckbox = React.forwardRef(
@@ -223,6 +205,9 @@ const MyBidsGrid = ({ title = 'My Bids' }) => {
 	useEffect(() => {
 		dispatch(getMyBids());
 	}, [dispatch]);
+
+	console.log(myBids);
+	
 
 	const tableInstance = useTable(
 		{

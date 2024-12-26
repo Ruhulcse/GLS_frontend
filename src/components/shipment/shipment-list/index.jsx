@@ -32,6 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import GlobalFilter from "../../shared/TableFilter/GlobalFilter";
 import ColumnFilter from "@/components/shared/TableFilter/ColumnFilter";
+import { getAllShipperShipments } from "@/store/api/shipperShipments/shipperShipmentsSlice";
 
 
 const ShipmentListGrid = ({ title = "Shipment List" }) => {
@@ -156,7 +157,9 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
                 </button>
               </Link>
             </Tooltip>
-            <Tooltip
+            {
+              user.userType==='shipper' && (
+                <Tooltip
               content="Edit"
               placement="top"
               arrow
@@ -168,21 +171,25 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
                 </button>
               </Link>
             </Tooltip>
-            <Tooltip
-              content="Delete"
-              placement="top"
-              arrow
-              animation="shift-away"
-              theme="danger"
-            >
-              <button
-                className="action-btn"
-                type="button"
-                onClick={() => deleteShipment(row.original?._id)}
-              >
-                <Icon icon="heroicons:trash" />
-              </button>
-            </Tooltip>
+              )
+            }
+           {user.userType==='shipper' && (
+             <Tooltip
+             content="Delete"
+             placement="top"
+             arrow
+             animation="shift-away"
+             theme="danger"
+           >
+             <button
+               className="action-btn"
+               type="button"
+               onClick={() => deleteShipment(row.original?._id)}
+             >
+               <Icon icon="heroicons:trash" />
+             </button>
+           </Tooltip>
+           )}
 
             {/* bid button */}
             {user.userType === "carrier" && (
@@ -209,14 +216,31 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const columns = useMemo(() => COLUMNS, [user]);
+  const [filterData,setFilterData] = useState([])
   const { errorToast } = useToast();
   const dispatch = useDispatch();
   const { shipments, loading } = useSelector((state) => state.shipments);
-  console.log(shipments);
+  const {shipperShipments} = useSelector((state)=>state.shipperShipments)
+  
+  
   
   useEffect(() => {
-    dispatch(getAllShipments());
-  }, [dispatch]);
+    if (user.userType === 'shipper') {
+      dispatch(getAllShipperShipments({ id: user._id }));
+    } else {
+      dispatch(getAllShipments());
+    }
+  }, [dispatch, user.userType, user._id]);
+  
+  useEffect(() => {
+    if (user.userType === 'shipper') {
+      setFilterData(shipperShipments);
+    } else {
+      setFilterData(shipments);
+    }
+  }, [user.userType, shipperShipments, shipments]);
+  
+  
 
   const deleteShipment = async (id) => {
     try {
@@ -277,7 +301,7 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
   const tableInstance = useTable(
     {
       columns,
-      data: shipments,
+      data: filterData,
 	  //initialState:{globalFilter:''}
     },
     useFilters,

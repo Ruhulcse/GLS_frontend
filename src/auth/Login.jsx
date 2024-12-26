@@ -110,7 +110,7 @@ function Login() {
                       name="email"
                       label="email"
                       type="text"
-                      defaultValue="ruhul.cse123@gmail.com"
+                      //defaultValue="ruhul.cse123@gmail.com"
                       placeholder="Enter your email"
                       register={register}
                       error={errors.email}

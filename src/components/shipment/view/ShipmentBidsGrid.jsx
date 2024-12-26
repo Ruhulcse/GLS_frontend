@@ -22,142 +22,18 @@ import fetchWrapper from "@/util/fetchWrapper";
 import { useParams } from "react-router-dom";
 // "pending","accepted","rejected"
 const actions = [
-    {
-      name: "Accepted",
-      icon: "heroicons-outline:check-badge",
-    },
-    {
-      name: "Pending",
-      icon: "heroicons:x-mark",
-    },
-    {
-      name: "Rejected",
-      icon: "heroicons-outline:trash",
-    },
-   
-  ];
-
-const COLUMNS = [
   {
-    Header: "Bid Amount",
-    accessor: "bidAmount",
-    Cell: (row) => {
-      return <span>{moneyFormatter(row?.cell?.value, "USD")}</span>;
-    },
+    name: "Accepted",
+    icon: "heroicons-outline:check-badge",
   },
   {
-    Header: "Proposed Timeline",
-    accessor: "proposedTimeline",
-    Cell: (row) => {
-      return <span>{humanDate(row?.cell?.value)}</span>;
-    },
+    name: "Pending",
+    icon: "heroicons:x-mark",
   },
   {
-    Header: "Status",
-    accessor: "status",
-    Cell: (row) => {
-      return (
-        <span className="block w-full">
-          <span
-            className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
-              row?.cell?.value?.toLowerCase() === "accepted"
-                ? "text-success-500 bg-success-500"
-                : ""
-            } 
-${
-  row?.cell?.value?.toLowerCase() === "pending"
-    ? "text-warning-500 bg-warning-500"
-    : ""
-}
-${
-  row?.cell?.value?.toLowerCase() === "cancled"
-    ? "text-danger-500 bg-danger-500"
-    : ""
-}
-
-			${
-        row?.cell?.value?.toLowerCase() === "deactivated"
-          ? "text-white-500 bg-gray-600"
-          : ""
-      }
-
-			${
-        row?.cell?.value?.toLowerCase() === "suspended"
-          ? "text-red-500 bg-red-600"
-          : ""
-      }
-
-			${
-        row?.cell?.value?.toLowerCase() === "rejected"
-          ? "text-red-500 bg-red-500"
-          : ""
-      }
-
-			${
-        row?.cell?.value?.toLowerCase() === "blocked"
-          ? "text-red-500 bg-red-700"
-          : ""
-      }
-
-
- `}
-          >
-            {row?.cell?.value}
-          </span>
-        </span>
-      );
-    },
+    name: "Rejected",
+    icon: "heroicons-outline:trash",
   },
-  {
-	Header: "action",
-	accessor: "action",
-	Cell: (row) => {
-	  const filteredActions = actions.filter(
-		(item) =>
-		  item.name.toLowerCase() !==
-		  row?.cell?.row?.original?.userStatus?.toLowerCase()
-	  );
-	  return (
-		row.cell?.row?.original?._id  && (
-		  <div className="flex space-x-3 rtl:space-x-reverse">
-			<Dropdown
-			  classMenuItems="right-0 w-[140px] top-[110%] "
-			  label={
-				<span className="text-xl text-center block w-full">
-				  <Icon icon="heroicons-outline:dots-vertical" />
-				</span>
-			  }
-			>
-			  <div className="divide-y divide-slate-100 dark:divide-slate-800">
-				{filteredActions?.map((item, i) => (
-				  <Menu.Item
-					key={i}
-					onClick={() =>
-					  updateUserStatus(
-						row?.cell?.row?.original?._id,
-						item?.name
-					  )
-					}
-				  >
-					<div
-					  className={`hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50 w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
-					>
-					  <span className="text-base">
-						<Icon icon={item.icon} />
-					  </span>
-					  <span>{item.name}</span>
-					</div>
-				  </Menu.Item>
-				))}
-			  </div>
-			</Dropdown>
-
-			
-		  </div>
-		)
-	  );
-	},
-  }
 ];
 
 const IndeterminateCheckbox = React.forwardRef(
@@ -185,17 +61,111 @@ const IndeterminateCheckbox = React.forwardRef(
 const ShipmentBidsGrid = ({ title = "Shipment Bids" }) => {
   const { bids } = useSelector((state) => state.shipment.shipment);
   const { id } = useParams();
+  const COLUMNS = [
+    {
+      Header: "Bid Amount",
+      accessor: "bidAmount",
+      Cell: (row) => {
+        return <span>{moneyFormatter(row?.cell?.value, "USD")}</span>;
+      },
+    },
+    {
+      Header: "Proposed Timeline",
+      accessor: "proposedTimeline",
+      Cell: (row) => {
+        return <span>{humanDate(row?.cell?.value)}</span>;
+      },
+    },
+    {
+      Header: "Status",
+      accessor: "status",
+      Cell: (row) => {
+        return (
+          <span className="block w-full">
+            <span
+              className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
+                row?.cell?.value?.toLowerCase() === "accepted"
+                  ? "text-success-500 bg-success-500"
+                  : ""
+              } 
+  ${
+    row?.cell?.value?.toLowerCase() === "pending"
+      ? "text-warning-500 bg-warning-500"
+      : ""
+  }
+  ${
+    row?.cell?.value?.toLowerCase() === "cancled"
+      ? "text-danger-500 bg-danger-500"
+      : ""
+  }
+  
+        ${
+          row?.cell?.value?.toLowerCase() === "deactivated"
+            ? "text-white-500 bg-gray-600"
+            : ""
+        }
+  
+        ${
+          row?.cell?.value?.toLowerCase() === "suspended"
+            ? "text-red-500 bg-red-600"
+            : ""
+        }
+  
+        ${
+          row?.cell?.value?.toLowerCase() === "rejected"
+            ? "text-red-500 bg-red-500"
+            : ""
+        }
+  
+        ${
+          row?.cell?.value?.toLowerCase() === "blocked"
+            ? "text-red-500 bg-red-700"
+            : ""
+        }
+  
+  
+   `}
+            >
+              {row?.cell?.value}
+            </span>
+          </span>
+        );
+      },
+    },
+    {
+      Header: "action",
+      accessor: "action",
+      Cell: ({ row }) => (
+        <div className="">
+          <button
+            className="px-2 py-px mx-1 bg-[#D3F1E4] text-[#3fb88a] rounded-lg"
+            onClick={() => updateBidsStatus("accepted", row.original._id)}
+          >
+            Accepted
+          </button>
+          <button
+            className="px-2 py-px mx-1 bg-red-300 rounded-lg"
+            onClick={() => updateBidsStatus("rejected", row.original._id)}
+          >
+            Reject
+          </button>
+        </div>
+      ),
+    },
+  ];
   const columns = useMemo(() => COLUMNS, [bids]);
 
-  const updateBidsStatus = async(state)=>{
-	try {
-		const response = await fetchWrapper.put(`/shipments/bid-status/${id}`,{newStatus})
-	} catch (error) {
-		if (response.status === 200) {
-				
-			  }
-	}
-  }
+  const updateBidsStatus = async (newStatus, bidId) => {
+    try {
+      const response = await fetchWrapper.put(`/shipments/bid-status/${id}`, {
+        newStatus,
+        bidId,
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const tableInstance = useTable(
     {

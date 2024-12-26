@@ -11,6 +11,7 @@ import users from "./api/users/usersSlice";
 import layout from "./layout";
 import chat from "../pages/admin/chat/store";
 import contact from "./api/contact/contactSlice";
+import shipperShipments from './api/shipperShipments/shipperShipmentsSlice'
 const rootReducer = {
   layout,
   users,
@@ -25,5 +26,6 @@ const rootReducer = {
   agents,
   myBids,
   contact,
+  shipperShipments
 };
 export default rootReducer;
