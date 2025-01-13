@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const ShipmentViewDetails = ({ shipment }) => {
 	
 	return (
-		<Card title={'Shipment Details'} subtitle={`Status : ${shipment.status.toUpperCase()}`} >
+		<Card title={'Shipment Details'} subtitle={`Status : ${shipment.status}`} >
 			{/* <Timeline from='dhaka' to='CTG' /> */}
 
 			<div className='grid md:grid-cols-4 grid-cols-1 gap-4'>

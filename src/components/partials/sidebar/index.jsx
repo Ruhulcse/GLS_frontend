@@ -25,7 +25,37 @@ const Sidebar = () => {
 			['Dashboard', 'Shippers', 'My Plans'].includes(item.title)
 		);
 		// Carrier-specific menu
-	} else if (userType === 'carrier') {
+	}
+	else if(userType === 'broker') {
+		selectedMenu = menuItems
+			.map((item) => {
+				if (item.title === 'Shippers') {
+					// Filter 'Shippers' to include only 'Shipments' and exclude 'Create Shipment'
+					return {
+						...item,
+						child: item.child.filter(
+							(childItem) => childItem.childtitle === 'Shipments'
+						),
+					};
+				}
+				if(item.title === 'Users'){
+					return {
+						...item,
+						child: item.child.filter(
+							(childItem) => childItem.childtitle === 'User List'
+						)
+					}
+				}
+				// Allow Dashboard, My Bids, and My Plans for carrier
+				if (['Dashboard','Shippers', 'My Bids', 'My Plans'].includes(item.title)) {
+					return item;
+				}
+				// Return null for items not allowed
+				return null;
+			})
+			.filter(Boolean); // Remove any null items from the menu
+	}
+	 else if (userType === 'carrier') {
 		selectedMenu = menuItems
 			.map((item) => {
 				if (item.title === 'Shippers') {

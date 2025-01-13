@@ -1,147 +1,198 @@
 /* eslint-disable react/prop-types */
-import Button from '@/components/ui/Button';
-import FormGroup from '@/components/ui/FormGroup';
-import Textarea from '@/components/ui/Textarea';
-import Textinput from '@/components/ui/Textinput';
-import useToast from '@/hooks/useToast';
-import fetchWrapper from '@/util/fetchWrapper';
-import { convertMoneyStringToNumber } from '@/util/helpers';
-import { yupResolver } from '@hookform/resolvers/yup';
-import moment from 'moment';
-import { useState } from 'react';
-import Flatpickr from 'react-flatpickr';
-import { Controller, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import * as yup from 'yup';
+import Button from "@/components/ui/Button";
+import FormGroup from "@/components/ui/FormGroup";
+import Textarea from "@/components/ui/Textarea";
+import Textinput from "@/components/ui/Textinput";
+import useToast from "@/hooks/useToast";
+import fetchWrapper from "@/util/fetchWrapper";
+import { convertMoneyStringToNumber } from "@/util/helpers";
+import { yupResolver } from "@hookform/resolvers/yup";
+import moment from "moment";
+import { useState } from "react";
+import Flatpickr from "react-flatpickr";
+import { Controller, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
 
 const BidForm = ({ onClose, shipmentId }) => {
-	const navigate = useNavigate();
-	const [loading, setLoading] = useState(false);
-	const FormValidationSchema = yup
-		.object({
-			bidAmount: yup.string().required('Bid Amount is Required'),
-			proposedTimeline: yup.string().required('Proposed Timeline is Required'),
-		})
-		.required();
+  const navigate = useNavigate();
 
-	const { successToast, errorToast } = useToast();
+  const { user } = useSelector((state) => state.user);
 
-	const {
-		register,
-		control,
-		formState: { errors },
-		handleSubmit,
-	} = useForm({
-		resolver: yupResolver(FormValidationSchema),
-		mode: 'all',
-	});
+  const [loading, setLoading] = useState(false);
+  const FormValidationSchema = yup
+    .object({
+      bidAmount: yup.string().required("Bid Amount is Required"),
+      proposedTimeline: yup.string().required("Proposed Timeline is Required"),
+	  email: yup.string().email("Invalid email").required("Email is Required"),
+    })
+    .required();
 
-	const onSubmit = async data => {
-		setLoading(true);
-		try {
-			const payload = {
-				...data,
-				shipmentId,
-				bidAmount: convertMoneyStringToNumber(data.bidAmount),
-			};
-			const response = await fetchWrapper.post(`shipments/bid`, payload);
-            console.log("onSubmit == response:", response)
-			if (response.status === 201) {
-				successToast('Bid placed successfully!');
-				navigate('/bids');
-				onClose();
-			}
-		} catch (error) {
-			errorToast(error?.message);
+  const { successToast, errorToast } = useToast();
+
+  const {
+    register,
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
+    resolver: yupResolver(FormValidationSchema),
+    mode: "all",
+  });
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      const payload = {
+        ...data,
+        shipmentId,
+        bidAmount: convertMoneyStringToNumber(data.bidAmount),
+      };
+	  const payload1 = {
+        ...data,
+        shipmentId,
+        bidAmount: convertMoneyStringToNumber(data.bidAmount),
+		brokerId: user._id
+      };
+	  if(user.userType === 'broker'){
+		  
+		  const response = await fetchWrapper.post(`/shipments/broker/bid`, payload1);
+		  console.log("onSubmit == response:", response);
+		  if (response.status === 201) {
+			successToast("Bid placed successfully!");
+			navigate("/bids");
 			onClose();
-		} finally {
-			setLoading(false);
-		}
-	};
-	return (
-		<>
-			<form onSubmit={handleSubmit(onSubmit)} className='space-y-4 my-3'>
-				<div className='grid-cols-1 grid'>
-					<FormGroup
-						label={
-							<div>
-								Bid Amount <span className='text-red-500'>*</span>
-							</div>
-						}
-						id='default-picker'
-						error={errors.bidAmount}
-					>
-						<Controller
-							name='bidAmount'
-							control={control}
-							render={({ field }) => (
-								<Textinput
-									id='nu'
-									options={{ numeral: true }}
-									placeholder='Bid Amount'
-									isMask
-									onChange={data => {
-										field.onChange(data);
-									}}
-									className='my-2'
-								/>
-							)}
-						/>
-					</FormGroup>
+		  }
+	  } else {
+		  
+		  const response = await fetchWrapper.post(`shipments/bid`, payload);
+		  console.log("onSubmit == response:", response);
+		  if (response.status === 201) {
+			successToast("Bid placed successfully!");
+			navigate("/bids");
+			onClose();
+		  }
+	  }
+     
+    } catch (error) {
+      errorToast(error?.message);
+      onClose();
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 my-3">
+        <div className="grid-cols-1 grid">
+          <FormGroup
+            label={
+              <div>
+                Bid Amount <span className="text-red-500">*</span>
+              </div>
+            }
+            id="default-picker"
+            error={errors.bidAmount}
+          >
+            <Controller
+              name="bidAmount"
+              control={control}
+              render={({ field }) => (
+                <Textinput
+                  id="nu"
+                  options={{ numeral: true }}
+                  placeholder="Bid Amount"
+                  isMask
+                  onChange={(data) => {
+                    field.onChange(data);
+                  }}
+                  className="my-2"
+                />
+              )}
+            />
+          </FormGroup>
 
-					<FormGroup
-						label={
-							<div>
-								Proposed Timeline <span className='text-red-500'>*</span>
-							</div>
-						}
-						id='default-picker'
-						error={errors.proposedTimeline}
-					>
-						<Controller
-							name='proposedTimeline'
-							control={control}
-							render={({ field }) => (
-								<Flatpickr
-									className='form-control my-2 py-0'
-									id='hf-picker'
-									placeholder='Proposed Timeline'
-									onChange={date => {
-										field.onChange(moment(date[0]).format('YYYY-MM-DD'));
-									}}
-									options={{
-										altInput: true,
-										altFormat: 'F j, Y',
-										dateFormat: 'Y-m-d',
-									}}
-								/>
-							)}
-						/>
-					</FormGroup>
+          <FormGroup
+            label={
+              <div>
+                Proposed Timeline <span className="text-red-500">*</span>
+              </div>
+            }
+            id="default-picker"
+            error={errors.proposedTimeline}
+          >
+            <Controller
+              name="proposedTimeline"
+              control={control}
+              render={({ field }) => (
+                <Flatpickr
+                  className="form-control my-2 py-0"
+                  id="hf-picker"
+                  placeholder="Proposed Timeline"
+                  onChange={(date) => {
+                    field.onChange(moment(date[0]).format("YYYY-MM-DD"));
+                  }}
+                  options={{
+                    altInput: true,
+                    altFormat: "F j, Y",
+                    dateFormat: "Y-m-d",
+                  }}
+                />
+              )}
+            />
+          </FormGroup>
+          {user.userType === "broker" && (
+            <FormGroup
+              label={
+                <div>
+                  Carrier Email <span className="text-red-500">*</span>
+                </div>
+              }
+              id="default-picker"
+              error={errors.email}
+            >
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <Textinput
+                    id="nu"
+                    options={{ numeral: true }}
+                    placeholder="Carrier Email"
+                    
+                    onChange={(data) => {
+                      field.onChange(data);
+                    }}
+                    className="my-2"
+                  />
+                )}
+              />
+            </FormGroup>
+          )}
+          <Textarea
+            label="Remarks"
+            name="remarks"
+            id="pn4"
+            placeholder="Enter remarks"
+            row="5"
+            register={register}
+            className="my-2"
+          />
 
-					<Textarea
-						label='Remarks'
-						name='remarks'
-						id='pn4'
-						placeholder='Enter remarks'
-						row='5'
-						register={register}
-						className='my-2'
-					/>
-
-					<div className='ltr:text-right rtl:text-left mt-3'>
-						<Button
-							className='btn btn-primary text-center'
-							type='submit'
-							text={'Place Bid'}
-							isLoading={loading}
-							disabled={loading}
-						/>
-					</div>
-				</div>
-			</form>
-		</>
-	);
+          <div className="ltr:text-right rtl:text-left mt-3">
+            <Button
+              className="btn btn-primary text-center"
+              type="submit"
+              text={"Place Bid"}
+              isLoading={loading}
+              disabled={loading}
+            />
+          </div>
+        </div>
+      </form>
+    </>
+  );
 };
 
 export default BidForm;

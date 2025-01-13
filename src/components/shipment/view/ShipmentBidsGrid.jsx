@@ -138,17 +138,20 @@ const ShipmentBidsGrid = ({ title = "Shipment Bids" }) => {
       Cell: ({ row }) => (
         <div className="">
           <button
+          disabled={row.original.status==='accepted'}
             className="px-2 py-px mx-1 bg-[#D3F1E4] text-[#3fb88a] rounded-lg"
             onClick={() => updateBidsStatus("accepted", row.original._id)}
           >
             Accepted
           </button>
-          <button
+          {
+            row.original.status !== "accepted" &&<button
             className="px-2 py-px mx-1 bg-red-300 rounded-lg"
             onClick={() => updateBidsStatus("rejected", row.original._id)}
           >
             Reject
           </button>
+          }
         </div>
       ),
     },
@@ -157,10 +160,13 @@ const ShipmentBidsGrid = ({ title = "Shipment Bids" }) => {
 
   const updateBidsStatus = async (newStatus, bidId) => {
     try {
-      const response = await fetchWrapper.put(`/shipments/bid-status/${id}`, {
+      const response = await fetchWrapper.put(`/shipments/status/${id}`, {
         newStatus,
         bidId,
       });
+
+      window.location.reload();
+      
       console.log(response);
     } catch (error) {
       console.log(error);

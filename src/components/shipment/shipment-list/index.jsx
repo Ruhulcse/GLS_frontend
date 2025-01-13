@@ -208,6 +208,24 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
                 </button>
               </Tooltip>
             )}
+             {
+              user.userType==='broker' && (
+                <Tooltip
+              content="Assign Load"
+              placement="top"
+              arrow
+              animation="shift-away"
+            >
+             <button
+                  className="action-btn"
+                  type="button"
+                  onClick={() => handlePlaceBid(row.original?._id)}
+                >
+                  <Icon icon="heroicons:tag" />
+                </button>
+            </Tooltip>
+              )
+            }
           </div>
         );
       },

@@ -24,9 +24,11 @@ import Loading from "../Loading";
 import GlobalFilter from "../shared/TableFilter/GlobalFilter";
 import Dropdown from "../ui/Dropdown";
 import Tooltip from "../ui/Tooltip";
+import { selectCurrentUserType } from "@/store/api/auth/authSlice";
 
 const UserList = ({ title = "User List" }) => {
   const { errorToast, successToast } = useToast();
+  const currentUserType = useSelector(selectCurrentUserType);
   const actions = [
     {
       name: "Active",
@@ -149,19 +151,23 @@ const UserList = ({ title = "User List" }) => {
         );
       },
     },
+
     {
       Header: "action",
       accessor: "action",
+      
       Cell: (row) => {
+       
         const filteredActions = actions.filter(
           (item) =>
             item.name.toLowerCase() !==
             row?.cell?.row?.original?.userStatus?.toLowerCase()
         );
         return (
-          row.cell?.row?.original?._id !== user_id && (
+          row.cell?.row?.original?._id !== user_id  && (
             <div className="flex space-x-3 rtl:space-x-reverse">
-              <Dropdown
+             {currentUserType !== "shipper" && (
+                <Dropdown
                 classMenuItems="right-0 w-[140px] top-[110%] "
                 label={
                   <span className="text-xl text-center block w-full">
@@ -192,6 +198,7 @@ const UserList = ({ title = "User List" }) => {
                   ))}
                 </div>
               </Dropdown>
+             )}
 
               <Tooltip
                 content="Chat"
@@ -210,6 +217,7 @@ const UserList = ({ title = "User List" }) => {
         );
       },
     },
+   
   ];
 
   const IndeterminateCheckbox = React.forwardRef(

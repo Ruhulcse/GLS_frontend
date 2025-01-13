@@ -64,6 +64,15 @@ const Notification = () => {
 			toast.success(notification.message, { position: 'top-right' });
 		});
 
+		socket.on("acceptedBidNotification", (notification) => {
+			fetchNotifications();
+			toast.success(notification.message, { position: 'top-right' });
+		})
+		socket.on("deliveredBidNotification", (notification) => {
+			fetchNotifications();
+			toast.success(notification.message, { position: 'top-right' });
+		})
+
 		return () => socket.disconnect();
 	}, [token]);
 
