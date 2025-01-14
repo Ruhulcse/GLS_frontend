@@ -84,6 +84,11 @@ export const menuItems = [
 		link: 'bids',
 	},
 	{
+		title: 'Assign loads',
+		icon: 'heroicons-outline:tag',
+		link: 'assign-loads',
+	},
+	{
 		title: 'My Plans',
 		icon: 'heroicons-outline:banknotes',
 		link: 'plans',

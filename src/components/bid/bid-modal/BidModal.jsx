@@ -6,7 +6,7 @@ import Modal from '@/components/ui/Modal';
 import { useSelector } from 'react-redux';
 import BidForm from '../bid-form/BidForm';
 
-export const BidModal = ({ isOpen, setIsOpen, shipmentId }) => {
+export const BidModal = ({ isOpen, setIsOpen, shipmentId,isEdit }) => {
 	const { shipment, loading } = useSelector(state => state.shipment);
 	const onClose = () => {
 		setIsOpen(false);
@@ -25,7 +25,7 @@ export const BidModal = ({ isOpen, setIsOpen, shipmentId }) => {
 			) : (
 				<div className=''>
 					<ShipmentViewDetails shipment={shipment} />
-					<BidForm onClose={onClose} shipmentId={shipmentId} />
+					<BidForm onClose={onClose} shipmentId={shipmentId} isEdit={isEdit} />
 				</div>
 			)}
 		</Modal>

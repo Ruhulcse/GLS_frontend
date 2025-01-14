@@ -47,7 +47,7 @@ const Sidebar = () => {
 					}
 				}
 				// Allow Dashboard, My Bids, and My Plans for carrier
-				if (['Dashboard','Shippers', 'My Bids', 'My Plans'].includes(item.title)) {
+				if (['Dashboard','Shippers', 'Assign loads', 'My Plans'].includes(item.title)) {
 					return item;
 				}
 				// Return null for items not allowed

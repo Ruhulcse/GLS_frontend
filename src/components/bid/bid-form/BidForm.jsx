@@ -15,17 +15,22 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
-const BidForm = ({ onClose, shipmentId }) => {
+const BidForm = ({ onClose, shipmentId,isEdit }) => {
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.user);
+
+  const {assignBid} = useSelector((state) => state.singleBid);
+  //const data = useSelector((state) => state.singleBid);
+  console.log(assignBid);
+  
 
   const [loading, setLoading] = useState(false);
   const FormValidationSchema = yup
     .object({
       bidAmount: yup.string().required("Bid Amount is Required"),
       proposedTimeline: yup.string().required("Proposed Timeline is Required"),
-	  email: yup.string().email("Invalid email").required("Email is Required"),
+	  email: yup.string().email("Invalid email").when("isBroker", { is: true, then: yup.string().required("Email is Required"),otherwise: yup.string().notRequired()}),
     })
     .required();
 
@@ -37,8 +42,16 @@ const BidForm = ({ onClose, shipmentId }) => {
     formState: { errors },
     handleSubmit,
   } = useForm({
-    resolver: yupResolver(FormValidationSchema),
+    resolver: yupResolver(FormValidationSchema,{context:{isBroker:user.userType === 'broker'}}),
     mode: "all",
+    defaultValues: isEdit
+    ? {
+        bidAmount: assignBid?.bidAmount || "",
+        proposedTimeline: assignBid?.proposedTimeline || "",
+        email: assignBid?.carrierId?.email || "",
+        remarks: assignBid?.remarks || "",
+      }
+    : {},
   });
 
   const onSubmit = async (data) => {
@@ -101,9 +114,11 @@ const BidForm = ({ onClose, shipmentId }) => {
               render={({ field }) => (
                 <Textinput
                   id="nu"
+                  defaultValue={assignBid?.bidAmount || ""}
                   options={{ numeral: true }}
                   placeholder="Bid Amount"
-                  isMask
+                  
+                  value={field.value}
                   onChange={(data) => {
                     field.onChange(data);
                   }}
@@ -130,6 +145,7 @@ const BidForm = ({ onClose, shipmentId }) => {
                   className="form-control my-2 py-0"
                   id="hf-picker"
                   placeholder="Proposed Timeline"
+                  value={field.value}
                   onChange={(date) => {
                     field.onChange(moment(date[0]).format("YYYY-MM-DD"));
                   }}
@@ -158,9 +174,10 @@ const BidForm = ({ onClose, shipmentId }) => {
                 render={({ field }) => (
                   <Textinput
                     id="nu"
+                    defaultValue={assignBid?.carrierId?.email || ""}
                     options={{ numeral: true }}
                     placeholder="Carrier Email"
-                    
+                    value={field.value}
                     onChange={(data) => {
                       field.onChange(data);
                     }}
@@ -176,6 +193,7 @@ const BidForm = ({ onClose, shipmentId }) => {
             id="pn4"
             placeholder="Enter remarks"
             row="5"
+            
             register={register}
             className="my-2"
           />
