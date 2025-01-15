@@ -70,6 +70,43 @@ const MobileMenu = ({ className = 'custom-class' }) => {
 				return null;
 			})
 			.filter(Boolean); // Remove any null items from the menu
+	} else if(userType === 'broker') {
+		selectedMenu = menuItems
+			.map((item) => {
+				if (item.title === 'Shippers') {
+					// Filter 'Shippers' to include only 'Shipments' and exclude 'Create Shipment'
+					return {
+						...item,
+						child: item.child.filter(
+							(childItem) => childItem.childtitle === 'Shipments'
+						),
+					};
+				}
+				if(item.title === 'Users'){
+					return {
+						...item,
+						child: item.child.filter(
+							(childItem) => childItem.childtitle === 'User List'
+						)
+					}
+				}
+				// Allow Dashboard, My Bids, and My Plans for carrier
+				if (['Dashboard','Shippers', 'Assign loads', 'My Plans'].includes(item.title)) {
+					return item;
+				}
+				// Return null for items not allowed
+				return null;
+			})
+			.filter(Boolean); // Remove any null items from the menu
+	} else if (userType === 'supperadmin') {
+		selectedMenu = menuItems
+			.map((item) => {
+				if (!['Assign loads'].includes(item.title)) {
+					return item;
+				}
+				return null;
+			})
+			.filter(Boolean); 
 	}
 
 	return (

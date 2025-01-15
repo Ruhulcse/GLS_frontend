@@ -55,7 +55,7 @@ const ShipmentForm = () => {
 		},
 		{
 			label: 'Furniture',
-			value: 'Gurniture',
+			value: 'Furniture',
 		},
 		{
 			label: 'Automobile Parts',

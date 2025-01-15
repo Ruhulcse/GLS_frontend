@@ -272,6 +272,8 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
             const response = await fetchWrapper.delete(`shipments/${id}`);
             if (response.status === 200) {
               dispatch(getAllShipments());
+              dispatch(getAllShipperShipments({ id: user._id }));
+              //setFilterData(shipments)
               swalSuccess("Shipment deleted successfully");
             }
           } catch (error) {

@@ -75,6 +75,15 @@ const Sidebar = () => {
 				return null;
 			})
 			.filter(Boolean); // Remove any null items from the menu
+	} else if (userType === 'supperadmin') {
+		selectedMenu = menuItems
+			.map((item) => {
+				if (!['Assign loads'].includes(item.title)) {
+					return item;
+				}
+				return null;
+			})
+			.filter(Boolean); 
 	}
 
 	useEffect(() => {

@@ -8,6 +8,7 @@ import fetchWrapper from "@/util/fetchWrapper";
 import { convertMoneyStringToNumber } from "@/util/helpers";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
+import { use } from "react";
 import { useState } from "react";
 import Flatpickr from "react-flatpickr";
 import { Controller, useForm } from "react-hook-form";
@@ -57,38 +58,38 @@ const BidForm = ({ onClose, shipmentId,isEdit }) => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const payload = {
+      const basePayload = {
         ...data,
         shipmentId,
         bidAmount: convertMoneyStringToNumber(data.bidAmount),
       };
-	  const payload1 = {
-        ...data,
-        shipmentId,
-        bidAmount: convertMoneyStringToNumber(data.bidAmount),
-		brokerId: user._id
-      };
-	  if(user.userType === 'broker'){
-		  
-		  const response = await fetchWrapper.post(`/shipments/broker/bid`, payload1);
-		  console.log("onSubmit == response:", response);
-		  if (response.status === 201) {
-			successToast("Bid placed successfully!");
-			navigate("/bids");
-			onClose();
-		  }
-	  } else {
-		  
-		  const response = await fetchWrapper.post(`shipments/bid`, payload);
-		  console.log("onSubmit == response:", response);
-		  if (response.status === 201) {
-			successToast("Bid placed successfully!");
-			navigate("/bids");
-			onClose();
-		  }
-	  }
+      const payload = user.userType === 'broker' ? {...basePayload, brokerId: user._id} : basePayload;
+      let response;
+      if(user.userType === 'broker'&&isEdit){
+        response = await fetchWrapper.put(`/shipment/bids/${assignBid._id}`, payload);
+      } else {
+        const endpoint = user.userType === 'broker' ? `/shipments/broker/bid` : `/shipments/bid`;
+        response = await fetchWrapper.post(endpoint, payload);
+      }
+
+      if(response.status === 201){
+        successToast("Bid placed successfully!");
+        if(user.userType === 'broker'){
+          navigate("/assign-loads");
+        } else {
+          navigate("/bids");
+        }
+        onClose();  
+      }
+      if(response.status === 200){
+        successToast("Bid updated successfully!");
+        navigate("/assign-loads");  
+        onClose();  
+      }
      
     } catch (error) {
+      console.log("error",error.message);
+      
       errorToast(error?.message);
       onClose();
     } finally {
@@ -135,6 +136,7 @@ const BidForm = ({ onClose, shipmentId,isEdit }) => {
               </div>
             }
             id="default-picker"
+            defaultValue={assignBid?.proposedTimeline || ""}
             error={errors.proposedTimeline}
           >
             <Controller
@@ -144,8 +146,9 @@ const BidForm = ({ onClose, shipmentId,isEdit }) => {
                 <Flatpickr
                   className="form-control my-2 py-0"
                   id="hf-picker"
+                  
                   placeholder="Proposed Timeline"
-                  value={field.value}
+                  value={field.value || assignBid?.proposedTimeline || ""}
                   onChange={(date) => {
                     field.onChange(moment(date[0]).format("YYYY-MM-DD"));
                   }}
