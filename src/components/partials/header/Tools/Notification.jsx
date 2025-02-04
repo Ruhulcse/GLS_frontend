@@ -64,7 +64,11 @@ const Notification = () => {
       "deliveredBidNotification",
 	  "assignedBidNotification",
 	  "assignByBroker",
-	  "deliveredBidNotificationToBroker"
+	  "deliveredBidNotificationToBroker",
+    "assignedUpdateBidNotification",
+    "assignedUpdateBidNotificationToShipper",
+    "cancelledBidNotification",
+
     ];
 
     events.forEach((event) => {

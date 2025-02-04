@@ -205,7 +205,7 @@ const BidForm = ({ onClose, shipmentId,isEdit }) => {
             <Button
               className="btn btn-primary text-center"
               type="submit"
-              text={"Place Bid"}
+              text={isEdit ? "Update Bid" : "Place Bid"}
               isLoading={loading}
               disabled={loading}
             />
