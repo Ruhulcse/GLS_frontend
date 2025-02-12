@@ -1,36 +1,73 @@
 import { MdCheck } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Container from "../../shared/Container/Container";
+import { useState } from "react";
+const MonthlyPackage = [
+  {
+    id: 1,
+    name: "Carriers",
+    price: 45,
+    feature1: "Lorem ipsum dolor sit.",
+    feature2: "0% savings",
+    feature3: "Lorem ipsum dolor sit.",
+    feature4: "Lorem ipsum dolor sit.",
+  },
+  {
+    id: 2,
+    name: "Brokers",
+    price: 20,
+    feature1: "Lorem ipsum dolor sit.",
+    feature2: "0% savings",
+    feature3: "Lorem ipsum dolor sit.",
+    feature4: "Lorem ipsum dolor sit.",
+  },
+  {
+    id: 3,
+    name: "Shippers",
+    price: 35,
+    feature1: "Lorem ipsum dolor sit.",
+    feature2: "0% savings",
+    feature3: "Lorem ipsum dolor sit.",
+    feature4: "Lorem ipsum dolor sit.",
+  },
+];
+const YearlyPackage = [
+  {
+    id: 1,
+    name: "Carriers",
+    price: 486,
+    feature1: "Lorem ipsum dolor sit.",
+    feature2: "10% savings",
+    feature3: "Lorem ipsum dolor sit.",
+    feature4: "Lorem ipsum dolor sit.",
+  },
+  {
+    id: 2,
+    name: "Brokers",
+    price: 216,
+    feature1: "Lorem ipsum dolor sit.",
+    feature2: "10% savings",
+    feature3: "Lorem ipsum dolor sit.",
+    feature4: "Lorem ipsum dolor sit.",
+  },
+  {
+    id: 3,
+    name: "Shippers",
+    price: 378,
+    feature1: "Lorem ipsum dolor sit.",
+    feature2: "10% savings",
+    feature3: "Lorem ipsum dolor sit.",
+    feature4: "Lorem ipsum dolor sit.",
+  },
+];
 const Pricing = () => {
-  const Products = [
-    {
-      id: 1,
-      name: "Carriers",
-      price: 45,
-      feature1: "Lorem ipsum dolor sit.",
-      feature2: "0% savings",
-      feature3: "Lorem ipsum dolor sit.",
-      feature4: "Lorem ipsum dolor sit.",
-    },
-    {
-      id: 2,
-      name: "Brokers",
-      price: 20,
-      feature1: "Lorem ipsum dolor sit.",
-      feature2: "25% savings",
-      feature3: "Lorem ipsum dolor sit.",
-      feature4: "Lorem ipsum dolor sit.",
-    },
-    {
-      id: 3,
-      name: "Shippers",
-      price: 35,
-      feature1: "Lorem ipsum dolor sit.",
-      feature2: "50% savings",
-      feature3: "Lorem ipsum dolor sit.",
-      feature4: "Lorem ipsum dolor sit.",
-    },
-  ];
+  const [isMonthly, setIsMonthly] = useState(true);
+  const [data,setData] = useState(MonthlyPackage)
+
+  const handlePackage = (isMonthly) => {
+    setIsMonthly(isMonthly);
+    setData(isMonthly ? MonthlyPackage : YearlyPackage);
+  }
   return (
     <section className="bg-[#0A0D10] py-16" id="pricing">
       <Container>
@@ -44,14 +81,26 @@ const Pricing = () => {
             Customize your subscription for a seamless fit!
           </p>
         </div>
-        <div className="sm:flex justify-center items-center sm:space-y-0 space-y-2 sm:space-x-4 text-[#EFE8FF]">
-          <p className="py-2 px-20 bg-[#0C0E7A] text-center rounded-full">
+          <div className="sm:flex justify-center items-center sm:space-y-0 space-y-2 sm:space-x-4 text-[#EFE8FF]">
+            <p
+              onClick={() => handlePackage(true)}
+              className={`py-2 px-20  text-center rounded-full cursor-pointer ${
+              isMonthly ? "bg-[#0C0E7A]" : ""
+            }`}
+          >
             Monthly
           </p>
-          <p className="text-center">Yearly save (10%)</p>
+          <p
+            onClick={() => handlePackage(false)}
+            className={`py-2 px-14  text-center rounded-full cursor-pointer ${
+              !isMonthly ? "bg-[#0C0E7A]" : ""
+            }`}
+          >
+            Yearly save (10%)
+          </p>
         </div>
         <div className="relative sm:flex justify-center items-center sm:space-x-4 sm:space-y-0 space-y-16 mt-20 p-3">
-          {Products.map((item) => (
+          {data.map((item) => (
             <div
               className="rounded border border-[#535159] text-[#e8e8eb] sm:w-80 w-auto h-auto bg-[#0E0C15] px-8 py-4"
               key={item.id}
@@ -68,7 +117,7 @@ const Pricing = () => {
                 <div className="border-b border-[#535159]">
                   <h1 className="text-4xl text-[#9101FF] font-bold my-4">
                     ${item.price} /
-                    <span className="text-sm text-[#d8d8d8]">Per Month</span>
+                    <span className="text-sm text-[#d8d8d8]">{isMonthly? "Per Month" : "Per Year"}</span>
                   </h1>
                 </div>
                 <div className="flex flex-col h-auto py-4 space-y-4">

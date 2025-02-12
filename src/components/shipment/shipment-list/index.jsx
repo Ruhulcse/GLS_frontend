@@ -34,18 +34,16 @@ import GlobalFilter from "../../shared/TableFilter/GlobalFilter";
 import ColumnFilter from "@/components/shared/TableFilter/ColumnFilter";
 import { getAllShipperShipments } from "@/store/api/shipperShipments/shipperShipmentsSlice";
 
-
 const ShipmentListGrid = ({ title = "Shipment List" }) => {
-
   const { user } = useSelector((state) => state.user);
   //console.log(user);
-  
+
   const [shipmentId, setShipmentId] = useState(null);
   const COLUMNS = [
     {
       Header: "Type",
       accessor: "cargoType",
-	  Filter: ColumnFilter,
+      Filter: ColumnFilter,
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
@@ -53,8 +51,8 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
     {
       Header: "Number of Loads",
       accessor: "numberOfLoads",
-	  Filter: ColumnFilter,
-	  disableFilters:true,
+      Filter: ColumnFilter,
+      disableFilters: true,
       Cell: (row) => {
         return <span>#{row?.cell?.value}</span>;
       },
@@ -62,7 +60,7 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
     {
       Header: "Origin",
       accessor: "origin",
-	  Filter: ColumnFilter,
+      Filter: ColumnFilter,
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
@@ -70,7 +68,7 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
     {
       Header: "Destination",
       accessor: "destination",
-	  Filter: ColumnFilter,
+      Filter: ColumnFilter,
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
@@ -78,8 +76,8 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
     {
       Header: "Weight (in kg)",
       accessor: "weightKG",
-	  Filter: ColumnFilter,
-	  disableFilters:true,
+      Filter: ColumnFilter,
+      disableFilters: true,
       Cell: (row) => {
         return <span>{row?.cell?.value}</span>;
       },
@@ -87,8 +85,8 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
     {
       Header: "Offering Price",
       accessor: "offeringPrice",
-	  Filter: ColumnFilter,
-	  disableFilters:true,
+      Filter: ColumnFilter,
+      disableFilters: true,
       Cell: (row) => {
         return <span>{moneyFormatter(row?.cell?.value, "USD")}</span>;
       },
@@ -96,7 +94,7 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
     {
       Header: "PickUp Date",
       accessor: "pickUpDate",
-	  Filter: ColumnFilter,
+      Filter: ColumnFilter,
       Cell: (row) => {
         return <span>{dateTime(row?.cell?.value)}</span>;
       },
@@ -104,7 +102,7 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
     {
       Header: "Delivery Date",
       accessor: "deliveryDate",
-	  Filter: ColumnFilter,
+      Filter: ColumnFilter,
       Cell: (row) => {
         return <span>{dateTime(row?.cell?.value)}</span>;
       },
@@ -113,12 +111,12 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
     {
       Header: "status",
       accessor: "status",
-	  Filter: ColumnFilter,
-	  disableFilters:true,
+      Filter: ColumnFilter,
+      disableFilters: true,
       Cell: (row) => {
         return (
-         // console.log(row)
-          
+          // console.log(row)
+
           <span className="block w-full">
             <span
               className={` inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25 ${
@@ -128,6 +126,8 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
               } 
 				${row?.cell?.value === "due" ? "text-warning-500 bg-warning-500" : ""}
 				${row?.cell?.value === "cancled" ? "text-danger-500 bg-danger-500" : ""}
+        ${row?.cell?.value === "delivered" ? "text-green-700 bg-green-900" : ""}
+        ${row?.cell?.value === "in transit" ? "text-yellow-500 bg-yellow-500" : ""}
 				
 				 `}
             >
@@ -140,8 +140,8 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
     {
       Header: "action",
       accessor: "action",
-	  Filter: ColumnFilter,
-	  disableFilters:true,
+      Filter: ColumnFilter,
+      disableFilters: true,
       Cell: ({ value, row }) => {
         return (
           <div className="flex space-x-3 rtl:space-x-reverse">
@@ -157,39 +157,37 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
                 </button>
               </Link>
             </Tooltip>
-            {
-              user.userType==='shipper' && (
-                <Tooltip
-              content="Edit"
-              placement="top"
-              arrow
-              animation="shift-away"
-            >
-              <Link to={`/shipment/edit/${row.original?._id}`}>
-                <button className="action-btn" type="button">
-                  <Icon icon="heroicons:pencil-square" />
+            {user.userType === "shipper" && (
+              <Tooltip
+                content="Edit"
+                placement="top"
+                arrow
+                animation="shift-away"
+              >
+                <Link to={`/shipment/edit/${row.original?._id}`}>
+                  <button className="action-btn" type="button">
+                    <Icon icon="heroicons:pencil-square" />
+                  </button>
+                </Link>
+              </Tooltip>
+            )}
+            {user.userType === "shipper" && (
+              <Tooltip
+                content="Delete"
+                placement="top"
+                arrow
+                animation="shift-away"
+                theme="danger"
+              >
+                <button
+                  className="action-btn"
+                  type="button"
+                  onClick={() => deleteShipment(row.original?._id)}
+                >
+                  <Icon icon="heroicons:trash" />
                 </button>
-              </Link>
-            </Tooltip>
-              )
-            }
-           {user.userType==='shipper' && (
-             <Tooltip
-             content="Delete"
-             placement="top"
-             arrow
-             animation="shift-away"
-             theme="danger"
-           >
-             <button
-               className="action-btn"
-               type="button"
-               onClick={() => deleteShipment(row.original?._id)}
-             >
-               <Icon icon="heroicons:trash" />
-             </button>
-           </Tooltip>
-           )}
+              </Tooltip>
+            )}
 
             {/* bid button */}
             {user.userType === "carrier" && (
@@ -208,24 +206,22 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
                 </button>
               </Tooltip>
             )}
-             {
-              user.userType==='broker' && (
-                <Tooltip
-              content="Assign Load"
-              placement="top"
-              arrow
-              animation="shift-away"
-            >
-             <button
+            {user.userType === "broker" && (
+              <Tooltip
+                content="Assign Load"
+                placement="top"
+                arrow
+                animation="shift-away"
+              >
+                <button
                   className="action-btn"
                   type="button"
                   onClick={() => handlePlaceBid(row.original?._id)}
                 >
                   <Icon icon="heroicons:tag" />
                 </button>
-            </Tooltip>
-              )
-            }
+              </Tooltip>
+            )}
           </div>
         );
       },
@@ -234,31 +230,27 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const columns = useMemo(() => COLUMNS, [user]);
-  const [filterData,setFilterData] = useState([])
+  const [filterData, setFilterData] = useState([]);
   const { errorToast } = useToast();
   const dispatch = useDispatch();
   const { shipments, loading } = useSelector((state) => state.shipments);
-  const {shipperShipments} = useSelector((state)=>state.shipperShipments)
-  
-  
-  
+  const { shipperShipments } = useSelector((state) => state.shipperShipments);
+
   useEffect(() => {
-    if (user.userType === 'shipper') {
+    if (user.userType === "shipper") {
       dispatch(getAllShipperShipments({ id: user._id }));
     } else {
       dispatch(getAllShipments());
     }
   }, [dispatch, user.userType, user._id]);
-  
+
   useEffect(() => {
-    if (user.userType === 'shipper') {
+    if (user.userType === "shipper") {
       setFilterData(shipperShipments);
     } else {
       setFilterData(shipments);
     }
   }, [user.userType, shipperShipments, shipments]);
-  
-  
 
   const deleteShipment = async (id) => {
     try {
@@ -322,10 +314,10 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
     {
       columns,
       data: filterData,
-	  //initialState:{globalFilter:''}
+      //initialState:{globalFilter:''}
     },
     useFilters,
-   // useGlobalFilter,
+    // useGlobalFilter,
     useSortBy,
     usePagination,
     useRowSelect,
@@ -366,10 +358,9 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
     setPageSize,
     //setGlobalFilter,
     prepareRow,
-    
   } = tableInstance;
 
-  const {  pageIndex, pageSize } = state;
+  const { pageIndex, pageSize } = state;
 
   if (loading) {
     return <Loading />;
@@ -401,15 +392,20 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
                           scope="col"
                           className=" table-th "
                         >
-                         <div> {column.render("Header")}
-                          <span>
-                            {column.isSorted
-                              ? column.isSortedDesc
-                                ? " 🔽"
-                                : " 🔼"
-                              : ""}
-                          </span></div>
-						  <div>{column.canFilter ? column.render("Filter") : null}</div>
+                          <div>
+                            {" "}
+                            {column.render("Header")}
+                            <span>
+                              {column.isSorted
+                                ? column.isSortedDesc
+                                  ? " 🔽"
+                                  : " 🔼"
+                                : ""}
+                            </span>
+                          </div>
+                          <div>
+                            {column.canFilter ? column.render("Filter") : null}
+                          </div>
                         </th>
                       ))}
                     </tr>
@@ -529,5 +525,3 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
 };
 
 export default ShipmentListGrid;
-
-

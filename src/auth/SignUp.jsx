@@ -1,4 +1,5 @@
 import { car } from "@/assets";
+import PrivacyModel from "@/components/privacyModal";
 import Button from "@/components/ui/Button";
 import FormGroup from "@/components/ui/FormGroup";
 import PasswordStrengthIndicator from "@/components/ui/PasswordStrengthIndicator";
@@ -15,15 +16,24 @@ function SignUp() {
   const navigate = useNavigate();
   const [agent, setAgent] = useState(false);
   const [user, setUser] = useState("");
+  const [isCheck, setIsCheck] = useState(false);
+  const [modelOpen, setModelOpen] = useState(false);
   const [signUp, { isLoading }] = useRegisterUserMutation();
   //console.log(user);
+
+  const handleModel = (isCheck) => {
+    setModelOpen(!modelOpen);
+    setIsCheck(isCheck);
+  };
 
   const schema = yup
     .object({
       firstName: yup.string().label("First Name").required(),
       lastName: yup.string().label("Last Name").required(),
       email: yup.string().email("invalid email").required("email is required"),
+      privacy: yup.boolean().typeError("Privacy Must be checked").required("Privacy must be checked"),
       phoneNumber: yup.string().required(),
+
       password: yup
         .string()
         .required()
@@ -52,7 +62,7 @@ function SignUp() {
     formState: { errors, isValid },
     handleSubmit,
     control,
-	setError,
+    setError,
     watch,
   } = useForm({
     resolver: yupResolver(schema),
@@ -67,28 +77,26 @@ function SignUp() {
     }
     return true;
   };
- 
 
   const onSubmit = async (data) => {
-    
     try {
       const success = await signUp(data).unwrap();
-	  if (Object.keys(success).length === 0) {
-		throw new Error('Email already exists');
-	}
+      if (Object.keys(success).length === 0) {
+        throw new Error("Email already exists");
+      }
       navigate("/logIn");
     } catch (error) {
-      if(error = 'Email already exists'){
-		setError('email', {
-			type: 'manual',
-			message: 'Email is already registered.',
-		});
-	  }
+      if ((error = "Email already exists")) {
+        setError("email", {
+          type: "manual",
+          message: "Email is already registered.",
+        });
+      }
     }
   };
   return (
-    <div className="min-h-[95vh] sm:h-[9vh] bg-gradient-to-tr to-[#ede8e8] from-[#f4c5c5]">
-      <div className="flex justify-center items-center h-full">
+    <div className="min-h-[95vh] relative sm:h-[9vh] bg-gradient-to-tr to-[#ede8e8] from-[#f4c5c5]">
+      <div className="flex justify-center items-center h-full ">
         <div className="bg-gradient-to-tl from-[#97aff1] to-[#c6f2f3de] min-h-5/6 w-5/6 grid xl:grid-cols-2 md:grid-cols-3 rounded-xl shadow-2xl ">
           {/* welcome */}
           <div className="hidden lg:block xl:col-span-1 rounded-xl">
@@ -236,17 +244,43 @@ function SignUp() {
                   </div>
                 )}
                 {agent && (
-                  <Textinput
-                    label="Agent code"
-                    type="text"
-                    name="agent_code"
-                    //className="right-0"
-                    autoComplete="code"
-                    error={errors.agent_code}
-                    placeholder="Code"
-                    register={register}
-                    className="w-full"
-                  />
+                  <>
+                    <Textinput
+                      label="Agent code"
+                      type="text"
+                      name="agent_code"
+                      //className="right-0"
+                      autoComplete="code"
+                      error={errors.agent_code}
+                      placeholder="Code"
+                      register={register}
+                      className="w-full"
+                    />
+                    <div>
+                    <div
+                      className="flex gap-3 items-center font-bold text-xl  py-4"
+                      onClick={() => setModelOpen(!modelOpen)}
+                    >
+                      <input
+                        type="checkbox"
+                        //defaultChecked
+                        name="privacy"
+                        value="privacy"
+                        checked={isCheck}
+                        {...register("privacy")}
+                        className="checkbox bg-white"
+                      />
+                      <label className="text-lg font-medium text-black-500 cursor-pointer hover:underline">
+                        Privacy Policy
+                      </label>
+                    </div>
+                    {errors.privacy && (
+                        <p className="text-red-500 text-sm mt-[-10px]">
+                          {errors.privacy.message}
+                        </p>
+                      )}
+                    </div>
+                  </>
                 )}
 
                 <Button
@@ -272,6 +306,8 @@ function SignUp() {
           </div>
         </div>
       </div>
+
+      {modelOpen && <PrivacyModel handleModel={handleModel} />}
     </div>
   );
 }
