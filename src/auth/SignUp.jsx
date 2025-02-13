@@ -276,7 +276,7 @@ function SignUp() {
                       className="checkbox bg-white"
                     />
                     <label className="text-sm font-medium text-black-500 cursor-pointer">
-                    Privacy & User agreement
+                    Privacy Policy
                     </label>
                   </div>
                   {errors?.privacy && (
