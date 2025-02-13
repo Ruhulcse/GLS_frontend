@@ -31,7 +31,7 @@ function SignUp() {
       firstName: yup.string().label("First Name").required(),
       lastName: yup.string().label("Last Name").required(),
       email: yup.string().email("invalid email").required("email is required"),
-      privacy: yup.boolean().typeError("Privacy Must be checked").required("Privacy must be checked"),
+      privacy:yup.boolean().oneOf([true], "Accept privacy policy"),
       phoneNumber: yup.string().required(),
 
       password: yup
@@ -63,6 +63,7 @@ function SignUp() {
     handleSubmit,
     control,
     setError,
+    clearErrors,
     watch,
   } = useForm({
     resolver: yupResolver(schema),
@@ -81,6 +82,7 @@ function SignUp() {
   const onSubmit = async (data) => {
     try {
       const success = await signUp(data).unwrap();
+      //console.log("success", success);
       if (Object.keys(success).length === 0) {
         throw new Error("Email already exists");
       }
@@ -256,37 +258,38 @@ function SignUp() {
                       register={register}
                       className="w-full"
                     />
-                    <div>
-                    <div
-                      className="flex gap-3 items-center font-bold text-xl  py-4"
-                      onClick={() => setModelOpen(!modelOpen)}
-                    >
-                      <input
-                        type="checkbox"
-                        //defaultChecked
-                        name="privacy"
-                        value="privacy"
-                        checked={isCheck}
-                        {...register("privacy")}
-                        className="checkbox bg-white"
-                      />
-                      <label className="text-lg font-medium text-black-500 cursor-pointer hover:underline">
-                        Privacy Policy
-                      </label>
-                    </div>
-                    {errors.privacy && (
-                        <p className="text-red-500 text-sm mt-[-10px]">
-                          {errors.privacy.message}
-                        </p>
-                      )}
-                    </div>
                   </>
                 )}
+                <div>
+                  <div
+                    className="flex gap-3 items-center font-bold text-xl  py-4"
+                   
+                  >
+                    <input
+                      type="checkbox"
+                      //defaultChecked
+                      name="privacy"
+                      //value={isCheck}
+                      checked={isCheck}
+                      onClick={() => handleModel(!modelOpen)}
+                      {...register("privacy")}
+                      className="checkbox bg-white"
+                    />
+                    <label className="text-sm font-medium text-black-500 cursor-pointer">
+                    Privacy & User agreement
+                    </label>
+                  </div>
+                  {errors?.privacy && (
+                    <p className="text-red-500 text-sm mt-[-10px]">
+                      {errors?.privacy?.message}
+                    </p>
+                  )}
+                </div>
 
                 <Button
                   type="submit"
                   text="Sign Up"
-                  disabled={!isValid}
+                  disabled={!isValid || !isCheck}
                   isLoading={isLoading}
                   className="btn btn-dark block w-full text-center mt-4"
                 />
