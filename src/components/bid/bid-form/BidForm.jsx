@@ -4,26 +4,32 @@ import FormGroup from "@/components/ui/FormGroup";
 import Textarea from "@/components/ui/Textarea";
 import Textinput from "@/components/ui/Textinput";
 import useToast from "@/hooks/useToast";
+import { getAllAssignBidsByBroker } from "@/store/api/assignBids/assignBidsSlice";
 import fetchWrapper from "@/util/fetchWrapper";
 import { convertMoneyStringToNumber } from "@/util/helpers";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
-import { use } from "react";
+import { use, useEffect } from "react";
 import { useState } from "react";
 import Flatpickr from "react-flatpickr";
 import { Controller, useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
-const BidForm = ({ onClose, shipmentId,isEdit }) => {
+const BidForm = ({ onClose, shipmentId,isEdit,setIsEdit }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+
+  console.log("isEdit", isEdit);  
+  
 
   const { user } = useSelector((state) => state.user);
 
   const {assignBid} = useSelector((state) => state.singleBid);
   //const data = useSelector((state) => state.singleBid);
   console.log(assignBid);
+  
   
 
   const [loading, setLoading] = useState(false);
@@ -42,18 +48,22 @@ const BidForm = ({ onClose, shipmentId,isEdit }) => {
     control,
     formState: { errors },
     handleSubmit,
+    reset
   } = useForm({
     resolver: yupResolver(FormValidationSchema,{context:{isBroker:user.userType === 'broker'}}),
-    mode: "all",
-    defaultValues: isEdit
-    ? {
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    if (isEdit && assignBid) {
+      reset({
         bidAmount: assignBid?.bidAmount || "",
         proposedTimeline: assignBid?.proposedTimeline || "",
         email: assignBid?.carrierId?.email || "",
         remarks: assignBid?.remarks || "",
-      }
-    : {},
-  });
+      });
+    }
+  }, [isEdit, assignBid, reset]);
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -83,14 +93,16 @@ const BidForm = ({ onClose, shipmentId,isEdit }) => {
       }
       if(response.status === 200){
         successToast("Bid updated successfully!");
-        navigate("/assign-loads");  
+        navigate("/assign-loads"); 
+        dispatch(getAllAssignBidsByBroker()); 
+
         onClose();  
       }
      
     } catch (error) {
-      console.log("error",error.message);
+      console.log("error",error);
       
-      errorToast(error?.message);
+      errorToast(error?.response.data.message);
       onClose();
     } finally {
       setLoading(false);
@@ -136,7 +148,7 @@ const BidForm = ({ onClose, shipmentId,isEdit }) => {
               </div>
             }
             id="default-picker"
-            defaultValue={assignBid?.proposedTimeline || ""}
+            defaultValue={assignBid?.proposedTimeline }
             error={errors.proposedTimeline}
           >
             <Controller
@@ -148,7 +160,7 @@ const BidForm = ({ onClose, shipmentId,isEdit }) => {
                   id="hf-picker"
                   
                   placeholder="Proposed Timeline"
-                  value={field.value || assignBid?.proposedTimeline || ""}
+                  value={field.value || assignBid?.proposedTimeline }
                   onChange={(date) => {
                     field.onChange(moment(date[0]).format("YYYY-MM-DD"));
                   }}
@@ -177,7 +189,7 @@ const BidForm = ({ onClose, shipmentId,isEdit }) => {
                 render={({ field }) => (
                   <Textinput
                     id="nu"
-                    defaultValue={assignBid?.carrierId?.email || ""}
+                    defaultValue={assignBid?.carrierId?.email||"" }
                     options={{ numeral: true }}
                     placeholder="Carrier Email"
                     value={field.value}

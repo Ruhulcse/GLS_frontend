@@ -68,6 +68,9 @@ const Notification = () => {
     "assignedUpdateBidNotification",
     "assignedUpdateBidNotificationToShipper",
     "cancelledBidNotification",
+    "pickedUpBidNotification",
+    "pickedUpBidNotificationToBroker",
+    "newShipmentNotification"
 
     ];
 

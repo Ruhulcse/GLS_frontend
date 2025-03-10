@@ -36,6 +36,7 @@ import { getAllShipperShipments } from "@/store/api/shipperShipments/shipperShip
 
 const ShipmentListGrid = ({ title = "Shipment List" }) => {
   const { user } = useSelector((state) => state.user);
+  
   //console.log(user);
 
   const [shipmentId, setShipmentId] = useState(null);
@@ -216,7 +217,9 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
                 <button
                   className="action-btn"
                   type="button"
-                  onClick={() => handlePlaceBid(row.original?._id)}
+                  onClick={() => {
+                    handlePlaceBid(row.original?._id)     
+                  }}
                 >
                   <Icon icon="heroicons:tag" />
                 </button>
@@ -279,11 +282,15 @@ const ShipmentListGrid = ({ title = "Shipment List" }) => {
   };
 
   const handlePlaceBid = async (id) => {
+    console.log("handlePlaceBid",id);
+    
     try {
       setIsOpen(true);
       setShipmentId(id);
       dispatch(getShipment({ id }));
     } catch (error) {
+     
+      
       errorToast(error?.message);
     }
   };

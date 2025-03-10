@@ -79,6 +79,22 @@ export const menuItems = [
 		],
 	},
 	{
+		title:"Broker",
+		icon:"heroicons-outline:users",
+		link:"#",
+		isHide: true,
+		child: [
+			{
+				childtitle: 'Broker List',
+				childlink: 'broker-list',
+			},
+			{
+				childtitle: 'Broker Register',
+				childlink: 'broker-register',
+			}
+		],
+	},
+	{
 		title: 'My Bids',
 		icon: 'heroicons-outline:tag',
 		link: 'bids',

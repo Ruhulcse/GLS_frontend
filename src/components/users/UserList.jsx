@@ -166,7 +166,7 @@ const UserList = ({ title = "User List" }) => {
         return (
           row.cell?.row?.original?._id !== user_id  && (
             <div className="flex space-x-3 rtl:space-x-reverse">
-             {currentUserType !== "shipper" && (
+             {currentUserType === "superadmin"|| currentUserType === "admin" && (
                 <Dropdown
                 classMenuItems="right-0 w-[140px] top-[110%] "
                 label={

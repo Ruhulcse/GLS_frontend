@@ -25,7 +25,13 @@ export const getShipment = createAsyncThunk(
 const shipmentSlice = createSlice({
 	name: 'shipment',
 	initialState,
-	reducers: {},
+	reducers: {
+		resetShipment: (state) => {
+			state.loading = false;
+			state.error = null;
+			state.success = false;
+			state.shipment = {};
+		}},
 	extraReducers: builder => {
 		builder
 			.addCase(getShipment.pending, state => {
@@ -42,5 +48,7 @@ const shipmentSlice = createSlice({
 			});
 	},
 });
+
+export const { resetShipment } = shipmentSlice.actions;
 
 export default shipmentSlice.reducer;

@@ -179,15 +179,9 @@ const MyBidsGrid = ({ title = "My Bids" }) => {
         ) : (
 			row.original.status=== "delivered"?<button className={`${row.original.status=== "delivered"&& 'cursor-not-allowed'}`}>Done</button> :
           <button className="inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-2 text-success-50 bg-success-500"
-            onClick={() =>
-              updatedDelivered(
-                row.original.shipmentId,
-                "delivered",
-                row.original.bidId
-              )
-            }
+             onClick={(row.original.status === 'accepted' || row.original.status === 'assigned') ? () => updatedDelivered(row.original.shipmentId, 'in transit', row.original.bidId) : () => updatedDelivered(row.original.shipmentId, 'delivered', row.original.bidId)}
           >
-            Delivered
+           {row.original.status === 'accepted'|| row.original.status === 'assigned' ? 'In Transit' : 'Delivered'}
           </button>
         ),
     },

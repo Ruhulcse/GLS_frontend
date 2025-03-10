@@ -26,18 +26,23 @@ const Sidebar = () => {
 		);
 		// Carrier-specific menu
 	}
+	else if(userType === 'agent') {
+		selectedMenu = menuItems.filter((item) =>[
+			'Dashboard',"My Plans"].includes(item.title)
+		)
+	}
 	else if(userType === 'broker') {
 		selectedMenu = menuItems
 			.map((item) => {
-				if (item.title === 'Shippers') {
-					// Filter 'Shippers' to include only 'Shipments' and exclude 'Create Shipment'
-					return {
-						...item,
-						child: item.child.filter(
-							(childItem) => childItem.childtitle === 'Shipments'
-						),
-					};
-				}
+				// if (item.title === 'Shippers') {
+				// 	// Filter 'Shippers' to include only 'Shipments' and exclude 'Create Shipment'
+				// 	return {
+				// 		...item,
+				// 		child: item.child.filter(
+				// 			(childItem) => childItem.childtitle === 'Shipments'
+				// 		),
+				// 	};
+				// }
 				if(item.title === 'Users'){
 					return {
 						...item,
@@ -68,7 +73,7 @@ const Sidebar = () => {
 					};
 				}
 				// Allow Dashboard, My Bids, and My Plans for carrier
-				if (['Dashboard', 'My Bids', 'My Plans'].includes(item.title)) {
+				if (['Dashboard',"Broker", 'My Bids', 'My Plans'].includes(item.title)) {
 					return item;
 				}
 				// Return null for items not allowed

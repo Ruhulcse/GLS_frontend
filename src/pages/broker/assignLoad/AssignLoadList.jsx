@@ -162,6 +162,7 @@ function AssignLoadList() {
                 <button
                   className="action-btn"
                   type="button"
+                  disabled={(row?.original?.status?.toLowerCase() === "in transit" || row?.original?.status?.toLowerCase() === "delivered")}
                   onClick={() => handlePlaceBid({id:row.original?.shipmentId,bidId:row.original?.bidId})}
                 >
                   <Icon icon="heroicons:pencil-square" />
@@ -173,10 +174,12 @@ function AssignLoadList() {
       },
     },
   ];
+  console.log("assign Bids",assignBids);
+  
   return (
     <>
       <DataGrid data={assignBids} title={"Assign Load List"} column={COLUMNS} />
-      <BidModal isOpen={isOpen} setIsOpen={setIsOpen} shipmentId={shipmentId} isEdit={isEdit} />
+      <BidModal isOpen={isOpen} setIsOpen={setIsOpen} shipmentId={shipmentId} isEdit={isEdit} setIsEdit={setIsEdit} />
     </>
   );
 }

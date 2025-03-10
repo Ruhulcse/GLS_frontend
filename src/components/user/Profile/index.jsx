@@ -40,7 +40,7 @@ const Profile = () => {
 							</div>
 							<div className='flex-1'>
 								<div className='text-2xl font-medium text-slate-900 dark:text-slate-200 mb-[3px]'>
-									{user?.firstName} {user?.lastName}
+									{user?.firstName} {user?.lastName} {user?.userType==="agent" && <span className='text-lg'>( {user?.agent_code} )</span>}
 								</div>
 								<div className='text-sm font-light text-slate-600 dark:text-slate-400'>
 									{user?.email}

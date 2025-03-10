@@ -23,7 +23,14 @@ export const getAssignBid = createAsyncThunk(
 const assignBidSlice = createSlice({
   name: "assignBid",
   initialState,
-  reducers: {},
+  reducers: {
+    resetAssignBid: (state) => {
+      state.loading = false;
+      state.error = null;
+      state.success = false;
+      state.assignBid = {};
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAssignBid.pending, (state) => {
@@ -40,5 +47,7 @@ const assignBidSlice = createSlice({
       });
   },
 });
+
+export const { resetAssignBid } = assignBidSlice.actions;
 
 export default assignBidSlice.reducer;
