@@ -1,15 +1,13 @@
 /* eslint-disable no-unused-vars */
 import Header from '@/components/partials/header';
 import Sidebar from '@/components/partials/sidebar';
-import { Suspense, useEffect, useRef } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-// import Settings from "@/components/partials/settings";
+import { Suspense,  useRef } from 'react';
+import { Outlet } from 'react-router-dom';
 import Loading from '@/components/Loading';
 import Footer from '@/components/partials/footer';
 import MobileFooter from '@/components/partials/footer/MobileFooter';
 import MobileMenu from '@/components/partials/sidebar/MobileMenu';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import useAuth from '@/hooks/useAuth';
 import useContentWidth from '@/hooks/useContentWidth';
 import useMenuHidden from '@/hooks/useMenuHidden';
 import useMenulayout from '@/hooks/useMenulayout';
@@ -21,14 +19,8 @@ import { ToastContainer } from 'react-toastify';
 const Layout = () => {
 	const { width, breakpoints } = useWidth();
 	const [collapsed] = useSidebar();
-	const navigate = useNavigate();
-	const isLoggedIn = useAuth();
+	
 
-	// useEffect(() => {
-	// 	if (!isLoggedIn) {
-	// 		navigate('/login');
-	// 	}
-	// }, [isLoggedIn, navigate]);
 
 	const switchHeaderClass = () => {
 		if (menuType === 'horizontal' || menuHidden) {
@@ -45,7 +37,7 @@ const Layout = () => {
 	const [menuHidden] = useMenuHidden();
 	// mobile menu
 	const [mobileMenu, setMobileMenu] = useMobileMenu();
-	const nodeRef = useRef(null);
+	
 
 	return (
 		<>

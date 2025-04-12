@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Dropdown from "@/components/ui/Dropdown";
 import Icon from "@/components/ui/Icon";
 import { Link } from "react-router-dom";
 import { Menu } from "@headlessui/react";
 import { message } from "@/constant/data";
+import fetchWrapper from "@/util/fetchWrapper";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/store/api/auth/authSlice";
 
 const messagelabel = () => {
   return (
@@ -19,6 +22,25 @@ const messagelabel = () => {
 const newMessage = message.slice(0, 4);
 
 const Message = () => {
+  const [sender, setSender] = useState([]);
+   const { user_id } = useSelector((state) => state.auth)
+  console.log("user id",user_id);
+  
+
+  useEffect(()=>{
+    const getSender =async () =>{
+      try {
+        const response = await fetchWrapper(`/chat/${user_id}`);
+        setSender(response?.data);
+      } catch (error) {
+        
+      }
+    }
+    getSender()
+  },[user_id])
+  console.log("sender",sender);
+  
+
   return (
     <Dropdown
       classMenuItems="md:w-[335px] w-min top-[58px]"

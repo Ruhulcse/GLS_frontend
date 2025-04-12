@@ -4,7 +4,7 @@
 /* eslint-disable react/jsx-key */
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   useGlobalFilter,
   usePagination,
@@ -25,10 +25,16 @@ import GlobalFilter from "../shared/TableFilter/GlobalFilter";
 import Dropdown from "../ui/Dropdown";
 import Tooltip from "../ui/Tooltip";
 import { selectCurrentUserType } from "@/store/api/auth/authSlice";
+import { getAllUsersByAgent } from "@/store/api/userByAgentCode/userByAgentCodeSlice";
+import { getUser } from "@/store/api/user/userSlice";
 
 const UserList = ({ title = "User List" }) => {
-  const { errorToast, successToast } = useToast();
-  const currentUserType = useSelector(selectCurrentUserType);
+  const { errorToast } = useToast();
+  const currentUserType =
+    useSelector(selectCurrentUserType) ||
+    JSON.parse(localStorage.getItem("auth")).userType;
+  console.log("currentUserType:", currentUserType);
+
   const actions = [
     {
       name: "Active",
@@ -155,50 +161,67 @@ const UserList = ({ title = "User List" }) => {
     {
       Header: "action",
       accessor: "action",
-      
+
       Cell: (row) => {
-       
         const filteredActions = actions.filter(
           (item) =>
             item.name.toLowerCase() !==
             row?.cell?.row?.original?.userStatus?.toLowerCase()
         );
         return (
-          row.cell?.row?.original?._id !== user_id  && (
+          row.cell?.row?.original?._id !== user_id && (
             <div className="flex space-x-3 rtl:space-x-reverse">
-             {currentUserType === "superadmin"|| currentUserType === "admin" && (
+              {(currentUserType === "supperadmin" ||
+                currentUserType === "admin" || currentUserType === "agent") && (
                 <Dropdown
-                classMenuItems="right-0 w-[140px] top-[110%] "
-                label={
-                  <span className="text-xl text-center block w-full">
-                    <Icon icon="heroicons-outline:dots-vertical" />
-                  </span>
-                }
-              >
-                <div className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {filteredActions?.map((item, i) => (
-                    <Menu.Item
-                      key={i}
-                      onClick={() =>
-                        updateUserStatus(
-                          row?.cell?.row?.original?._id,
-                          item?.name
-                        )
-                      }
-                    >
-                      <div
-                        className={`hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50 w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
+                  classMenuItems="right-0 w-[140px] top-[110%] "
+                  label={
+                    <span className="text-xl text-center block w-full">
+                      <Icon icon="heroicons-outline:dots-vertical" />
+                    </span>
+                  }
+                >
+                  <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                    {filteredActions?.map((item, i) => (
+                      <Menu.Item
+                        key={i}
+                        onClick={() =>
+                          updateUserStatus(
+                            row?.cell?.row?.original?._id,
+                            item?.name
+                          )
+                        }
                       >
-                        <span className="text-base">
-                          <Icon icon={item.icon} />
-                        </span>
-                        <span>{item.name}</span>
-                      </div>
-                    </Menu.Item>
-                  ))}
-                </div>
-              </Dropdown>
-             )}
+                        <div
+                          className={`hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50 w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
+                        >
+                          <span className="text-base">
+                            <Icon icon={item.icon} />
+                          </span>
+                          <span>{item.name}</span>
+                        </div>
+                      </Menu.Item>
+                    ))}
+                  </div>
+                </Dropdown>
+              )}
+
+              {(currentUserType === "admin" ||
+                currentUserType === "supperadmin" ||
+                currentUserType === "agent") && (
+                <Tooltip
+                  content="View"
+                  placement="top"
+                  arrow
+                  animation="shift-away"
+                >
+                  <Link to={`/user-details/${row.cell?.row?.original?._id}`}>
+                    <button className="action-btn" type="button">
+                      <Icon icon="heroicons:eye" />
+                    </button>
+                  </Link>
+                </Tooltip>
+              )}
 
               <Tooltip
                 content="Chat"
@@ -217,7 +240,6 @@ const UserList = ({ title = "User List" }) => {
         );
       },
     },
-   
   ];
 
   const IndeterminateCheckbox = React.forwardRef(
@@ -243,18 +265,33 @@ const UserList = ({ title = "User List" }) => {
   );
 
   const { users, loading } = useSelector((state) => state.users);
+  const { users: agentCodeUser } = useSelector((state) => state.agentCodeUser);
   const { user_id } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.user);
   const columns = useMemo(() => COLUMNS, []);
   const dispatch = useDispatch();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if (currentUserType === "agent") {
+      setData(agentCodeUser);
+    } else {
+      setData(users);
+    }
+  }, [data, currentUserType, user]);
 
   useEffect(() => {
     dispatch(getAllUsers());
-  }, [dispatch]);
+    dispatch(getUser({ user_id: user_id }));
+    if (currentUserType === "agent") {
+      dispatch(getAllUsersByAgent({ id: user.agent_code }));
+    }
+  }, [dispatch, user_id, user.agent_code]);
 
   const tableInstance = useTable(
     {
       columns,
-      data: users,
+      data,
     },
 
     useGlobalFilter,

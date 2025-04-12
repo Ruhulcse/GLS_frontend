@@ -14,6 +14,7 @@ import contact from "./api/contact/contactSlice";
 import shipperShipments from "./api/shipperShipments/shipperShipmentsSlice";
 import assignBids from "./api/assignBids/assignBidsSlice";
 import singleBid from "./api/assignBid/assignBidSlice";
+import agentCodeUser from './api/userByAgentCode/userByAgentCodeSlice'
 
 const rootReducer = {
   layout,
@@ -32,5 +33,6 @@ const rootReducer = {
   shipperShipments,
   assignBids,
   singleBid,
+  agentCodeUser
 };
 export default rootReducer;

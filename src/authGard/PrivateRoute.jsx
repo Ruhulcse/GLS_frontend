@@ -5,8 +5,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 function PrivateRoute({ children }) {
 	const token = useSelector(selectCurrentToken);
-	// const userType = useSelector(selectCurrentUserType);
-	// console.log({ userType });
+	
 
 	const location = useLocation();
 

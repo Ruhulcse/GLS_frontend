@@ -46,6 +46,7 @@ import ReSetPassword from "@/auth/ResetPassword";
 import ContactList from "@/pages/admin/contactList";
 import Message from "@/pages/admin/contactList/Message";
 import AssignLoadList from "@/pages/broker/assignLoad/AssignLoadList";
+import UserDetails from "@/components/user-details";
 
 const ShipmentFormPage = lazy(() =>
   import("@/pages/admin/shipments/shipment-form")
@@ -231,6 +232,10 @@ export const router = createBrowserRouter([
       {
         path: "/users",
         element: <UserListPage />,
+      },
+      {
+        path:"/user-details/:id",
+        element:<UserDetails/>
       },
       {
         path: "/notifications",
